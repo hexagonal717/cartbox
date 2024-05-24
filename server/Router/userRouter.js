@@ -90,7 +90,7 @@ router.get("/getUserInfoByQuery", async (req, res) => {
     try {
 
 
-        const data = await userInfo.findOne({email: req.query.email});
+        const data = await userInfo.findOne({email: req.query.email}, {}, {lean: true});
 
 
         res.status(200).json(data);
