@@ -1,10 +1,12 @@
 const router = require("express").Router();
 const userInfo = require("../Model/userSchema");
 const {response} = require("express");
+const argon = require("argon2");
 
 router.post("/signup", async (req, res) => {
     try {
         console.log(req.body);
+
         const {firstName, lastName, email, phone, password} = req.body;
 
         if (!firstName || !lastName || !email || !phone || !password) {
@@ -15,19 +17,21 @@ router.post("/signup", async (req, res) => {
 
         }
 
-        const existingUser = await userInfo.findOne({email}, "_id", {lean: true});
-        if (existingUser) {
+        const existingUserEmail = await userInfo.findOne({email}, {}, {lean: true});
+        const existingUserPhone = await userInfo.findOne({phone}, {}, {lean: true});
+        if (existingUserEmail || existingUserPhone) {
             console.log("User already exists.")
             return res.status(400).json({error: "User already exists."});
 
         }
+
 
         const newUser = new userInfo({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             phone: req.body.phone,
-            password: req.body.password,
+            password: await argon.hash(req.body.password),
         })
         console.log(newUser)
         const savedUser = await newUser.save();
@@ -41,6 +45,40 @@ router.post("/signup", async (req, res) => {
     }
 
 });
+
+router.post("/login", async (req, res) => {
+    try {
+
+        const {email, password} = req.body;
+
+        if (!email || !password) {
+            console.log("Email and Password is required.");
+            res.status(400).json({error: "Email and Password is required."});
+
+        }
+
+        const dbExistingUser = await userInfo.findOne({email}, {}, {lean: true});
+        console.log(dbExistingUser);
+        if (!dbExistingUser) {
+            res.status(400).json({error: "Email or Password is incorrect."});
+        }
+
+        const isPasswordValid = await argon.verify(dbExistingUser.password, password);
+
+
+        if (dbExistingUser && isPasswordValid) {
+            console.log("Login Successful.")
+            res.status(200).json({success: true});
+        }
+
+
+    } catch (err) {
+        console.log(err.message)
+        res.status(500).json({error: "Server error. Please try again later."});
+    }
+
+
+})
 
 router.get("/getAllUserInfo", async (req, res) => {
 
@@ -64,7 +102,6 @@ router.get("/getAllUserInfo", async (req, res) => {
     }
 
 })
-
 
 router.get("/getUserInfoByParams/:id", async (req, res) => {
 

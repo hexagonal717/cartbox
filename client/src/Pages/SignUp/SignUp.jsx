@@ -24,7 +24,6 @@ const SignUp = () => {
         });
     }
 
-    console.log(result, "88888888888888");
     return (
         <div>
             <input
