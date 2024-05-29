@@ -5,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const userRouter = require("./Router/userRouter");
+const authRouter = require("./Router/authRouter");
 
 app.use(cors());
 mongoose.connect(process.env.mongoUrl).then(() => {
@@ -13,6 +14,7 @@ mongoose.connect(process.env.mongoUrl).then(() => {
 
 app.use(express.json());
 app.use("/api/user", userRouter);
+app.use("/auth", authRouter);
 
 app.listen(3000, () => {
     console.log(`Port connected.`);

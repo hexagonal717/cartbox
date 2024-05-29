@@ -3,6 +3,8 @@ import {login} from "../../api.js";
 import {Navigate} from "react-router-dom";
 
 const Login = () => {
+
+
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
@@ -10,6 +12,7 @@ const Login = () => {
     const [isPasswordValid, setIsPasswordValid] = useState(false);
 
     function handleSubmit() {
+
         login(credentials).then((data) => setIsPasswordValid(data))
     }
 
@@ -36,7 +39,7 @@ const Login = () => {
                         placeholder="password"
                         onChange={handleCredentials}
                     />
-                    <button onClick={() => handleSubmit()}>Log in</button>
+                    <button onClick={handleSubmit}>Log in</button>
                 </div>
             )}
 
