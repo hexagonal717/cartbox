@@ -9,7 +9,7 @@ function App() {
     const data = useSelector((state) => state.loginSlice.accessTokenList);
 
     if (data) {
-        var loginstatus = data.success
+        var loginStatus = data.success
     }
 
     console.log(data, "fffffffffffffffffffffffffffffffff")
@@ -17,7 +17,7 @@ function App() {
     const pageRouter = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<Layout/>}>
-                <Route index element={loginstatus ? <Home/> : <Login/>}/>
+                <Route index element={loginStatus ? <Home/> : <Login/>}/>
                 <Route path="/signup" element={<SignUp/>}/>
             </Route>,
         ),
