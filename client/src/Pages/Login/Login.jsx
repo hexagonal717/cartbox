@@ -1,19 +1,20 @@
 import {useState} from "react";
 import {login} from "../../api.js";
-import {Navigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {Link} from "react-router-dom";
 
 const Login = () => {
 
+    const dispatch = useDispatch();
 
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
     });
-    const [isPasswordValid, setIsPasswordValid] = useState(false);
 
     function handleSubmit() {
 
-        login(credentials).then((data) => setIsPasswordValid(data))
+        login(credentials, dispatch)
     }
 
     function handleCredentials(event) {
@@ -24,25 +25,25 @@ const Login = () => {
 
     return (<>
 
-        {isPasswordValid ? <Navigate to="/"></Navigate>
-            : (
-                <div>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="email"
-                        onChange={handleCredentials}
-                    />
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="password"
-                        onChange={handleCredentials}
-                    />
-                    <button onClick={handleSubmit}>Log in</button>
-                </div>
-            )}
 
+        <div>
+            <input
+                type="email"
+                name="email"
+                placeholder="email"
+                onChange={handleCredentials}
+            />
+            <input
+                type="password"
+                name="password"
+                placeholder="password"
+                onChange={handleCredentials}
+            />
+            <button onClick={handleSubmit}>Log in</button>
+        </div>
+        <Link to={"/signup"}>
+            <button>Sign up Page</button>
+        </Link>
 
     </>)
 };

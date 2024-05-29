@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {signUp} from "../../api.js";
+import {Link} from "react-router-dom";
 
 const SignUp = () => {
     const [result, setResult] = useState();
@@ -58,6 +59,9 @@ const SignUp = () => {
             />
             <button onClick={handleSignUp}>Sign Up</button>
             <h1>{result && result.firstName}</h1>
+            <Link to={"/"}>
+                <button>Log In</button>
+            </Link>
         </div>
     );
 };
