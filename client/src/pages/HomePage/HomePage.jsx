@@ -1,12 +1,14 @@
 import styled from "styled-components";
-import { allUserInfo } from "../../api.js";
+import { getAllUserInfo } from "../../api.js";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeAccessToken } from "../../Redux/loginSlice.js";
+import { removeAccessToken } from "../../redux/loginSlice.js";
+import NavBar from "../../components/NavBar/NavBar.jsx";
 
 const MainContainer = styled.div`
   display: flex;
-  position: fixed;
+  padding: 15rem;
+  position: relative;
   gap: 1rem;
 `;
 
@@ -15,8 +17,8 @@ const HomePage = () => {
 
   const [showAllUser, setShowAllUser] = useState(null);
 
-  function handleAllUserInfo() {
-    allUserInfo().then((data) => {
+  function handleGetAllUserInfo() {
+    getAllUserInfo().then((data) => {
       setShowAllUser(data);
     });
   }
@@ -26,21 +28,24 @@ const HomePage = () => {
   }
 
   return (
-    <MainContainer>
-      <div>Home</div>
+    <>
+      <NavBar />
+      <MainContainer>
+        <div>Home</div>
 
-      <button onClick={handleAllUserInfo}>Show all user</button>
-      <button onClick={handleLogout}>Log Out</button>
+        <button onClick={handleGetAllUserInfo}>Show all user</button>
+        <button onClick={handleLogout}>Log Out</button>
 
-      {showAllUser &&
-        showAllUser.map((user) => (
-          <>
-            <h2 key={user._id}>
-              {user.firstName} {user.lastName}
-            </h2>
-          </>
-        ))}
-    </MainContainer>
+        {showAllUser &&
+          showAllUser.map((user) => (
+            <>
+              <h2 key={user._id}>
+                {user.firstName} {user.lastName}
+              </h2>
+            </>
+          ))}
+      </MainContainer>
+    </>
   );
 };
 

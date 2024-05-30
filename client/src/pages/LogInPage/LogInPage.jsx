@@ -91,6 +91,10 @@ const InputContainer = styled.input`
     padding: 1rem 0.9rem;
     box-shadow: 0 0 0.5rem #5e1eff4c;
   }
+
+  &::-ms-reveal {
+    filter: invert(100%);
+  }
 `;
 
 const LogInButton = styled.button`
