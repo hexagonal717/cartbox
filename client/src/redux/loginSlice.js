@@ -1,19 +1,19 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const loginSlice = createSlice({
-    name: "loginSlice",
-    initialState: {
-        accessTokenList: null,
+  name: "loginSlice",
+  initialState: {
+    accessToken: null,
+  },
+  reducers: {
+    getAccessToken: (state, action) => {
+      state.accessToken = action.payload;
     },
-    reducers: {
-        accessToken: (state, action) => {
-            state.accessTokenList = action.payload;
-        },
-        removeAccessToken: (state) => {
-            state.accessTokenList = null;
-        },
+    removeAccessToken: (state) => {
+      state.accessToken = null;
     },
+  },
 });
 
-export const {accessToken, removeAccessToken} = loginSlice.actions;
+export const { getAccessToken, removeAccessToken } = loginSlice.actions;
 export default loginSlice.reducer;

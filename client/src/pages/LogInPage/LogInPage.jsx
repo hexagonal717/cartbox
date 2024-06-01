@@ -12,7 +12,8 @@ const LogInPage = () => {
     password: "",
   });
 
-  function handleSubmit() {
+  function handleSubmit(event) {
+    event.preventDefault();
     login(credentials, dispatch);
   }
 
@@ -24,7 +25,7 @@ const LogInPage = () => {
 
   return (
     <MainContainer>
-      <FormContainer>
+      <FormContainer onSubmit={handleSubmit}>
         <InputContainer
           type="email"
           name="email"
@@ -37,7 +38,7 @@ const LogInPage = () => {
           placeholder="Password"
           onChange={handleCredentials}
         />
-        <LogInButton onClick={handleSubmit}>Log in</LogInButton>
+        <LogInButton type="submit">Log in</LogInButton>
         <div style={{ color: "#dadada", fontSize: "0.8rem", fontWeight: 700 }}>
           Want to create an account?
         </div>
@@ -57,7 +58,7 @@ const MainContainer = styled.div`
   user-select: none;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -95,6 +96,17 @@ const InputContainer = styled.input`
   &::-ms-reveal {
     filter: invert(100%);
   }
+
+  //&:-webkit-autofill,
+  //:-webkit-autofill:hover,
+  //:-webkit-autofill:focus,
+  //:-webkit-autofill:active {
+  //  color: white !important;
+  //  -webkit-text-fill-color: white !important;
+  //  -webkit-box-shadow: 0 0 0 10rem #212121ff inset !important;
+  //  -webkit-background-clip: text !important;
+  //  background-clip: text !important;
+  //}
 `;
 
 const LogInButton = styled.button`

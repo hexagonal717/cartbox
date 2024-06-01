@@ -9,6 +9,7 @@ const SignUpPage = () => {
     lastName: "",
     email: "",
     phone: Number,
+    age: Number,
     password: "",
   });
 
@@ -17,16 +18,29 @@ const SignUpPage = () => {
     setUserInfo({ ...userInfo, [name]: value });
   }
 
-  function handleSignUp() {
+  function handleSignUp(event) {
+    event.preventDefault();
     console.log(userInfo);
     signUp(userInfo).then((data) => {
-      console.log("return in .............", data.success);
+      console.log("User created successfully.", data.success);
     });
   }
 
   return (
     <MainContainer>
-      <FormContainer>
+      <FormContainer
+        action="/"
+        onSubmit={handleSignUp}
+        method="post"
+        encType="multipart/form-data"
+      >
+        <ProfileImgLabel htmlFor="upload-photo">
+          Upload an image
+          <img src="" alt="" />
+        </ProfileImgLabel>
+
+        <ProfileImgUploader type="file" name="profileImg" id="upload-photo" />
+
         <InputContainer
           type="text"
           placeholder="First Name"
@@ -40,6 +54,7 @@ const SignUpPage = () => {
           onChange={handleUserInfo}
         />
         <InputContainer
+          aria-autocomplete="none"
           type="email"
           placeholder="Email"
           name="email"
@@ -52,13 +67,19 @@ const SignUpPage = () => {
           onChange={handleUserInfo}
         />
         <InputContainer
+          type="number"
+          placeholder="Age"
+          name="age"
+          onChange={handleUserInfo}
+        />
+        <InputContainer
           type="password"
           placeholder="Password"
           name="password"
           onChange={handleUserInfo}
         />
 
-        <SignUpButton onClick={handleSignUp}>Sign Up</SignUpButton>
+        <SignUpButton type="submit">Sign Up</SignUpButton>
         <div style={{ color: "#dadada", fontSize: "0.8rem", fontWeight: 700 }}>
           Already have an account?
         </div>
@@ -78,11 +99,30 @@ const MainContainer = styled.div`
   user-select: none;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
+`;
+
+const ProfileImgUploader = styled.input`
+  display: none;
+`;
+
+const ProfileImgLabel = styled.label`
+  color: white;
+  border-radius: 25rem;
+  outline: 0.15rem solid #ffffff44;
+  text-decoration: none;
+  padding: 5.4rem 3rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const InputContainer = styled.input`
