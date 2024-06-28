@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import {AccountCircleOutlined, ArrowBackIosOutlined, ExitToAppOutlined, SettingsOutlined,} from "@mui/icons-material";
 import {useState} from "react";
-import {removeAccessToken} from "../../redux/loginSlice.js";
+import {clearAccessToken} from "../../redux/userLoginSlice.js";
 import {useDispatch, useSelector} from "react-redux";
-import {getUserInfoByParams} from "../../api.js";
+import {getUserInfoByParams} from "../../api/api.js";
 import {NavLink} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 
 const NavBar = () => {
-    const token = useSelector((state) => state.loginSlice.accessToken);
+    const token = useSelector((state) => state.userLoginSlice.accessToken);
     const dispatch = useDispatch();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     console.log("55555555555555", token.userId);
 
     function handleLogout() {
-        dispatch(removeAccessToken());
+        dispatch(clearAccessToken());
     }
 
     const {
@@ -133,6 +133,7 @@ const NavBarContainer = styled.div`
     align-items: center;
     /*border-radius: 0.5rem;*/
     outline: 0.1rem solid #3a3a3a;
+    user-select: none;
 `;
 
 const NavBarList = styled.ul`

@@ -10,9 +10,9 @@ let token = null;
 
 if (localStorage.getItem("persist:calvinmern")) {
     const data = JSON.parse(localStorage.getItem("persist:calvinmern"));
-    const loginSlice = JSON.parse(data.loginSlice);
-    if (loginSlice && loginSlice.accessToken) {
-        token = loginSlice.accessToken.tokenId;
+    const userLoginSlice = JSON.parse(data.userLoginSlice);
+    if (userLoginSlice && userLoginSlice.accessToken) {
+        token = userLoginSlice.accessToken.tokenId;
     }
 }
 

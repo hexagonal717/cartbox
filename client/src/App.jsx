@@ -1,15 +1,15 @@
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider,} from "react-router-dom";
 import Layout from "./pages/Layout.jsx";
-import HomePage from "./pages/HomePage/HomePage.jsx";
-import SignUpPage from "./pages/SignUpPage/SignUpPage.jsx";
+import HomePage from "./pages/User/HomePage/HomePage.jsx";
+import SignUpPage from "./pages/User/SignUpPage/SignUpPage.jsx";
 import {useSelector} from "react-redux";
-import LogInPage from "./pages/LogInPage/LogInPage.jsx";
-import ProfilePage from "./pages/ProfilePage/ProfilePage.jsx";
-import AccountSettings from "./pages/AccountSettings/AccountSettings.jsx";
-import SettingsPage from "./pages/SettingsPage/SettingsPage.jsx";
+import LogInPage from "./pages/User/LogInPage/LogInPage.jsx";
+import ProfilePage from "./pages/User/ProfilePage/ProfilePage.jsx";
+import AccountSettings from "./pages/User/AccountSettings/AccountSettings.jsx";
+import SettingsPage from "./pages/User/SettingsPage/SettingsPage.jsx";
 
 function App() {
-    const data = useSelector((state) => state.loginSlice.accessToken);
+    const data = useSelector((state) => state.userLoginSlice.accessToken);
 
     if (data) {
         var loginStatus = data.success;
@@ -20,7 +20,7 @@ function App() {
                 <Route index element={loginStatus ? <HomePage/> : <LogInPage/>}/>
                 <Route path="/signup" element={<SignUpPage/>}/>
                 <Route
-                    path="settings"
+                    path="/settings"
                     element={loginStatus ? <SettingsPage/> : <LogInPage/>}
                 >
                     <Route
