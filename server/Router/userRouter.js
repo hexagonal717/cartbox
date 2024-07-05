@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const { verifyToken } = require("../verifyToken");
+const {verifyToken} = require("../verifyToken");
 const {
-  putUserInfoByParams,
-  deleteUserInfoByParams,
-  getUserInfoByParams,
-  insertAllData,
-  deleteAllData,
-  filterData,
+    putUserInfoByParams,
+    deleteUserInfoByParams,
+    getUserInfoByParams,
+    insertAllData,
+    deleteAllData,
+    filterData,
 } = require("../AppController/userController");
 
 router.get("/getUserInfoByParams/:id", verifyToken, getUserInfoByParams);
@@ -14,9 +14,9 @@ router.get("/getUserInfoByParams/:id", verifyToken, getUserInfoByParams);
 router.put("/putUserInfoByParams/:id", verifyToken, putUserInfoByParams);
 
 router.delete(
-  "/deleteUserInfoByParams/:id",
-  verifyToken,
-  deleteUserInfoByParams,
+    "/deleteUserInfoByParams/:id",
+    verifyToken,
+    deleteUserInfoByParams,
 );
 
 router.post("/insertAllData", insertAllData);

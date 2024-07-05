@@ -12,6 +12,7 @@ const Layout = block(() => {
     return (
         <>
             {!userToken ||
+            // location.pathname === "/adminlogin" ||
             location.pathname === "/settings/account" ||
             location.pathname === "/settings/profile" ? (
                 <>

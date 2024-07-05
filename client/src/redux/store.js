@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE,} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userSliceReducer from "./userSlice.js";
+import adminSliceReducer from "./adminSlice.js";
 import userLoginSliceReducer from "./userLoginSlice.js";
 import adminLoginSliceReducer from "./adminLoginSlice.js";
 
@@ -13,6 +14,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     userSlice: userSliceReducer,
+    adminSlice: adminSliceReducer,
     userLoginSlice: userLoginSliceReducer,
     adminLoginSlice: adminLoginSliceReducer
 });

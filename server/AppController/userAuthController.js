@@ -1,4 +1,4 @@
-const userInfo = require("../Model/userSchema");
+const UserInfoSchema = require("../Model/userSchema");
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 
@@ -14,12 +14,13 @@ const signup = async (req, res) => {
             return res.status(400).json({error: "All fields are required."});
         }
 
-        const existingUserEmail = await userInfo.findOne(
+
+        const existingUserEmail = UserInfoSchema.findOne(
             {email},
             {},
             {lean: true},
         );
-        const existingUserPhone = await userInfo.findOne(
+        const existingUserPhone = await UserInfoSchema.findOne(
             {phone},
             {},
             {lean: true},
@@ -29,13 +30,14 @@ const signup = async (req, res) => {
             return res.status(400).json({error: "User already exists."});
         }
 
-        const newUser = new userInfo({
+        const newUser = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             phone: req.body.phone,
             age: req.body.age,
             password: await argon.hash(req.body.password),
+            type: req.body.type
         });
         console.log(newUser);
         await newUser.save();
@@ -45,6 +47,8 @@ const signup = async (req, res) => {
         res.status(500).json({error: "Server error. Please try again later."});
     }
 };
+
+
 const login = async (req, res) => {
     try {
         console.log("***************************", req.body);
@@ -55,7 +59,8 @@ const login = async (req, res) => {
             res.status(400).json({error: "Email and Password is required."});
         }
 
-        const dbExistingUser = await userInfo.findOne(
+
+        const dbExistingUser = await UserInfoSchema.findOne(
             {email},
             {},
             {lean: true},

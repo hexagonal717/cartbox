@@ -10,15 +10,15 @@ let token = null;
 
 if (localStorage.getItem("persist:calvinmern")) {
     const data = JSON.parse(localStorage.getItem("persist:calvinmern"));
-    const userLoginSlice = JSON.parse(data.userLoginSlice);
-    if (userLoginSlice && userLoginSlice.accessToken) {
-        token = userLoginSlice.accessToken.tokenId;
+    const adminLoginSlice = JSON.parse(data.adminLoginSlice);
+    if (adminLoginSlice && adminLoginSlice.accessToken) {
+        token = adminLoginSlice.accessToken.tokenId;
     }
 }
 
 console.log("token", token);
 
-
 export const userRequest = axios.create({
     baseURL: baseUrl,
+    headers: token ? {token: token} : {},
 });

@@ -9,11 +9,11 @@ const ProfilePage = () => {
 
     const [isDisabled, setIsDisabled] = useState(true);
     const [userInfo, setUserInfo] = useState({
-        firstName: undefined,
-        lastName: undefined,
-        email: undefined,
-        phone: Number,
-        password: undefined,
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        password: "",
     });
 
     const {
@@ -53,9 +53,10 @@ const ProfilePage = () => {
     const handleSave = async () => {
         try {
             const updatedUserInfo = await putUserInfoById(token.userId, userInfo);
+            setIsDisabled(true);
             await refetch()
             console.log("User Info Saved:", updatedUserInfo);
-            setIsDisabled(true);
+
         } catch (err) {
             console.error("Error saving user info:", err);
         }

@@ -27,6 +27,7 @@ const SignUpPage = () => {
     }
 
     return (
+
         <MainContainer>
             <FormContainer
                 action="/"
@@ -89,7 +90,9 @@ const SignUpPage = () => {
             </FormContainer>
         </MainContainer>
     );
+
 };
+
 
 const MainContainer = styled.div`
     display: block;

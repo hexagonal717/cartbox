@@ -28,7 +28,7 @@ const NavBar = () => {
                 console.log("last checking", data);
                 return data;
             }),
-        enabled: !!token.userId,
+
     });
 
     if (status === "loading") return <h1>Loading...</h1>;
