@@ -2,9 +2,18 @@ import {setAccessToken} from "../redux/userLoginSlice.js";
 import {publicRequest, userRequest} from "./axios.js";
 
 export const signUp = async (userInfo) => {
-    const res = await publicRequest.post("/api/user/auth/signup", userInfo);
-    console.log("final answer", res.data);
-    return res.data;
+
+    try {
+
+
+        const res = await publicRequest.post("/api/user/auth/signup", userInfo, {headers: {"Content-Type": "multipart/form-data"}});
+        console.log("final answer", res.data);
+        return res.data;
+
+    } catch (error) {
+        console.log(error.response)
+    }
+
 };
 
 export const login = async (userInfo, dispatch) => {

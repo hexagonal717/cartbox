@@ -1,6 +1,27 @@
 const UserInfoSchema = require("../Model/userSchema");
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+
+cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+
+    }
+)
+
+const storage = multer.diskStorage({
+    filename: function (req, file, callback) {
+
+        callback(null, file.originalname);
+
+    }
+})
+
+const upload = multer({storage: storage});
+
 
 const signup = async (req, res) => {
     try {
@@ -15,7 +36,7 @@ const signup = async (req, res) => {
         }
 
 
-        const existingUserEmail = UserInfoSchema.findOne(
+        const existingUserEmail = await UserInfoSchema.findOne(
             {email},
             {},
             {lean: true},
@@ -25,19 +46,26 @@ const signup = async (req, res) => {
             {},
             {lean: true},
         );
+        console.log(existingUserPhone, existingUserEmail, "***")
         if (existingUserEmail || existingUserPhone) {
             console.log("User already exists.");
             return res.status(400).json({error: "User already exists."});
         }
 
-        const newUser = new User({
+        const uploadedImage = await cloudinary.uploader.upload(req.file.path);
+        console.log(uploadedImage, "UPLOADED IMAGE");
+
+        const imagePath = uploadedImage.secure_url;
+
+        const newUser = new UserInfoSchema({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             phone: req.body.phone,
             age: req.body.age,
             password: await argon.hash(req.body.password),
-            type: req.body.type
+            type: req.body.type,
+            image: imagePath
         });
         console.log(newUser);
         await newUser.save();
@@ -100,6 +128,6 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-    signup,
+    signup: [upload.single('image'), signup],
     login,
 };

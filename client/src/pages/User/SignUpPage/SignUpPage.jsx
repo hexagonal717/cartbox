@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 
 const SignUpPage = () => {
+
+    const [previewImage, setPreviewImage] = useState(null);
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",
@@ -11,10 +13,16 @@ const SignUpPage = () => {
         phone: Number,
         age: Number,
         password: "",
+        image: ""
     });
 
     function handleUserInfo(event) {
-        const {name, value} = event.target;
+        let {name, value} = event.target;
+        if (event.target.type === "file") {
+            value = event.target.files[0];
+            setPreviewImage(URL.createObjectURL(event.target.files[0]));
+
+        }
         setUserInfo({...userInfo, [name]: value});
     }
 
@@ -37,10 +45,10 @@ const SignUpPage = () => {
             >
                 <ProfileImgLabel htmlFor="upload-photo">
                     Upload an image
-                    <img src="" alt=""/>
+                    <img src={previewImage} alt=""/>
                 </ProfileImgLabel>
 
-                <ProfileImgUploader type="file" name="profileImg" id="upload-photo"/>
+                <ProfileImgUploader type="file" name="image" id="upload-photo" onChange={handleUserInfo}/>
 
                 <InputContainer
                     type="text"
@@ -138,6 +146,8 @@ const InputContainer = styled.input`
     box-shadow: 0 0 0.2rem #d1d1d14c;
     font-size: 0.8rem;
     font-weight: 500;
+    caret-color: white;
+    color-scheme: dark;
     transition: outline 123ms ease-in-out,
     box-shadow 123ms ease-in-out,
     padding 123ms ease-in-out;
@@ -157,6 +167,17 @@ const InputContainer = styled.input`
 
     &::-ms-reveal {
         filter: invert(100%);
+    }
+
+    &:-webkit-autofill,
+    :-webkit-autofill:hover,
+    :-webkit-autofill:focus,
+    :-webkit-autofill:active {
+        color: white !important;
+        -webkit-text-fill-color: white !important;
+        -webkit-box-shadow: 0 0 0 10rem #2A3240FF inset !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
     }
 `;
 
