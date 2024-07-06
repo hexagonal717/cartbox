@@ -41,11 +41,14 @@ const SignUpPage = () => {
                 action="/"
                 onSubmit={handleSignUp}
                 method="post"
-                encType="multipart/form-data"
-            >
+                encType="multipart/form-data">
                 <ProfileImgLabel htmlFor="upload-photo">
-                    Upload an image
-                    <img src={previewImage} alt=""/>
+
+                    {previewImage ? null :
+                        <div style={{color: "white", fontSize: "0.8rem", fontWeight: "400"}}>Upload an image</div>}
+                    <ProfileImage style={!previewImage ? {display: "none"} : {display: "block"}} src={previewImage}
+                                  alt=""/>
+
                 </ProfileImgLabel>
 
                 <ProfileImgUploader type="file" name="image" id="upload-photo" onChange={handleUserInfo}/>
@@ -101,7 +104,6 @@ const SignUpPage = () => {
 
 };
 
-
 const MainContainer = styled.div`
     display: block;
     position: fixed;
@@ -117,24 +119,36 @@ const FormContainer = styled.form`
     gap: 0.8rem;
 `;
 
-const ProfileImgUploader = styled.input`
-    display: none;
+const ProfileImage = styled.img`
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 `;
 
+const ProfileImgUploader = styled.input`
+    display: none;
+    text-decoration: none;
+`;
+
+
 const ProfileImgLabel = styled.label`
-    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12rem;
+    width: 12rem;
+    text-align: center;
     border-radius: 25rem;
     outline: 0.15rem solid #ffffff44;
     text-decoration: none;
-    padding: 5.4rem 3rem;
-    font-size: 0.8rem;
-    font-weight: 400;
     margin-bottom: 2rem;
 
     &:hover {
         cursor: pointer;
     }
 `;
+
 
 const InputContainer = styled.input`
     padding: 0.7rem 0.6rem;
