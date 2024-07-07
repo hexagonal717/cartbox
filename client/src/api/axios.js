@@ -16,9 +16,10 @@ if (localStorage.getItem("persist:calvinmern")) {
     }
 }
 
-console.log("token", token);
-
-
 export const userRequest = axios.create({
     baseURL: baseUrl,
 });
+
+if (token) {
+    userRequest.defaults.headers.token = token;
+}
