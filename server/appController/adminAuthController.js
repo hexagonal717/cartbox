@@ -1,71 +1,42 @@
-const UserInfoSchema = require("../Model/userSchema");
+const AdminInfoSchema = require("../model/adminSchema").AdminInfoSchema;
 const argon = require("argon2");
 const jwt = require("jsonwebtoken");
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
-
-cloudinary.config({
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-
-    }
-)
-
-const storage = multer.diskStorage({
-    filename: function (req, file, callback) {
-
-        callback(null, file.originalname);
-
-    }
-})
-
-const upload = multer({storage: storage});
-
 
 const signup = async (req, res) => {
     try {
-        console.log(req.body, "third check");
+        console.log(req.body, "admin third check");
 
         const {firstName, lastName, age, email, phone, password} = req.body;
 
         if (!firstName || !lastName || !age || !email || !phone || !password) {
-            console.log("All fields are required.");
+            console.log("All fields are required.(admin)");
 
-            return res.status(400).json({error: "All fields are required."});
+            return res.status(400).json({error: "All fields are required.(admin)"});
         }
 
-
-        const existingUserEmail = await UserInfoSchema.findOne(
+        const existingUserEmail = await AdminInfoSchema.findOne(
             {email},
             {},
             {lean: true},
         );
-        const existingUserPhone = await UserInfoSchema.findOne(
+        const existingUserPhone = await AdminInfoSchema.findOne(
             {phone},
             {},
             {lean: true},
         );
-        console.log(existingUserPhone, existingUserEmail, "***")
         if (existingUserEmail || existingUserPhone) {
             console.log("User already exists.");
             return res.status(400).json({error: "User already exists."});
         }
 
-        const uploadedImage = await cloudinary.uploader.upload(req.file.path);
-        console.log(uploadedImage, "UPLOADED IMAGE");
 
-        const imagePath = uploadedImage.secure_url;
-
-        const newUser = new UserInfoSchema({
+        const newUser = new AdminInfoSchema({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             phone: req.body.phone,
             age: req.body.age,
             password: await argon.hash(req.body.password),
-            type: req.body.type,
-            image: imagePath
         });
         console.log(newUser);
         await newUser.save();
@@ -75,8 +46,6 @@ const signup = async (req, res) => {
         res.status(500).json({error: "Server error. Please try again later."});
     }
 };
-
-
 const login = async (req, res) => {
     try {
         console.log("***************************", req.body);
@@ -87,8 +56,7 @@ const login = async (req, res) => {
             res.status(400).json({error: "Email and Password is required."});
         }
 
-
-        const dbExistingUser = await UserInfoSchema.findOne(
+        const dbExistingUser = await AdminInfoSchema.findOne(
             {email},
             {},
             {lean: true},
@@ -110,7 +78,7 @@ const login = async (req, res) => {
                 {
                     id: dbExistingUser._id,
                 },
-                process.env.JWT_SECRET_KEY,
+                process.env.JWT_ADMIN_SECRET_KEY,
             );
 
             return res.status(200).json({
@@ -128,6 +96,6 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-    signup: [upload.single('image'), signup],
+    signup,
     login,
 };

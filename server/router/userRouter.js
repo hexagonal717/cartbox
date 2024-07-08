@@ -6,8 +6,8 @@ const {
     getUserInfoByParams,
     insertAllData,
     deleteAllData,
-    filterData,
-} = require("../AppController/userController");
+    filterData, findAllUsers, findUserByAge,
+} = require("../appController/userController");
 
 router.get("/getUserInfoByParams/:id", verifyToken, getUserInfoByParams);
 
@@ -22,4 +22,6 @@ router.delete(
 router.post("/insertAllData", insertAllData);
 router.delete("/deleteAllData", deleteAllData);
 router.get("/filterData", filterData);
+router.get("/mongoQuery/findAllUsers", findAllUsers);
+router.get("/mongoQuery/findUserByAge", findUserByAge);
 module.exports = router;

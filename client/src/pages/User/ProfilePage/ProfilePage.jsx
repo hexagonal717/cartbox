@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {useSelector} from "react-redux";
-import {getUserInfoByParams, putUserInfoById} from "../../../api/api.js";
+import {getUserInfoByParams, putUserInfoByParams} from "../../../api/api.js";
 import {useQuery} from "@tanstack/react-query";
 import {useRef, useState} from "react";
 
@@ -15,6 +15,7 @@ const ProfilePage = () => {
         lastName: "",
         email: "",
         phone: "",
+        age: "",
         password: "",
         image: ""
     });
@@ -40,7 +41,8 @@ const ProfilePage = () => {
     if (status === "error") return <h1>{JSON.stringify(error)}</h1>;
 
 
-    function handleEdit() {
+    function handleEdit(event) {
+        event.preventDefault()
         if (!isDisabled) {
             setUserInfo(dbUserInfo);
         }
@@ -61,25 +63,34 @@ const ProfilePage = () => {
 
     }
 
+
     function handleOnChange(event) {
-        const {name, value} = event.target;
-        setUserInfo({...userInfo, [name]: value});
+
+        const {name, value, files, type} = event.target;
+        if (type === "file" && files[0]) {
+            event.preventDefault()
+            setPreviewImage(URL.createObjectURL(files[0]));
+            setUserInfo({...userInfo, [name]: files[0]});
+        } else {
+            event.preventDefault()
+            setUserInfo({...userInfo, [name]: value});
+        }
     }
 
-    console.log("first check in error", userInfo, token.userId);
-
-    const handleSave = async (event) => {
+    async function handleSave(event) {
         try {
-            const updatedUserInfo = await putUserInfoById(token.userId, userInfo);
-            setPreviewImage(URL.createObjectURL(event.target.files[0]));
+            event.preventDefault()
+            const updatedUserInfo = await putUserInfoByParams(token.userId, userInfo);
             setIsDisabled(true);
-            await refetch()
-            console.log("User Info Saved:", updatedUserInfo);
+            await refetch();
+            setPreviewImage(null)
 
+            console.log("User Info Saved:", updatedUserInfo);
         } catch (err) {
             console.error("Error saving user info:", err);
         }
-    };
+    }
+
 
     const disabledInput = {
         color: "#909090",
@@ -106,7 +117,13 @@ const ProfilePage = () => {
     return (
         dbUserInfo && (
             <MainContainer>
-                <FormContainer>
+                <FormContainer
+
+                    action="/"
+                    onSubmit={handleSave}
+                    method="post"
+                    encType="multipart/form-data">
+
                     <ProfileCircle>
                         {previewImage ? (
                             <ProfileImage src={previewImage} alt="Profile"/>
@@ -125,14 +142,14 @@ const ProfilePage = () => {
 
                         <SaveProfileImageButton
                             style={previewImage ? {display: "block"} : {display: "none"}}
-                            onClick={handleSave}>
+                            type="submit">
                             <span>Save</span>
                         </SaveProfileImageButton>
                     </ProfileImageButtonGroup>
 
 
                     <ProfileImgUploader type="file" name="image" id="upload-photo" ref={profileImageInputRef}
-                                        onChange={handleSave}/>
+                                        onChange={handleOnChange}/>
 
                     <InputContainer
                         name="firstName"
@@ -171,7 +188,8 @@ const ProfilePage = () => {
                     </EditButton>
                     <SaveButton
                         style={isDisabled ? disabledSaveButton : enabledSaveButton}
-                        onClick={isDisabled ? null : handleSave}
+                        type="submit"
+                        // onClick={isDisabled ? null : handleSave}
                     >
                         Save
                     </SaveButton>
@@ -192,7 +210,7 @@ const MainContainer = styled.div`
 
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -7,7 +7,7 @@ const {
     /*insertAllData,
     deleteAllData,
     filterData,*/
-} = require("../AppController/adminController");
+} = require("../appController/adminController");
 
 router.get("/getAdminInfoByParams/:id", verifyToken, getAdminInfoByParams);
 

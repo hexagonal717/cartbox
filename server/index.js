@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const userRouter = require("./Router/userRouter");
-const userAuthRouter = require("./Router/userAuthRouter");
-const adminRouter = require("./Router/adminRouter");
-const adminAuthRouter = require("./Router/adminAuthRouter");
+const userRouter = require("./router/userRouter");
+const userAuthRouter = require("./router/userAuthRouter");
+const adminRouter = require("./router/adminRouter");
+const adminAuthRouter = require("./router/adminAuthRouter");
 
 const app = express();
 app.use(cors());

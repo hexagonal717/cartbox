@@ -9,6 +9,6 @@ const UserInfoSchema = new mongoose.Schema({
     password: {type: String, required: true},
     type: {type: String, required: true, default: "user"},
     image: {type: String}
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model("UserInfo", UserInfoSchema);

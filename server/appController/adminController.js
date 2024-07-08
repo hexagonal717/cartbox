@@ -1,4 +1,4 @@
-const userInfo = require("../Model/adminSchema").AdminInfoSchema;
+const userInfo = require("../model/adminSchema").AdminInfoSchema;
 const argon = require("argon2");
 
 const getAdminInfoByParams = async (req, res) => {
