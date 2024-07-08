@@ -2,18 +2,21 @@ import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {getUserInfoByParams, putUserInfoById} from "../../../api/api.js";
 import {useQuery} from "@tanstack/react-query";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 const ProfilePage = () => {
     const token = useSelector((state) => state.userLoginSlice.accessToken);
 
+    const [previewImage, setPreviewImage] = useState(null);
     const [isDisabled, setIsDisabled] = useState(true);
+    const profileImageInputRef = useRef(null);
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
         password: "",
+        image: ""
     });
 
     const {
@@ -36,11 +39,26 @@ const ProfilePage = () => {
     if (status === "loading") return <h1>Loading...</h1>;
     if (status === "error") return <h1>{JSON.stringify(error)}</h1>;
 
+
     function handleEdit() {
         if (!isDisabled) {
             setUserInfo(dbUserInfo);
         }
         setIsDisabled(!isDisabled);
+    }
+
+    function handleEditImage() {
+
+
+        if (previewImage) {
+            profileImageInputRef.current.value = null;
+        }
+        setPreviewImage('');
+        if (!previewImage) {
+            profileImageInputRef.current.click();
+        }
+
+
     }
 
     function handleOnChange(event) {
@@ -50,9 +68,10 @@ const ProfilePage = () => {
 
     console.log("first check in error", userInfo, token.userId);
 
-    const handleSave = async () => {
+    const handleSave = async (event) => {
         try {
             const updatedUserInfo = await putUserInfoById(token.userId, userInfo);
+            setPreviewImage(URL.createObjectURL(event.target.files[0]));
             setIsDisabled(true);
             await refetch()
             console.log("User Info Saved:", updatedUserInfo);
@@ -88,6 +107,33 @@ const ProfilePage = () => {
         dbUserInfo && (
             <MainContainer>
                 <FormContainer>
+                    <ProfileCircle>
+                        {previewImage ? (
+                            <ProfileImage src={previewImage} alt="Profile"/>
+                        ) : dbUserInfo.image ? (
+                            <ProfileImage src={dbUserInfo.image} alt="Profile"/>
+                        ) : (
+                            <div style={{color: "white", fontSize: "0.8rem", fontWeight: "400"}}>Upload an image</div>
+                        )}
+                    </ProfileCircle>
+
+                    <ProfileImageButtonGroup>
+
+                        <EditProfileImageButton onClick={handleEditImage}>
+                            {!previewImage ? "Edit picture" : "Cancel"}
+                        </EditProfileImageButton>
+
+                        <SaveProfileImageButton
+                            style={previewImage ? {display: "block"} : {display: "none"}}
+                            onClick={handleSave}>
+                            <span>Save</span>
+                        </SaveProfileImageButton>
+                    </ProfileImageButtonGroup>
+
+
+                    <ProfileImgUploader type="file" name="image" id="upload-photo" ref={profileImageInputRef}
+                                        onChange={handleSave}/>
+
                     <InputContainer
                         name="firstName"
                         style={isDisabled ? disabledInput : enabledInput}
@@ -121,7 +167,7 @@ const ProfilePage = () => {
                         onChange={handleOnChange}
                     />
                     <EditButton onClick={handleEdit}>
-                        {isDisabled ? "Edit" : "Cancel"}
+                        {isDisabled ? "Edit profile" : "Cancel"}
                     </EditButton>
                     <SaveButton
                         style={isDisabled ? disabledSaveButton : enabledSaveButton}
@@ -134,6 +180,7 @@ const ProfilePage = () => {
         )
     );
 };
+
 
 const MainContainer = styled.div`
     display: flex;
@@ -183,8 +230,40 @@ const InputContainer = styled.input`
 
 `;
 
+const ProfileImage = styled.img`
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+`;
+
+const ProfileImgUploader = styled.input`
+    display: none;
+    text-decoration: none;
+`;
+
+
+const ProfileCircle = styled.label`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 12rem;
+    width: 12rem;
+    text-align: center;
+    border-radius: 25rem;
+    outline: 0.15rem solid #ffffff44;
+    text-decoration: none;
+
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+
 const EditButton = styled.button`
-    padding: 0.6rem 5rem;
+    height: 2rem;
+    width: 6rem;
     margin: 1rem;
     background: #ffffff15;
     font-size: 0.8rem;
@@ -202,6 +281,59 @@ const EditButton = styled.button`
         transition: 123ms ease-in-out;
     }
 `;
+
+
+const EditProfileImageButton = styled.button`
+    height: 2rem;
+    width: 6rem;
+    background: #ffffff15;
+    font-size: 0.8rem;
+    color: #ffffff;
+    border-radius: 0.4rem;
+    border: none;
+    outline: 0.1rem solid #ffffff77;
+    font-weight: 700;
+    transition: background 123ms ease-in-out;
+
+    &:hover {
+        background: #ffffff25;
+        color: #ffffff;
+        cursor: pointer;
+        transition: 123ms ease-in-out;
+    }
+`;
+
+
+const ProfileImageButtonGroup = styled.div`
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+`;
+
+
+const SaveProfileImageButton = styled.button`
+    height: 2rem;
+    width: 6rem;
+    background: #ffffff15;
+    font-size: 0.8rem;
+    color: #ffffff;
+    border-radius: 0.4rem;
+    border: none;
+    outline: 0.1rem solid #ffffff77;
+    font-weight: 700;
+    transition: background 123ms ease-in-out;
+
+    &:hover {
+        background: #ffffff25;
+        color: #ffffff;
+        cursor: pointer;
+        transition: 123ms ease-in-out;
+    }
+`;
+
 const SaveButton = styled.button`
     padding: 0.6rem 5rem;
     margin: 1rem;
