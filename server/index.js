@@ -3,10 +3,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
-const userRouter = require("./router/userRouter");
-const userAuthRouter = require("./router/userAuthRouter");
-const adminRouter = require("./router/adminRouter");
-const adminAuthRouter = require("./router/adminAuthRouter");
+const customerAuthRouter = require("./router/v1/customer/customerAuthRouter");
+const customerProfileRouter = require("./router/v1/customer/customerProfileRouter");
+const adminAuthRouter = require("./router/v1/admin/adminAuthRouter");
+const adminProfileRouter = require("./router/v1/admin/adminProfileRouter");
+const superAdminAuthRouter = require("./router/v1/superAdmin/superAdminAuthRouter");
+const superAdminProfileRouter = require("./router/v1/superAdmin/superAdminProfileRouter");
+
 
 const app = express();
 app.use(cors());
@@ -21,10 +24,12 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
 
 
 // Define routes
-app.use("/api/user", userRouter);
-app.use("/api/user/auth", userAuthRouter);
-app.use("/api/admin", adminRouter);
+app.use("/api/customer", customerProfileRouter);
+app.use("/api/customer/auth", customerAuthRouter);
+app.use("/api/admin", adminProfileRouter);
 app.use("/api/admin/auth", adminAuthRouter);
+app.use("/api/superAdmin", superAdminProfileRouter);
+app.use("/api/superAdmin/auth", superAdminAuthRouter);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

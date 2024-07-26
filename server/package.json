@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "react-ecommerce-server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

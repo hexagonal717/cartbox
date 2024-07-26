@@ -4,27 +4,27 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Layout from "./pages/Layout.jsx";
-import HomePage from "./pages/User/HomePage/HomePage.jsx";
-import SignUpPage from "./pages/User/SignUpPage/SignUpPage.jsx";
+import Layout from "./components/common/Layout/Layout.jsx";
+import HomePage from "./features/customer/pages/HomePage.jsx";
+import SignUpPage from "./features/customer/pages/SignUpPage.jsx";
 import { useSelector } from "react-redux";
-import LogInPage from "./pages/User/LogInPage/LogInPage.jsx";
-import ProfilePage from "./pages/User/ProfilePage/ProfilePage.jsx";
-import AccountSettings from "./pages/User/AccountSettings/AccountSettings.jsx";
-import SettingsPage from "./pages/User/SettingsPage/SettingsPage.jsx";
-import AdminLogInPage from "./pages/Admin/AdminLogInPage/AdminLogInPage.jsx";
-import AdminHomePage from "./pages/Admin/AdminHomePage/AdminHomePage.jsx";
-import ForgotPasswordPage from "./pages/User/ForgotPasswordPage/ForgotPasswordPage.jsx";
-import VerifyCodePage from "./pages/User/VerifyCodePage/VerifyCodePage.jsx";
-import ChangePasswordPage from "./pages/User/ChangePasswordPage/ChangePasswordPage.jsx";
-import LogInRedirectPage from "./pages/User/LogInRedirectPage/LogInRedirectPage.jsx";
+import LogInPage from "./features/customer/pages/LogInPage.jsx";
+import ProfilePage from "./features/customer/pages/ProfilePage.jsx";
+import AccountSettings from "./features/customer/pages/AccountSettings.jsx";
+import SettingsPage from "./features/customer/pages/SettingsPage.jsx";
+import AdminLogInPage from "./features/admin/pages/AdminLogInPage.jsx";
+import AdminHomePage from "./features/admin/pages/AdminHomePage.jsx";
+import ForgotPasswordPage from "./features/customer/pages/ForgotPasswordPage.jsx";
+import VerifyCodePage from "./features/customer/pages/VerifyCodePage.jsx";
+import ChangePasswordPage from "./features/customer/pages/ChangePasswordPage.jsx";
+import LogInRedirectPage from "./features/customer/pages/LogInRedirectPage.jsx";
 
 function App() {
-  const userToken = useSelector((state) => state.userLoginSlice.accessToken);
-  const adminToken = useSelector((state) => state.adminLoginSlice.accessToken);
+  const customerToken = useSelector((state) => state.customerAuthSlice.accessToken);
+  const adminToken = useSelector((state) => state.adminAuthSlice.accessToken);
 
-  if (userToken) {
-    var loginStatus = userToken.success;
+  if (customerToken) {
+    var loginStatus = customerToken.success;
   }
   if (adminToken) {
     var adminLoginStatus = adminToken.success;
