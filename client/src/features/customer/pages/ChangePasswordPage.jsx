@@ -1,24 +1,24 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { changePassword } from "../../../api/customer/customerApi.js";
-import { useNavigate } from "react-router-dom";
-import { clearEmailState, setOtpVerify } from "../redux/customerOtpSlice.js";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { changePassword } from '../../../api/customer/customerApi.js';
+import { clearEmailState, setOtpVerify } from '../redux/customerOtpSlice.js';
 
 const ChangePasswordPage = () => {
   const navigate = useNavigate();
   const email = useSelector((state) => state.customerOtpSlice.email);
   const dispatch = useDispatch();
   const [passwords, setPasswords] = useState({
-    password: "",
-    confirmPassword: "",
+    password: '',
+    confirmPassword: '',
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   async function handleSubmit(event) {
     event.preventDefault();
     if (passwords.password !== passwords.confirmPassword) {
-      setError("Passwords do not match");
+      setError('Passwords do not match');
       return;
     }
 
@@ -29,16 +29,19 @@ const ChangePasswordPage = () => {
     if (response?.success) {
       dispatch(setOtpVerify(false));
       dispatch(clearEmailState());
-      navigate("/loginredirectpage");
+      navigate('/loginredirectpage');
     } else {
-      setError("Failed to change password");
+      setError('Failed to change password');
     }
   }
 
   function handleCredentials(event) {
     const { name, value } = event.target;
-    setPasswords({ ...passwords, [name]: value });
-    setError(""); // Clear error when user starts typing
+    setPasswords({
+      ...passwords,
+      [name]: value,
+    });
+    setError(''); // Clear error when user starts typing
   }
 
   return (

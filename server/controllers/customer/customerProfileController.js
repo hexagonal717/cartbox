@@ -1,7 +1,7 @@
-const customerSchema = require("../../model/customerSchema");
-const argon = require("argon2");
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
+const customerSchema = require('../../model/customerSchema');
+const argon = require('argon2');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -17,31 +17,31 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-const getCustomerInfoByParams = async (req, res) => {
-  console.log("3rd check", req.body);
+const getUser = async (req, res) => {
+  console.log('3rd check', req.body);
   try {
     const data = await customerSchema.find(
       { _id: req.params.id },
       {},
       { lean: true },
     );
-    console.log(data, "999999999");
+    console.log(data, '999999999');
     const { password, ...other } = data[0];
 
     res.status(200).json(other);
-    console.log(data, "");
+    console.log(data, 'User Data');
   } catch (err) {
-    res.status(500).json({ error: "Server error. Please try again later." });
+    res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 
-const putCustomerInfoByParams = async (req, res) => {
+const putUser = async (req, res) => {
   try {
     let imagePath = null;
 
     if (req.file) {
       const uploadedImage = await cloudinary.uploader.upload(req.file.path);
-      console.log(uploadedImage, "UPLOADED IMAGE");
+      console.log(uploadedImage, 'UPLOADED IMAGE');
       imagePath = uploadedImage.secure_url;
     }
 
@@ -67,22 +67,22 @@ const putCustomerInfoByParams = async (req, res) => {
     res.status(200).json(updateData);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Server error. Please try again later." });
+    res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 
-const deleteCustomerInfoByParams = async (req, res) => {
-  console.log("delete user id", req.params.id);
+const deleteUser = async (req, res) => {
+  console.log('delete user id', req.params.id);
   try {
     await customerSchema.findByIdAndDelete(req.params.id);
-    res.status(200).json({ type: "success" });
+    res.status(200).json({ type: 'success' });
   } catch (err) {
     console.log(err);
   }
 };
 
 const insertAllData = async (req, res) => {
-  console.log("************", req.body);
+  console.log('************', req.body);
 
   try {
     // Hash the passwords for each user
@@ -93,17 +93,17 @@ const insertAllData = async (req, res) => {
       }),
     );
 
-    console.log("usersWithHashedPasswords", usersWithHashedPasswords);
+    console.log('usersWithHashedPasswords', usersWithHashedPasswords);
 
     // Insert users into the database
     const result = await customerSchema.insertMany(usersWithHashedPasswords);
 
-    res.status(200).json({ type: "success", payload: result });
+    res.status(200).json({ type: 'success', payload: result });
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      type: "error",
-      message: "Failed to insert data",
+      type: 'error',
+      message: 'Failed to insert data',
       error: err.message,
     });
   }
@@ -112,7 +112,7 @@ const insertAllData = async (req, res) => {
 const deleteAllData = async (req, res) => {
   try {
     await customerSchema.deleteMany();
-    res.status(200).json({ type: "delete success" });
+    res.status(200).json({ type: 'delete success' });
   } catch (err) {
     console.log(err);
   }
@@ -121,7 +121,7 @@ const deleteAllData = async (req, res) => {
 const filterData = async (req, res) => {
   try {
     const filData = await customerSchema.find({ age: { $gte: 25 } });
-    res.status(200).json({ type: "success", data: filData });
+    res.status(200).json({ type: 'success', data: filData });
   } catch (err) {
     console.log(err);
   }
@@ -143,9 +143,9 @@ const findUserByAge = async (req, res) => {
 };
 
 module.exports = {
-  getCustomerInfoByParams,
-  putCustomerInfoByParams: [upload.single("image"),putCustomerInfoByParams],
-  deleteCustomerInfoByParams,
+  getUser,
+  putUser: [upload.single('image'), putUser],
+  deleteUser,
   insertAllData,
   deleteAllData,
   filterData,

@@ -1,11 +1,12 @@
 {
-  "name": "react-ecommerce-server",
+  "name": "cartbox-server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
-  "author": "",
+  "author": "Calvin Paiva",
   "license": "ISC",
   "description": "",
   "dependencies": {

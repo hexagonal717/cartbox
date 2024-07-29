@@ -1,8 +1,8 @@
-# React e-Commerce
+# CartBox
 
 ## Description
 
-This is a full-stack eCommerce website built with React for the frontend and Express for the backend. It includes features such as product listings, user authentication, shopping cart functionality, and more. The website is designed to provide a seamless shopping experience for users.
+CartBox is a full-stack e-commerce website built with React for the frontend and Express for the backend. It includes features such as product listings, user authentication, shopping cart functionality, and more. The website is designed to provide a seamless shopping experience for users.
 
 ## Features
 
@@ -50,8 +50,8 @@ This is a full-stack eCommerce website built with React for the frontend and Exp
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/hexagonal717/react-ecommerce.git
-    cd react-ecommerce
+    git clone https://github.com/hexagonal717/cartbox.git
+    cd cartbox
     ```
 2. **Navigate to the client directory**
     ```bash
@@ -113,21 +113,23 @@ This is a full-stack eCommerce website built with React for the frontend and Exp
                 - customerApi.js
                 - customerAxios.js
             - superAdmin/
+                - superAdminApi.js
+                - superAdminAxios.js
         - App.jsx
         - assets/
             - react.svg
         - components/
             - common/
-                - index.js
-                - Layout/
-                    - Layout.jsx
-                - NavBar/
-                    - NavBar.jsx
-                - SidePanel/
-                    - SidePanel.jsx
+                - CartEmpty.jsx
+                - CategoryBar.jsx
+                - Footer.jsx
+                - Layout.jsx
+                - NavBar.jsx
+                - ProductCard.jsx
+                - ProfileButton.jsx
+                - SidePanel.jsx
         - features/
             - admin/
-                - index.js
                 - pages/
                     - AdminHomePage.jsx
                     - AdminLogInPage.jsx
@@ -136,19 +138,23 @@ This is a full-stack eCommerce website built with React for the frontend and Exp
                     - adminOtpSlice.js
                     - adminProfileSlice.js
             - customer/
-                - index.js
                 - pages/
                     - AccountSettings.jsx
+                    - CartPage.jsx
                     - ChangePasswordPage.jsx
+                    - DemoPage.jsx
                     - ForgotPasswordPage.jsx
                     - HomePage.jsx
                     - LogInPage.jsx
                     - LogInRedirectPage.jsx
+                    - ProductDetailPage.jsx
                     - ProfilePage.jsx
                     - SettingsPage.jsx
                     - SignUpPage.jsx
+                    - SkeletonProductCard.jsx
                     - VerifyCodePage.jsx
                 - redux/
+                    - cartSlice.js
                     - customerAuthSlice.js
                     - customerOtpSlice.js
                     - customerProfileSlice.js
@@ -164,7 +170,6 @@ This is a full-stack eCommerce website built with React for the frontend and Exp
         - main.jsx
         - redux/
             - store.js
-    - vite.config.js
 
 
 ### Backend
@@ -173,9 +178,12 @@ This is a full-stack eCommerce website built with React for the frontend and Exp
     - controllers/
         - admin/
             - adminAuthController.js
+            - adminProductController.js
             - adminProfileController.js
         - customer/
             - customerAuthController.js
+            - customerCartController.js
+            - customerProductController.js
             - customerProfileController.js
         - superAdmin/
             - superAdminAuthController.js
@@ -190,24 +198,40 @@ This is a full-stack eCommerce website built with React for the frontend and Exp
             - superAdminAuthMiddleware.js
     - model/
         - adminSchema.js
+        - cartSchema.js
         - customerSchema.js
+        - orderSchema.js
         - otpSchema.js
+        - productSchema.js
         - superAdminSchema.js
     - router/
         - v1/
             - admin/
                 - adminAuthRouter.js
+                - adminProductRouter.js
                 - adminProfileRouter.js
             - customer/
                 - customerAuthRouter.js
+                - customerCartRouter.js
+                - customerProductRouter.js
                 - customerProfileRouter.js
             - superAdmin/
                 - superAdminAuthRouter.js
                 - superAdminProfileRouter.js
 
 ## Data Flow Diagram
-####
-![Data Flow Diagram](/dfd/react-ecommerce.drawio.svg)
+
+### Level 0
+![Data Flow Diagram](/dfd/level0-cartbox.drawio.svg)
+
+### Level 1 - Super Admin
+![Data Flow Diagram](/dfd/level1-superadmin.drawio.svg)
+
+### Level 1 - Admin
+![Data Flow Diagram](/dfd/level1-admin.drawio.svg)
+
+### Level 1 - Customer
+![Data Flow Diagram](/dfd/level1-customer.drawio.svg)
 
 ## Contributing
 

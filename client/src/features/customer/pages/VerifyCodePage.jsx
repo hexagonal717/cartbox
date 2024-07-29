@@ -1,14 +1,14 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { verifyOtp } from "../../../api/customer/customerApi.js";
-import { useNavigate } from "react-router-dom";
-import { setOtpVerify } from "../redux/customerOtpSlice.js";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { verifyOtp } from '../../../api/customer/customerApi.js';
+import { setOtpVerify } from '../redux/customerOtpSlice.js';
 
 const VerifyCodePage = () => {
   const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
-    otp: "",
+    otp: '',
   });
 
   async function handleSubmit(event) {
@@ -19,13 +19,16 @@ const VerifyCodePage = () => {
 
     if (response?.success) {
       setOtpVerify(true);
-      navigate("/changepassword");
+      navigate('/changepassword');
     }
   }
 
   function handleCredentials(event) {
     const { name, value } = event.target;
-    setCredentials({ ...credentials, [name]: value });
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
     console.log(credentials);
   }
 
