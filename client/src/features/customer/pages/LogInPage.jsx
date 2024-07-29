@@ -25,11 +25,11 @@ const LogInPage = () => {
 
   return (
     <>
-      <Header>
-        <Link to="/adminlogin">
-          <AdminButton>For Admins</AdminButton>
-        </Link>
-      </Header>
+      {/*<Header>*/}
+      {/*  <Link to="/adminlogin">*/}
+      {/*    <AdminButton>For Admins</AdminButton>*/}
+      {/*  </Link>*/}
+      {/*</Header>*/}
 
       <MainContainer>
         <FormContainer onSubmit={handleSubmit}>

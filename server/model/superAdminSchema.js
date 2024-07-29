@@ -7,7 +7,7 @@ const superAdminSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     phone: {type: Number, required: true, unique: true},
     password: {type: String, required: true},
-    userType: {type: String, required: true, default: "superAdmin"},
+    role: {type: String, enum: ['customer', 'admin', 'superAdmin'], default: 'superAdmin'},
     image: {type: String},
 });
 

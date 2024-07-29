@@ -1,10 +1,10 @@
-import { setAccessToken } from "../../features/customer/redux/customerAuthSlice.js";
-import { publicRequest, userRequest } from "./customerAxios.js";
+import { setAccessToken } from "../../features/superAdmin/redux/superAdminAuthSlice.js";
+import { publicRequest, userRequest } from "./superAdminAxios.js";
 
 // Sign up new user
-export const signUp = async (customerInfo) => {
+export const signUp = async (superAdminInfo) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/signup", customerInfo, {
+    const res = await publicRequest.post("/api/superAdmin/auth/signup", superAdminInfo, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data;
@@ -15,9 +15,9 @@ export const signUp = async (customerInfo) => {
 };
 
 // Login user
-export const login = async (customerInfo, dispatch) => {
+export const login = async (superAdminInfo, dispatch) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/login", customerInfo);
+    const res = await publicRequest.post("/api/superAdmin/auth/login", superAdminInfo);
     dispatch(setAccessToken(res.data));
     userRequest.defaults.headers.token = res.data.tokenId;
   } catch (error) {
@@ -30,7 +30,7 @@ export const login = async (customerInfo, dispatch) => {
 export const forgotPassword = async (email) => {
   try {
     const res = await publicRequest.post(
-      `/api/customer/auth/forgotpassword`,
+      `/api/superAdmin/auth/forgotpassword`,
       email,
     );
     console.log(res.data, "forgotPassword data");
@@ -43,7 +43,7 @@ export const forgotPassword = async (email) => {
 
 export const verifyOtp = async (otp) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/verifyotp", otp);
+    const res = await publicRequest.post("/api/superAdmin/auth/verifyotp", otp);
     console.log(res.data, "otp verify check");
     return res.data;
   } catch (error) {
@@ -53,7 +53,7 @@ export const verifyOtp = async (otp) => {
 
 export const changePassword = async (email, password) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/changePassword", {
+    const res = await publicRequest.post("/api/superAdmin/auth/changePassword", {
       email,
       password,
     });
@@ -65,9 +65,9 @@ export const changePassword = async (email, password) => {
 };
 
 // Get user info by ID
-export const getCustomerInfoByParams = async (customerId) => {
+export const getSuperAdminInfoByParams = async (superAdminId) => {
   try {
-    const res = await userRequest.get(`/api/customer/getCustomerInfoByParams/${customerId}`);
+    const res = await userRequest.get(`/api/superAdmin/profile/getSuperAdminInfoByParams/${superAdminId}`);
     console.log("heyyyyy", res.data);
     return res.data;
   } catch (error) {
@@ -77,11 +77,11 @@ export const getCustomerInfoByParams = async (customerId) => {
 };
 
 // Update user info by ID
-export const putCustomerInfoByParams = async (customerId, customerInfo) => {
+export const putSuperAdminInfoByParams = async (superAdminId, superAdminInfo) => {
   try {
     const res = await userRequest.put(
-      `/api/customer/putCustomerInfoByParams/${customerId}`,
-      customerInfo,
+      `/api/superAdmin/profile/putSuperAdminInfoByParams/${superAdminId}`,
+      superAdminInfo,
       {
         headers: { "Content-Type": "multipart/form-data" },
       },
@@ -94,26 +94,14 @@ export const putCustomerInfoByParams = async (customerId, customerInfo) => {
 };
 
 // Delete user info by ID
-export const deleteCustomerInfoById = async (customerId) => {
+export const deleteSuperAdminInfoById = async (customerId) => {
   try {
     const res = await userRequest.delete(
-      `/api/customer/deleteCustomerInfoByParams/${customerId}`,
+      `/api/superAdmin/deleteSuperAdminInfoByParams/${customerId}`,
     );
     return res.data;
   } catch (error) {
     console.error("Delete user info error:", error.response);
-    throw error;
-  }
-};
-
-// Get product info list
-export const getProductInfoList = async () => {
-  try {
-    const res = await userRequest.get(`/api/customer/product/getProductInfoList`);
-    console.log("heyyyyy", res.data);
-    return res.data;
-  } catch (error) {
-    console.error("Get product list info error:", error.response);
     throw error;
   }
 };

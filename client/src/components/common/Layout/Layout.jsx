@@ -1,15 +1,20 @@
 import {block} from "million/react";
 
-import {useSelector} from "react-redux";
-
+import {Outlet} from "react-router-dom";
 import NavBar from "../NavBar/NavBar.jsx";
-import {Outlet, useLocation} from "react-router-dom";
 
 const Layout = block(() => {
-    const userToken = useSelector((state) => state.customerAuthSlice.accessToken);
-    const location = useLocation();
+    // const userToken = useSelector((state) => state.customerAuthSlice.accessToken);
+    // const location = useLocation();
+    //
 
-    return (
+
+    return <>
+<NavBar></NavBar>
+        <Outlet/>
+    </>
+
+    /*return (
         <>
             {!userToken ||
             // location.pathname === "/adminlogin" ||
@@ -25,7 +30,7 @@ const Layout = block(() => {
                 </>
             )}
         </>
-    );
+    );*/
 });
 
 export default Layout;
