@@ -26,9 +26,16 @@ const getProductInfoList = async (req, res) => {
 
 
 const getProductDetailByParams = async (req, res) => {
+
+
     try {
+
         // Fetch a product from the database
-        const product = await Product.find({_id},{},{lean:true});
+        const product = await Product.find({ _id: req.params.id },
+            {},
+            { lean: true });
+
+        console.log(product,'dsdsds')
 
         // Send success response with fetched product
         res.status(200).json({
@@ -54,5 +61,5 @@ const getProductDetailByParams = async (req, res) => {
 
 
 module.exports = {
-    getProductInfoList
+    getProductInfoList,getProductDetailByParams
 };

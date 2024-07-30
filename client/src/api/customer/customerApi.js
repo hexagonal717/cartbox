@@ -117,3 +117,18 @@ export const getProductInfoList = async () => {
     throw error;
   }
 };
+
+// Get product info list
+export const getProductDetailByParams = async (productId) => {
+  try {
+    const res = await userRequest.get(`/api/customer/product/getProductDetailByParams/${productId}`);
+
+    console.log(productId)
+    console.log("product detail first check", res.data);
+    return res.data;
+  } catch (error) {
+    console.error("Get product detail error:", error.response);
+    throw error;
+  }
+};
+

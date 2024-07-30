@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import PropTypes from "prop-types";
+import {NavLink} from "react-router-dom";
 
 const ProductCard = ({ product }) => {
     return (
+        <NavLink style={{textDecoration:"none"}} to={`/product/${product._id}`}>
         <Card>
             <ImageContainer>
                 <Image src={product.image} alt={product.name} />
@@ -13,6 +15,7 @@ const ProductCard = ({ product }) => {
                 <Description>{product.description}</Description>
             </Content>
         </Card>
+        </NavLink>
     );
 };
 

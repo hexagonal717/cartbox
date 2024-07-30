@@ -1,36 +1,44 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
-import { getProductDetailByParams } from '../../../api/customer/customerApi.js';
+import {getProductDetailByParams} from '../../../api/customer/customerApi.js';
 import Footer from '../../../components/common/Footer/Footer.jsx';
+import {useQuery} from "@tanstack/react-query";
 
-const ProductDetail = () => {
-    const { productId } = useParams();
-    const [product, setProduct] = useState(null);
+const ProductDetailPage = () => {
+    const {productId} = useParams();
 
-    useEffect(() => {
-        getProductDetailByParams(productId).then((data) => {
-            setProduct(data.payload);
-        });
-    }, [productId]);
+    const {
+        status,
+        error,
+        data: product,
+    } = useQuery({
+        queryKey: ["productDetail", productId],
+        queryFn: () =>
+            getProductDetailByParams(productId).then((data) => data.payload[0]),
+        enabled: !!productId,
+    });
+
+    if (status === "loading") return <LoadingMessage>Loading...</LoadingMessage>;
+    if (status === "error") return <LoadingMessage>{JSON.stringify(error)}</LoadingMessage>;
 
     if (!product) {
-        return <LoadingMessage>Loading...</LoadingMessage>;
+        return <LoadingMessage>Product not found</LoadingMessage>;
     }
+
 
     return (
         <>
             <MainContainer>
                 <ImageContainer>
-                    <ProductImage src={product.image} alt={product.name} />
+                    <ProductImage src={product.image} alt={product.name}/>
                 </ImageContainer>
                 <InfoContainer>
                     <ProductName>{product.name}</ProductName>
                     <ProductDescription>{product.description}</ProductDescription>
-                    <ProductPrice>${product.price.toFixed(2)}</ProductPrice>
+                    <ProductPrice>${product.price}</ProductPrice>
                 </InfoContainer>
             </MainContainer>
-            <Footer />
+            <Footer/>
         </>
     );
 };
@@ -39,8 +47,8 @@ const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 3rem;
     padding: 2rem;
-    min-height: 100vh;
 `;
 
 const ImageContainer = styled.div`
@@ -80,4 +88,4 @@ const LoadingMessage = styled.p`
     text-align: center;
 `;
 
-export default ProductDetail;
+export default ProductDetailPage;

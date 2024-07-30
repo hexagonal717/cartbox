@@ -7,11 +7,11 @@ import LogInPage from "./features/customer/pages/LogInPage.jsx";
 import ProfilePage from "./features/customer/pages/ProfilePage.jsx";
 import AccountSettings from "./features/customer/pages/AccountSettings.jsx";
 import SettingsPage from "./features/customer/pages/SettingsPage.jsx";
-
 import ForgotPasswordPage from "./features/customer/pages/ForgotPasswordPage.jsx";
 import VerifyCodePage from "./features/customer/pages/VerifyCodePage.jsx";
 import ChangePasswordPage from "./features/customer/pages/ChangePasswordPage.jsx";
 import LogInRedirectPage from "./features/customer/pages/LogInRedirectPage.jsx";
+import ProductDetailPage from "./features/customer/pages/ProductDetailPage.jsx";
 
 function App() {
     const customerToken = useSelector((state) => state.customerAuthSlice.accessToken);
@@ -33,6 +33,7 @@ function App() {
                 <Route path="/verifycode" element={<VerifyCodePage/>}/>
                 <Route path="/changepassword" element={<ChangePasswordPage/>}/>
                 <Route path="/loginredirectPage" element={<LogInRedirectPage/>}/>
+                <Route path="/product/:productId" element={<ProductDetailPage/>}/>
                 <Route
                     path="/settings"
                     element={loginStatus ? <SettingsPage/> : <LogInPage/>}
