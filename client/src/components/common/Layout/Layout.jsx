@@ -1,5 +1,4 @@
 import { block } from 'million/react';
-
 import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from '../NavBar/NavBar.jsx';
 
@@ -13,10 +12,10 @@ const Layout = block(() => {
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   return (
-    <>
+    <div className={"font-inter"}>
       {!shouldIgnore && <NavBar />}
       <Outlet />
-    </>
+    </div>
   );
 
   /*return (

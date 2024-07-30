@@ -1,0 +1,14 @@
+@layer components {
+    .input-autofill {
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+            color: white !important;
+            -webkit-text-fill-color: white !important;
+            -webkit-box-shadow: 0 0 0 10rem #2a3240ff inset !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+        }
+    }
+}
