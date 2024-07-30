@@ -1,45 +1,45 @@
-const adminSchema = require("../../model/adminSchema");
-const argon = require("argon2");
+const adminSchema = require('../../model/adminSchema');
+const argon = require('argon2');
 
 const getAdminInfoByParams = async (req, res) => {
-    console.log("3rd check");
-    try {
-        const data = await adminSchema.findById(req.params.id);
-        console.log(data, "999999999");
-        const {password, ...other} = data._doc;
+  console.log('3rd check');
+  try {
+    const data = await adminSchema.findById(req.params.id);
+    console.log(data, '999999999');
+    const { password, ...other } = data._doc;
 
-        res.status(200).json(other);
-        console.log(data, "");
-    } catch (err) {
-        res.status(500).json({error: "Server error. Please try again later."});
-    }
+    res.status(200).json(other);
+    console.log(data, '');
+  } catch (err) {
+    res.status(500).json({ error: 'Server error. Please try again later.' });
+  }
 };
 
 const putAdminInfoByParams = async (req, res) => {
-    try {
-        const updateData = await adminSchema.findByIdAndUpdate(
-            req.params.id,
-            {
-                $set: req.body,
-            },
-            {new: true},
-        );
+  try {
+    const updateData = await adminSchema.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true },
+    );
 
-        console.log(updateData);
-        res.status(200).json(updateData);
-    } catch (err) {
-        console.log(err);
-    }
+    console.log(updateData);
+    res.status(200).json(updateData);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const deleteAdminInfoByParams = async (req, res) => {
-    console.log("delete user id", req.params.id);
-    try {
-        await adminSchema.findByIdAndDelete(req.params.id);
-        res.status(200).json({type: "success"});
-    } catch (err) {
-        console.log(err);
-    }
+  console.log('delete user id', req.params.id);
+  try {
+    await adminSchema.findByIdAndDelete(req.params.id);
+    res.status(200).json({ type: 'success' });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 /*const insertAllData = async (req, res) => {
@@ -88,10 +88,10 @@ const filterData = async (req, res) => {
 };*/
 
 module.exports = {
-    getAdminInfoByParams,
-    putAdminInfoByParams,
-    deleteAdminInfoByParams,
-    /*insertAllData,
+  getAdminInfoByParams,
+  putAdminInfoByParams,
+  deleteAdminInfoByParams,
+  /*insertAllData,
     deleteAllData,
     filterData,*/
 };

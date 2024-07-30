@@ -1,12 +1,13 @@
-const router = require("express").Router();
-const {verifyToken} = require("../../../middleware/superAdmin/superAdminAuthMiddleware");
+const router = require('express').Router();
 const {
-    addProductInfoList,
-    getProductInfoList
-} = require("../../../controllers/superAdmin/superAdminProductController");
+  verifyToken,
+} = require('../../../middleware/superAdmin/superAdminAuthMiddleware');
+const {
+  addProductInfoList,
+  getProductInfoList,
+} = require('../../../controllers/superAdmin/superAdminProductController');
 
-
-router.post("/addProductInfoList", addProductInfoList);
-router.get("/getProductInfoList", getProductInfoList);
+router.post('/addProductInfoList', addProductInfoList);
+router.get('/getProductInfoList', getProductInfoList);
 
 module.exports = router;

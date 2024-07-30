@@ -1,10 +1,10 @@
-const customerSchema = require("../../model/customerSchema");
-const argon = require("argon2");
-const jwt = require("jsonwebtoken");
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
-const nodemailer = require("nodemailer");
-const otpSchema = require("../../model/otpSchema");
+const customerSchema = require('../../model/customerSchema');
+const argon = require('argon2');
+const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const nodemailer = require('nodemailer');
+const otpSchema = require('../../model/otpSchema');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -22,14 +22,14 @@ const upload = multer({ storage: storage });
 
 const signup = async (req, res) => {
   try {
-    console.log(req.body, "third check");
+    console.log(req.body, 'third check');
 
     const { firstName, lastName, age, email, phone, password } = req.body;
 
     if (!firstName || !lastName || !age || !email || !phone || !password) {
-      console.log("All fields are required.");
+      console.log('All fields are required.');
 
-      return res.status(400).json({ error: "All fields are required." });
+      return res.status(400).json({ error: 'All fields are required.' });
     }
 
     const existingUserEmail = await customerSchema.findOne(
@@ -42,16 +42,16 @@ const signup = async (req, res) => {
       {},
       { lean: true },
     );
-    console.log(existingUserPhone, existingUserEmail, "***");
+    console.log(existingUserPhone, existingUserEmail, '***');
     if (existingUserEmail || existingUserPhone) {
-      console.log("User already exists.");
-      return res.status(400).json({ error: "User already exists." });
+      console.log('User already exists.');
+      return res.status(400).json({ error: 'User already exists.' });
     }
     let imagePath = null;
 
     if (req.file) {
       const uploadedImage = await cloudinary.uploader.upload(req.file.path);
-      console.log(uploadedImage, "UPLOADED IMAGE");
+      console.log(uploadedImage, 'UPLOADED IMAGE');
       imagePath = uploadedImage.secure_url;
     }
 
@@ -67,21 +67,21 @@ const signup = async (req, res) => {
     });
     console.log(newUser);
     await newUser.save();
-    res.status(200).json("success");
+    res.status(200).json('success');
   } catch (err) {
-    console.error("Error during user signup:", err);
-    res.status(500).json({ error: "Server error. Please try again later." });
+    console.error('Error during user signup:', err);
+    res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 
 const login = async (req, res) => {
   try {
-    console.log("***************************", req.body);
+    console.log('***************************', req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
-      console.log("Email and Password is required.");
-      res.status(400).json({ error: "Email and Password is required." });
+      console.log('Email and Password is required.');
+      res.status(400).json({ error: 'Email and Password is required.' });
     }
 
     const dbExistingUser = await customerSchema.findOne(
@@ -91,7 +91,7 @@ const login = async (req, res) => {
     );
     console.log(dbExistingUser);
     if (!dbExistingUser) {
-      return res.status(401).json({ error: "Email or Password is incorrect." });
+      return res.status(401).json({ error: 'Email or Password is incorrect.' });
     }
 
     const isPasswordValid = await argon.verify(
@@ -99,9 +99,9 @@ const login = async (req, res) => {
       password,
     );
 
-    !isPasswordValid && res.status(401).json("not matched");
+    !isPasswordValid && res.status(401).json('not matched');
     if (dbExistingUser && isPasswordValid) {
-      console.log("Login Successful.");
+      console.log('Login Successful.');
       const sessionToken = jwt.sign(
         {
           id: dbExistingUser._id,
@@ -119,7 +119,7 @@ const login = async (req, res) => {
     console.log(err.message);
     return res
       .status(500)
-      .json({ error: "Server error. Please try again later." });
+      .json({ error: 'Server error. Please try again later.' });
   }
 };
 
@@ -150,7 +150,7 @@ const forgotPassword = async (req, res) => {
     });
 
     let transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: 'gmail',
       auth: {
         user: process.env.NODEMAILER_APP_EMAIL,
         pass: process.env.NODEMAILER_APP_PASSWORD,
@@ -160,17 +160,17 @@ const forgotPassword = async (req, res) => {
     let mailOptions = {
       from: process.env.NODEMAILER_APP_EMAIL,
       to: email,
-      subject: "E-Commerce OTP Code",
+      subject: 'E-Commerce OTP Code',
       text: `Your OTP code is ${otp}`,
     };
 
     await transporter.sendMail(mailOptions);
-    console.log("Email sent: " + mailOptions.response);
+    console.log('Email sent: ' + mailOptions.response);
 
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Failed to send OTP, please try again" });
+    res.status(500).json({ error: 'Failed to send OTP, please try again' });
   }
 };
 
@@ -184,10 +184,10 @@ const verifyOtp = async (req, res) => {
     if (existingOtp) {
       res.status(200).json({ success: true });
     } else {
-      res.status(201).json({ error: "Verification code does not match." });
+      res.status(201).json({ error: 'Verification code does not match.' });
     }
   } catch (e) {
-    res.error(e.response, "Verification error.");
+    res.error(e.response, 'Verification error.');
   }
 };
 
@@ -196,8 +196,8 @@ const changePassword = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password.password;
 
-    console.log(password, "password");
-    console.log(email, "5555");
+    console.log(password, 'password');
+    console.log(email, '5555');
 
     const existingEmail = await customerSchema.findOne(
       email,
@@ -206,7 +206,7 @@ const changePassword = async (req, res) => {
     );
 
     if (existingEmail) {
-      console.log("existing email for password change");
+      console.log('existing email for password change');
     }
 
     if (existingEmail) {
@@ -215,7 +215,7 @@ const changePassword = async (req, res) => {
         { $set: { password: await argon.hash(password) } },
         { new: true },
       );
-      console.log(updatePassword, "password updated successfully");
+      console.log(updatePassword, 'password updated successfully');
     }
     res.status(200).json({ success: true });
   } catch (error) {
@@ -224,7 +224,7 @@ const changePassword = async (req, res) => {
 };
 
 module.exports = {
-  signup: [upload.single("image"), signup],
+  signup: [upload.single('image'), signup],
   login,
   forgotPassword,
   verifyOtp,

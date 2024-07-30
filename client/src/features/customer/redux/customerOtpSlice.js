@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const customerOtpSlice = createSlice({
-  name: "customerOtpSlice",
+  name: 'customerOtpSlice',
   initialState: {
-    email: "",
+    email: '',
     otpVerify: false,
   },
   reducers: {

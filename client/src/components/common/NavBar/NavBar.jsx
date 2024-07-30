@@ -1,237 +1,98 @@
-import styled from "styled-components";
 import {
-    AccountCircleOutlined,
-    ArrowBackIosOutlined,
-    ExitToAppOutlined, ListAltOutlined,
-} from "@mui/icons-material";
-import {useState} from "react";
-import {clearAccessToken} from "../../../features/customer/redux/customerAuthSlice.js";
-import {useDispatch, useSelector} from "react-redux";
-import {getCustomerInfoByParams} from "../../../api/customer/customerApi.js";
-import {NavLink, useNavigate} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
-
+  AccountCircleOutlined,
+  ArrowBackIosOutlined,
+  ExitToAppOutlined,
+  ListAltOutlined,
+} from '@mui/icons-material';
+import { useState } from 'react';
+import { clearAccessToken } from '../../../features/customer/redux/customerAuthSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCustomerInfoByParams } from '../../../api/customer/customerApi.js';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 const NavBar = () => {
-    const token = useSelector((state) => state.customerAuthSlice.accessToken);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [dropdownVisible, setDropdownVisible] = useState(false);
+  const token = useSelector((state) => state.customerAuthSlice.accessToken);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
-    function handleLogout() {
-        dispatch(clearAccessToken());
-        navigate("/");
-    }
+  function handleLogout() {
+    dispatch(clearAccessToken());
+    navigate('/');
+  }
 
-    const {
-        status,
-        error,
-        data: userData,
-    } = useQuery({
-        queryKey: ["customerData", token?.customerId],
-        queryFn: () =>
-            getCustomerInfoByParams(token.customerId).then((data) => {
-                console.log("last checking", data);
-                return data;
-            }),
-        enabled: !!token, // Only run the query if the token is present
-    });
+  const {
+    status,
+    error,
+    data: userData,
+  } = useQuery({
+    queryKey: ['customerData', token?.customerId],
+    queryFn: () =>
+      getCustomerInfoByParams(token.customerId).then((data) => {
+        console.log('last checking', data);
+        return data;
+      }),
+    enabled: !!token, // Only run the query if the token is present
+  });
 
-    if (status === "loading") return <h1>Loading...</h1>;
-    if (status === "error") return <h1>{JSON.stringify(error)}</h1>;
+  if (status === 'loading') return <h1>Loading...</h1>;
+  if (status === 'error') return <h1>{JSON.stringify(error)}</h1>;
 
-    return (
-        <NavBarContainer>
-            <NavBarList>
-                {token ? (
-                    <NavBarListItem onClick={() => setDropdownVisible(!dropdownVisible)}>
-                        <ProfileMenuButton>
-                            <div style={{color: "#3b82f6dd"}}>
-                                {userData?.firstName || "Profile"}
-                            </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <AccountCircleOutlined
-                                    style={{
-                                        fontSize: "1.5rem",
-                                        color: "#3b82f6dd",
-                                    }}
-                                />
-                                <ArrowBackIosOutlined
-                                    style={{
-                                        marginLeft: "0.5rem",
-                                        fontSize: "0.8rem",
-                                        color: "#3b82f6dd",
-                                        rotate: "270deg",
-                                    }}
-                                />
-                            </div>
-                        </ProfileMenuButton>
-                        {dropdownVisible && (
-                            <DropdownMenu>
-                                <NavLink
-                                    style={{textDecoration: "none"}}
-                                    to={`/settings/profile`}
-                                >
-                                    <DropdownItem
-                                        style={{
-                                            display: "flex",
-
-                                            gap: "0.8rem",
-                                        }}
-                                    >
-                                        <div>
-                                            <AccountCircleOutlined
-                                                style={{
-                                                    fontSize: "1.2rem",
-                                                    color: "white",
-                                                }}
-                                            />
-                                        </div>
-                                        <div>My Profile</div>
-                                    </DropdownItem>
-                                </NavLink>
-                                <NavLink
-                                    style={{textDecoration: "none"}}
-                                    to={`/settings/profile`}
-                                >
-                                    <DropdownItem
-                                        style={{
-                                            display: "flex",
-                                            gap: "0.8rem",
-                                        }}
-                                    >
-                                        <div>
-                                            <ListAltOutlined
-                                                style={{
-                                                    fontSize: "1.2rem",
-                                                    color: "white",
-                                                }}
-                                            />
-                                        </div>
-                                        <div>Orders</div>
-                                    </DropdownItem>
-                                </NavLink>
-                                <DropdownItem
-                                    onClick={handleLogout}
-                                    style={{
-                                        display: "flex",
-
-                                        gap: "0.8rem",
-                                    }}
-                                >
-                                    <div>
-                                        <ExitToAppOutlined
-                                            style={{
-                                                fontSize: "1.2rem",
-                                                color: "white",
-                                            }}
-                                        />
-                                    </div>
-                                    <div>Logout</div>
-                                </DropdownItem>
-                            </DropdownMenu>
-                        )}
-                    </NavBarListItem>
-                ) : (
-                    <NavBarListItem>
-                        <SignInButton onClick={() => navigate("/login")}>
-                            Log In
-                        </SignInButton>
-                    </NavBarListItem>
-                )}
-            </NavBarList>
-        </NavBarContainer>
-    );
+  return (
+    <div className="fixed bg-neutral-950 backdrop-blur-sm h-max-content w-full p-3 z-50 flex justify-end items-center outline outline-1 outline-gray-800 select-none">
+      <ul className="list-none">
+        {token ? (
+          <li className="relative">
+            <button
+              className="flex gap-4 font-bold items-center bg-blue-500 bg-opacity-10 border-none px-4 py-2 rounded-lg outline outline-1 outline-blue-500/40 hover:bg-blue-500/15 cursor-pointer"
+              onClick={() => setDropdownVisible(!dropdownVisible)}
+            >
+              <div className="text-blue-500">
+                {userData?.firstName || 'Profile'}
+              </div>
+              <div className="flex justify-center items-center">
+                <AccountCircleOutlined className="text-xl text-blue-500" />
+                <ArrowBackIosOutlined className="ml-2 text-xs text-blue-500 rotate-90" />
+              </div>
+            </button>
+            {dropdownVisible && (
+              <div className="absolute right-4 top-12 p-3 text-sm font-bold bg-black rounded-lg shadow-md z-50 overflow-hidden outline outline-1 outline-white/15">
+                <NavLink to="/settings/profile" className="no-underline">
+                  <div className="flex gap-3 p-2 text-gray-400 rounded-md cursor-pointer hover:bg-gray-900 hover:text-white">
+                    <AccountCircleOutlined className="text-lg text-white" />
+                    <div>My Profile</div>
+                  </div>
+                </NavLink>
+                <NavLink to="/settings/profile" className="no-underline">
+                  <div className="flex gap-3 p-2 text-gray-400 rounded-md cursor-pointer hover:bg-gray-900 hover:text-white">
+                    <ListAltOutlined className="text-lg text-white" />
+                    <div>Orders</div>
+                  </div>
+                </NavLink>
+                <div
+                  onClick={handleLogout}
+                  className="flex gap-3 p-2 text-gray-400 rounded-md cursor-pointer hover:bg-gray-900 hover:text-white"
+                >
+                  <ExitToAppOutlined className="text-lg text-white" />
+                  <div>Logout</div>
+                </div>
+              </div>
+            )}
+          </li>
+        ) : (
+          <li>
+            <button
+              onClick={() => navigate('/login')}
+              className="flex items-center text-sm font-bold bg-blue-500 bg-opacity-10 border-none px-4 py-2 rounded-lg outline outline-1 outline-blue-900 text-blue-500 hover:bg-blue-500/15 cursor-pointer"
+            >
+              Log In
+            </button>
+          </li>
+        )}
+      </ul>
+    </div>
+  );
 };
-
-const NavBarContainer = styled.div`
-    display: flex;
-    position: fixed;
-    justify-self: center;
-    inset: 0;
-    background-color: #00000044;
-    backdrop-filter: blur(1rem);
-    height: max-content;
-    width: calc(100%);
-    padding: 0.6rem;
-    z-index: 5;
-    justify-content: end;
-    align-items: center;
-    outline: 0.1rem solid #3a3a3a;
-    user-select: none;
-`;
-
-const NavBarList = styled.ul`
-    list-style-type: none;
-`;
-
-const NavBarListItem = styled.li``;
-
-const ProfileMenuButton = styled.button`
-    display: flex;
-    gap: 1rem;
-    font-weight: 700;
-    align-items: center;
-    background: #3b82f618;
-    border: none;
-    padding: 0.3rem 1rem;
-    border-radius: 0.4rem;
-    outline: 0.1rem solid #3b82f658;
-
-    &:hover {
-        background: #3b82f626;
-        cursor: pointer;
-    }
-`;
-
-const DropdownMenu = styled.div`
-    position: absolute;
-    padding: 0.3rem;
-    top: 3rem;
-    right: 1rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    background: black;
-    border-radius: 0.4rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    overflow: clip;
-    outline: 0.1rem solid #ffffff22;
-`;
-
-const DropdownItem = styled.div`
-    padding: 0.5rem 1rem;
-    color: #a3a3a3;
-    border-radius: 0.2rem;
-    cursor: pointer;
-
-    &:hover {
-        background: #111111;
-        color: #e1e1e1;
-    }
-`;
-
-const SignInButton = styled.button`
-    display: flex;
-    align-items: center;
-    font-weight: 700;
-    background: #3b82f618;
-    border: none;
-    padding: 0.3rem 1rem;
-    border-radius: 0.4rem;
-    outline: 0.1rem solid #3b82f658;
-    color: #3b82f6dd;
-
-    &:hover {
-        background: #3b82f626;
-        cursor: pointer;
-    }
-`;
 
 export default NavBar;

@@ -1,15 +1,19 @@
-import { setAccessToken } from "../../features/customer/redux/customerAuthSlice.js";
-import { publicRequest, userRequest } from "./customerAxios.js";
+import { setAccessToken } from '../../features/customer/redux/customerAuthSlice.js';
+import { publicRequest, userRequest } from './customerAxios.js';
 
 // Sign up new user
 export const signUp = async (customerInfo) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/signup", customerInfo, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await publicRequest.post(
+      '/api/customer/auth/signup',
+      customerInfo,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      },
+    );
     return res.data;
   } catch (error) {
-    console.error("Sign-up error:", error.response);
+    console.error('Sign-up error:', error.response);
     throw error;
   }
 };
@@ -17,11 +21,14 @@ export const signUp = async (customerInfo) => {
 // Login user
 export const login = async (customerInfo, dispatch) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/login", customerInfo);
+    const res = await publicRequest.post(
+      '/api/customer/auth/login',
+      customerInfo,
+    );
     dispatch(setAccessToken(res.data));
     userRequest.defaults.headers.token = res.data.tokenId;
   } catch (error) {
-    console.error("Login error:", error.response);
+    console.error('Login error:', error.response);
     throw error;
   }
 };
@@ -33,31 +40,31 @@ export const forgotPassword = async (email) => {
       `/api/customer/auth/forgotpassword`,
       email,
     );
-    console.log(res.data, "forgotPassword data");
+    console.log(res.data, 'forgotPassword data');
     return res.data;
   } catch (error) {
-    console.error("Forgot password error:", error.response);
+    console.error('Forgot password error:', error.response);
     throw error;
   }
 };
 
 export const verifyOtp = async (otp) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/verifyotp", otp);
-    console.log(res.data, "otp verify check");
+    const res = await publicRequest.post('/api/customer/auth/verifyotp', otp);
+    console.log(res.data, 'otp verify check');
     return res.data;
   } catch (error) {
-    console.error("otp verification failed.", error.response);
+    console.error('otp verification failed.', error.response);
   }
 };
 
 export const changePassword = async (email, password) => {
   try {
-    const res = await publicRequest.post("/api/customer/auth/changePassword", {
+    const res = await publicRequest.post('/api/customer/auth/changePassword', {
       email,
       password,
     });
-    console.log("changePassword clientSide check:", res);
+    console.log('changePassword clientSide check:', res);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -67,11 +74,13 @@ export const changePassword = async (email, password) => {
 // Get user info by ID
 export const getCustomerInfoByParams = async (customerId) => {
   try {
-    const res = await userRequest.get(`/api/customer/getCustomerInfoByParams/${customerId}`);
-    console.log("heyyyyy", res.data);
+    const res = await userRequest.get(
+      `/api/customer/getCustomerInfoByParams/${customerId}`,
+    );
+    console.log('heyyyyy', res.data);
     return res.data;
   } catch (error) {
-    console.error("Get customer info error:", error.response);
+    console.error('Get customer info error:', error.response);
     throw error;
   }
 };
@@ -83,12 +92,12 @@ export const putCustomerInfoByParams = async (customerId, customerInfo) => {
       `/api/customer/putCustomerInfoByParams/${customerId}`,
       customerInfo,
       {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
       },
     );
     return res.data;
   } catch (error) {
-    console.error("Update user info error:", error.response);
+    console.error('Update user info error:', error.response);
     throw error;
   }
 };
@@ -101,7 +110,7 @@ export const deleteCustomerInfoById = async (customerId) => {
     );
     return res.data;
   } catch (error) {
-    console.error("Delete user info error:", error.response);
+    console.error('Delete user info error:', error.response);
     throw error;
   }
 };
@@ -109,11 +118,13 @@ export const deleteCustomerInfoById = async (customerId) => {
 // Get product info list
 export const getProductInfoList = async () => {
   try {
-    const res = await userRequest.get(`/api/customer/product/getProductInfoList`);
-    console.log("heyyyyy", res.data);
+    const res = await userRequest.get(
+      `/api/customer/product/getProductInfoList`,
+    );
+    console.log('heyyyyy', res.data);
     return res.data;
   } catch (error) {
-    console.error("Get product list info error:", error.response);
+    console.error('Get product list info error:', error.response);
     throw error;
   }
 };
@@ -121,14 +132,15 @@ export const getProductInfoList = async () => {
 // Get product info list
 export const getProductDetailByParams = async (productId) => {
   try {
-    const res = await userRequest.get(`/api/customer/product/getProductDetailByParams/${productId}`);
+    const res = await userRequest.get(
+      `/api/customer/product/getProductDetailByParams/${productId}`,
+    );
 
-    console.log(productId)
-    console.log("product detail first check", res.data);
+    console.log(productId);
+    console.log('product detail first check', res.data);
     return res.data;
   } catch (error) {
-    console.error("Get product detail error:", error.response);
+    console.error('Get product detail error:', error.response);
     throw error;
   }
 };
-

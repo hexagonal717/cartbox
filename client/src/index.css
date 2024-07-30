@@ -1,17 +1,21 @@
-* {
-    font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+/** {*/
+/*    font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*    box-sizing: border-box;*/
+/*    font-synthesis: none;*/
+/*    text-rendering: optimizeLegibility;*/
+/*    -webkit-font-smoothing: antialiased;*/
+/*    -moz-osx-font-smoothing: grayscale;*/
 
-}
+/*    input::-webkit-outer-spin-button,*/
+/*    input::-webkit-inner-spin-button {*/
+/*        -webkit-appearance: none;*/
+/*        margin: 0;*/
+/*    }*/
+
+/*}*/

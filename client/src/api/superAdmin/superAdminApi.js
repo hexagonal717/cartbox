@@ -1,15 +1,19 @@
-import { setAccessToken } from "../../features/superAdmin/redux/superAdminAuthSlice.js";
-import { publicRequest, userRequest } from "./superAdminAxios.js";
+import { setAccessToken } from '../../features/superAdmin/redux/superAdminAuthSlice.js';
+import { publicRequest, userRequest } from './superAdminAxios.js';
 
 // Sign up new user
 export const signUp = async (superAdminInfo) => {
   try {
-    const res = await publicRequest.post("/api/superAdmin/auth/signup", superAdminInfo, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await publicRequest.post(
+      '/api/superAdmin/auth/signup',
+      superAdminInfo,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      },
+    );
     return res.data;
   } catch (error) {
-    console.error("Sign-up error:", error.response);
+    console.error('Sign-up error:', error.response);
     throw error;
   }
 };
@@ -17,11 +21,14 @@ export const signUp = async (superAdminInfo) => {
 // Login user
 export const login = async (superAdminInfo, dispatch) => {
   try {
-    const res = await publicRequest.post("/api/superAdmin/auth/login", superAdminInfo);
+    const res = await publicRequest.post(
+      '/api/superAdmin/auth/login',
+      superAdminInfo,
+    );
     dispatch(setAccessToken(res.data));
     userRequest.defaults.headers.token = res.data.tokenId;
   } catch (error) {
-    console.error("Login error:", error.response);
+    console.error('Login error:', error.response);
     throw error;
   }
 };
@@ -33,31 +40,34 @@ export const forgotPassword = async (email) => {
       `/api/superAdmin/auth/forgotpassword`,
       email,
     );
-    console.log(res.data, "forgotPassword data");
+    console.log(res.data, 'forgotPassword data');
     return res.data;
   } catch (error) {
-    console.error("Forgot password error:", error.response);
+    console.error('Forgot password error:', error.response);
     throw error;
   }
 };
 
 export const verifyOtp = async (otp) => {
   try {
-    const res = await publicRequest.post("/api/superAdmin/auth/verifyotp", otp);
-    console.log(res.data, "otp verify check");
+    const res = await publicRequest.post('/api/superAdmin/auth/verifyotp', otp);
+    console.log(res.data, 'otp verify check');
     return res.data;
   } catch (error) {
-    console.error("otp verification failed.", error.response);
+    console.error('otp verification failed.', error.response);
   }
 };
 
 export const changePassword = async (email, password) => {
   try {
-    const res = await publicRequest.post("/api/superAdmin/auth/changePassword", {
-      email,
-      password,
-    });
-    console.log("changePassword clientSide check:", res);
+    const res = await publicRequest.post(
+      '/api/superAdmin/auth/changePassword',
+      {
+        email,
+        password,
+      },
+    );
+    console.log('changePassword clientSide check:', res);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -67,28 +77,33 @@ export const changePassword = async (email, password) => {
 // Get user info by ID
 export const getSuperAdminInfoByParams = async (superAdminId) => {
   try {
-    const res = await userRequest.get(`/api/superAdmin/profile/getSuperAdminInfoByParams/${superAdminId}`);
-    console.log("heyyyyy", res.data);
+    const res = await userRequest.get(
+      `/api/superAdmin/profile/getSuperAdminInfoByParams/${superAdminId}`,
+    );
+    console.log('heyyyyy', res.data);
     return res.data;
   } catch (error) {
-    console.error("Get customer info error:", error.response);
+    console.error('Get customer info error:', error.response);
     throw error;
   }
 };
 
 // Update user info by ID
-export const putSuperAdminInfoByParams = async (superAdminId, superAdminInfo) => {
+export const putSuperAdminInfoByParams = async (
+  superAdminId,
+  superAdminInfo,
+) => {
   try {
     const res = await userRequest.put(
       `/api/superAdmin/profile/putSuperAdminInfoByParams/${superAdminId}`,
       superAdminInfo,
       {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
       },
     );
     return res.data;
   } catch (error) {
-    console.error("Update user info error:", error.response);
+    console.error('Update user info error:', error.response);
     throw error;
   }
 };
@@ -101,7 +116,7 @@ export const deleteSuperAdminInfoById = async (customerId) => {
     );
     return res.data;
   } catch (error) {
-    console.error("Delete user info error:", error.response);
+    console.error('Delete user info error:', error.response);
     throw error;
   }
 };

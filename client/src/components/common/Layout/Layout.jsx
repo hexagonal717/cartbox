@@ -1,20 +1,25 @@
-import {block} from "million/react";
+import { block } from 'million/react';
 
-import {Outlet} from "react-router-dom";
-import NavBar from "../NavBar/NavBar.jsx";
+import { Outlet, useLocation } from 'react-router-dom';
+import NavBar from '../NavBar/NavBar.jsx';
 
 const Layout = block(() => {
-    // const userToken = useSelector((state) => state.customerAuthSlice.accessToken);
-    // const location = useLocation();
-    //
+  // const userToken = useSelector((state) => state.customerAuthSlice.accessToken);
+  const location = useLocation();
+  //
 
+  const ignoreLocations = ['/login', '/signup', '/forgotpassword', '/demo'];
 
-    return <>
-<NavBar></NavBar>
-        <Outlet/>
+  const shouldIgnore = ignoreLocations.includes(location.pathname);
+
+  return (
+    <>
+      {!shouldIgnore && <NavBar />}
+      <Outlet />
     </>
+  );
 
-    /*return (
+  /*return (
         <>
             {!userToken ||
             // location.pathname === "/adminlogin" ||

@@ -1,21 +1,29 @@
-import { useState } from "react";
-import { login } from "../../../api/customer/customerApi.js";
-import { useDispatch } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { useState } from 'react';
+import { login } from '../../../api/customer/customerApi.js';
+import { useDispatch } from 'react-redux';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const LogInPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
-  function handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    login(credentials, dispatch);
-  }
+
+    try {
+      await login(credentials, dispatch); // Await the login function
+      navigate('/'); // Navigate only after login is successful
+    } catch (error) {
+      console.error('Login failed:', error);
+      // Handle the error (e.g., display an error message)
+    }
+  };
 
   function handleCredentials(event) {
     const { name, value } = event.target;
@@ -46,17 +54,17 @@ const LogInPage = () => {
             onChange={handleCredentials}
           />
 
-          <NavLink to={"/forgotpassword"} style={{ textDecoration: "none" }}>
+          <NavLink to={'/forgotpassword'} style={{ textDecoration: 'none' }}>
             <ForgotPassword>Forgot password?</ForgotPassword>
           </NavLink>
 
           <LogInButton type="submit">Log in</LogInButton>
           <div
-            style={{ color: "#dadada", fontSize: "0.8rem", fontWeight: 700 }}
+            style={{ color: '#dadada', fontSize: '0.8rem', fontWeight: 700 }}
           >
             Want to create an account?
           </div>
-          <Link to={"/signup"}>
+          <Link to={'/signup'}>
             <SignUpButton>Sign up</SignUpButton>
           </Link>
         </FormContainer>

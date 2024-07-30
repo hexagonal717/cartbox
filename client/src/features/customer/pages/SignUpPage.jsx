@@ -1,23 +1,23 @@
-import { useState } from "react";
-import { signUp } from "../../../api/customer/customerApi.js";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { useState } from 'react';
+import { signUp } from '../../../api/customer/customerApi.js';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const SignUpPage = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [customerInfo, setCustomerInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    email: '',
     phone: Number,
     age: Number,
-    password: "",
-    image: "",
+    password: '',
+    image: '',
   });
 
   function handleUserInfo(event) {
     let { name, value } = event.target;
-    if (event.target.type === "file") {
+    if (event.target.type === 'file') {
       value = event.target.files[0];
       setPreviewImage(URL.createObjectURL(event.target.files[0]));
     }
@@ -28,7 +28,7 @@ const SignUpPage = () => {
     event.preventDefault();
     console.log(customerInfo);
     signUp(customerInfo).then((data) => {
-      console.log("User created successfully.", data.success);
+      console.log('User created successfully.', data.success);
     });
   }
 
@@ -43,13 +43,13 @@ const SignUpPage = () => {
         <ProfileImgLabel htmlFor="upload-photo">
           {previewImage ? null : (
             <div
-              style={{ color: "white", fontSize: "0.8rem", fontWeight: "400" }}
+              style={{ color: 'white', fontSize: '0.8rem', fontWeight: '400' }}
             >
               Upload an image
             </div>
           )}
           <ProfileImage
-            style={!previewImage ? { display: "none" } : { display: "block" }}
+            style={!previewImage ? { display: 'none' } : { display: 'block' }}
             src={previewImage}
             alt=""
           />
@@ -101,10 +101,10 @@ const SignUpPage = () => {
         />
 
         <SignUpButton type="submit">Sign Up</SignUpButton>
-        <div style={{ color: "#dadada", fontSize: "0.8rem", fontWeight: 700 }}>
+        <div style={{ color: '#dadada', fontSize: '0.8rem', fontWeight: 700 }}>
           Already have an account?
         </div>
-        <Link to={"/"}>
+        <Link to={'/'}>
           <LogInButton>Log In</LogInButton>
         </Link>
       </FormContainer>

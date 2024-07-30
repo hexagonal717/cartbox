@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const superAdminOtpSlice = createSlice({
-  name: "superAdminOtpSlice",
+  name: 'superAdminOtpSlice',
   initialState: {
-    email: "",
+    email: '',
     otpVerify: false,
   },
   reducers: {

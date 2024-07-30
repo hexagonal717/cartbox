@@ -1,10 +1,3 @@
 const mongoose = require('mongoose');
 
-const orderSchema = new mongoose.Schema({
-
-
-
-
-})
-
-
+const orderSchema = new mongoose.Schema({});
