@@ -44,52 +44,62 @@ const NavBar = () => {
       className="h-max-content fixed z-50 flex w-full select-none items-center justify-end
         bg-neutral-950 p-3 outline outline-1 outline-gray-800 backdrop-blur-sm"
     >
-      <ul className="list-none">
+      <ul className={'list-none'}>
         {token ? (
           <li className="relative">
             <button
-              className="flex cursor-pointer items-center gap-4 rounded-lg border-none bg-blue-500
-                bg-opacity-10 px-4 py-2 font-bold outline outline-1 outline-blue-500/40
-                hover:bg-blue-500/15"
+              className={`flex w-36 cursor-pointer items-center justify-evenly rounded-lg border-none
+                bg-blue-500 bg-opacity-10 py-1.5 text-xs font-bold outline outline-1
+                outline-blue-500/40 hover:bg-blue-500/15`}
               onClick={() => setDropdownVisible(!dropdownVisible)}
             >
-              <div className="text-blue-500">
-                {userData?.firstName || 'Profile'}
+              <div className={'ml-1 text-blue-500'}>
+                {userData?.firstName || 'User'}
               </div>
-              <div className="flex items-center justify-center">
-                <AccountCircleOutlined className="text-xl text-blue-500" />
-                <ArrowBackIosOutlined className="ml-2 rotate-90 text-xs text-blue-500" />
+
+              <div>
+                {userData?.image ? (
+                  <img
+                    src={userData?.image}
+                    alt=""
+                    className={'ml-1.5 h-6 w-6 rounded-full object-cover'}
+                  />
+                ) : (
+                  <AccountCircleOutlined className="ml-1.5 scale-90 text-blue-500" />
+                )}
               </div>
+
+              <ArrowBackIosOutlined className="-rotate-90 scale-50 text-blue-500" />
             </button>
             {dropdownVisible && (
               <div
-                className="absolute right-4 top-12 z-50 overflow-hidden rounded-lg bg-black p-3 text-sm
-                  font-bold shadow-md outline outline-1 outline-white/15"
+                className="absolute top-11 z-50 w-36 rounded-lg bg-black p-1 text-xs font-bold outline outline-1
+                  outline-white/15"
               >
                 <NavLink to="/settings/profile" className="no-underline">
                   <div
-                    className="flex cursor-pointer gap-3 rounded-md p-2 text-gray-400 hover:bg-gray-900
-                      hover:text-white"
+                    className="flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
+                      hover:bg-neutral-900 hover:text-white"
                   >
-                    <AccountCircleOutlined className="text-lg text-white" />
+                    <AccountCircleOutlined className={'scale-75 text-neutral-100'} />
                     <div>My Profile</div>
                   </div>
                 </NavLink>
                 <NavLink to="/settings/profile" className="no-underline">
                   <div
-                    className="flex cursor-pointer gap-3 rounded-md p-2 text-gray-400 hover:bg-gray-900
-                      hover:text-white"
+                    className="flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
+                      hover:bg-neutral-900 hover:text-white"
                   >
-                    <ListAltOutlined className="text-lg text-white" />
+                    <ListAltOutlined className={'scale-75 text-neutral-100'} />
                     <div>Orders</div>
                   </div>
                 </NavLink>
                 <div
                   onClick={handleLogout}
-                  className="flex cursor-pointer gap-3 rounded-md p-2 text-gray-400 hover:bg-gray-900
-                    hover:text-white"
+                  className="flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
+                    hover:bg-neutral-900 hover:text-white"
                 >
-                  <ExitToAppOutlined className="text-lg text-white" />
+                  <ExitToAppOutlined className={'scale-75 text-neutral-100'} />
                   <div>Logout</div>
                 </div>
               </div>
@@ -99,8 +109,8 @@ const NavBar = () => {
           <li>
             <button
               onClick={() => navigate('/login')}
-              className="flex cursor-pointer items-center rounded-lg border-none bg-blue-500
-                bg-opacity-10 px-4 py-2 text-sm font-bold text-blue-500 outline outline-1
+              className="flex w-36 cursor-pointer items-center justify-center rounded-lg border-none
+                bg-blue-500 bg-opacity-10 py-2.5 text-xs font-bold text-blue-500 outline outline-1
                 outline-blue-900 hover:bg-blue-500/15"
             >
               Log In

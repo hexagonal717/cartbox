@@ -62,13 +62,10 @@ export const verifyOtp = async (otp) => {
 
 export const changePassword = async (email, password) => {
   try {
-    const res = await publicRequest.post(
-      '/api/superAdmin/auth/changePassword',
-      {
-        email,
-        password,
-      },
-    );
+    const res = await publicRequest.post('/api/superAdmin/auth/changePassword', {
+      email,
+      password,
+    });
     console.log('changePassword clientSide check:', res);
     return res.data;
   } catch (err) {
@@ -91,10 +88,7 @@ export const getSuperAdminInfoByParams = async (superAdminId) => {
 };
 
 // Update user info by ID
-export const putSuperAdminInfoByParams = async (
-  superAdminId,
-  superAdminInfo,
-) => {
+export const putSuperAdminInfoByParams = async (superAdminId, superAdminInfo) => {
   try {
     const res = await userRequest.put(
       `/api/superAdmin/profile/putSuperAdminInfoByParams/${superAdminId}`,

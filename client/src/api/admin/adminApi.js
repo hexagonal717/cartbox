@@ -16,9 +16,7 @@ export const login = async (adminInfo, dispatch) => {
 
 export const getAdminInfoByParams = async (adminId) => {
   console.log('second check', adminId);
-  const res = await userRequest.get(
-    `/api/admin/getAdminInfoByParams/${adminId}`,
-  );
+  const res = await userRequest.get(`/api/admin/getAdminInfoByParams/${adminId}`);
   console.log(res.data, 'finL PROFILE');
   console.log('data');
   return res.data;

@@ -4,15 +4,11 @@ import { publicRequest, userRequest } from './customerAxios.js';
 // Sign up new user
 export const signUp = async (customerInfo) => {
   try {
-    const res = await publicRequest.post(
-      '/api/customer/auth/signup',
-      customerInfo,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    const res = await publicRequest.post('/api/customer/auth/signup', customerInfo, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-    );
+    });
     return res.data;
   } catch (error) {
     console.error('Sign-up error:', error.response);
@@ -23,10 +19,7 @@ export const signUp = async (customerInfo) => {
 // Login user
 export const login = async (customerInfo, dispatch) => {
   try {
-    const res = await publicRequest.post(
-      '/api/customer/auth/login',
-      customerInfo,
-    );
+    const res = await publicRequest.post('/api/customer/auth/login', customerInfo);
     dispatch(setAccessToken(res.data));
     userRequest.defaults.headers.token = res.data.tokenId;
   } catch (error) {
@@ -38,10 +31,7 @@ export const login = async (customerInfo, dispatch) => {
 //Forgot password user
 export const forgotPassword = async (email) => {
   try {
-    const res = await publicRequest.post(
-      `/api/customer/auth/forgotpassword`,
-      email,
-    );
+    const res = await publicRequest.post(`/api/customer/auth/forgotpassword`, email);
     console.log(res.data, 'forgotPassword data');
     return res.data;
   } catch (error) {
@@ -122,9 +112,7 @@ export const deleteCustomerInfoById = async (customerId) => {
 // Get product info list
 export const getProductInfoList = async () => {
   try {
-    const res = await userRequest.get(
-      `/api/customer/product/getProductInfoList`,
-    );
+    const res = await userRequest.get(`/api/customer/product/getProductInfoList`);
     console.log('heyyyyy', res.data);
     return res.data;
   } catch (error) {

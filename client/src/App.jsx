@@ -20,9 +20,7 @@ import ProductDetailPage from './features/customer/pages/ProductDetailPage.jsx';
 import DemoPage from './features/customer/pages/DemoPage.jsx';
 
 function App() {
-  const customerToken = useSelector(
-    (state) => state.customerAuthSlice.accessToken,
-  );
+  const customerToken = useSelector((state) => state.customerAuthSlice.accessToken);
   const adminToken = useSelector((state) => state.adminAuthSlice.accessToken);
 
   if (customerToken) {

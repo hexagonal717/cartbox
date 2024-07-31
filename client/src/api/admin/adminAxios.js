@@ -9,9 +9,7 @@ export const publicRequest = axios.create({
 let token = null;
 
 if (localStorage.getItem('persist:hexagonal717-ecommerce')) {
-  const data = JSON.parse(
-    localStorage.getItem('persist:hexagonal717-ecommerce'),
-  );
+  const data = JSON.parse(localStorage.getItem('persist:hexagonal717-ecommerce'));
   const adminAuthSlice = JSON.parse(data.adminAuthSlice);
   if (adminAuthSlice && adminAuthSlice.accessToken) {
     token = adminAuthSlice.accessToken.tokenId;

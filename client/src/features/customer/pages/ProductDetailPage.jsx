@@ -1,9 +1,8 @@
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { getProductDetailByParams } from '../../../api/customer/customerApi.js';
-import Footer from '../../../components/common/Footer/Footer.jsx';
 import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { ShareOutlined } from '@mui/icons-material';
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
@@ -21,124 +20,65 @@ const ProductDetailPage = () => {
     enabled: !!productId,
   });
 
-  if (status === 'loading') return <LoadingMessage>Loading...</LoadingMessage>;
+  if (status === 'loading')
+    return <p className="mt-8 text-center text-xl">Loading...</p>;
   if (status === 'error')
-    return <LoadingMessage>{JSON.stringify(error)}</LoadingMessage>;
+    return <p className="mt-8 text-center text-xl">{JSON.stringify(error)}</p>;
 
   if (!product) {
-    return <LoadingMessage>Product not found</LoadingMessage>;
+    return <p className="mt-8 text-center text-xl">Product not found</p>;
   }
 
-  function addToCart() {}
+  function addToCart() {
+    // Handle add to cart
+  }
 
-  const findData = cartData.some((li) => {
-    return li.id === productId;
-  });
+  const findData = cartData.some((li) => li.id === productId);
 
   return (
     <>
-      <MainContainer>
-        <ImageContainer>
-          <ProductImage src={product.image} alt={product.name} />
-        </ImageContainer>
-        <InfoContainer>
-          <ProductName>{product.name}</ProductName>
-          <ProductDescription>{product.description}</ProductDescription>
-          <ProductPrice>${product.price}</ProductPrice>
+      <div
+        className="grid h-full w-full grid-cols-1 gap-8 px-0 py-16 sm:grid-cols-2 sm:px-8 sm:py-20 lg:grid-cols-2
+          lg:px-36"
+      >
+        <div className="mx-auto w-full max-w-lg">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-auto w-full rounded"
+          />
+        </div>
+        <div className="flex flex-col p-4 justify-start">
+          <div className="scale-90 text-right hover:cursor-pointer">
+            <ShareOutlined />
+          </div>
+          <div className="mb-4 text-lg font-light">{product.name}</div>
+          <div className="mb-4">{product.description}</div>
+          <div className="text-2xl font-medium">${product.price}</div>
 
-          <div>
-            {findData === true ? (
-              <BtnInCart>In Cart</BtnInCart>
+          <div className="mt-4">
+            {findData ? (
+              <button
+                className="h-12 w-32 rounded-md border border-neutral-600 bg-yellow-400 text-lg font-bold
+                  text-black shadow-lg backdrop-blur-md"
+              >
+                In Cart
+              </button>
             ) : (
-              <BtnAddToCart onClick={() => addToCart()}>
+              <button
+                onClick={() => addToCart()}
+                className="h-12 w-32 rounded-md border border-neutral-600 bg-black text-xs font-bold text-white
+                  transition-all hover:bg-yellow-400 hover:text-black"
+              >
                 Add to Cart
-              </BtnAddToCart>
+              </button>
             )}
           </div>
-        </InfoContainer>
-      </MainContainer>
-      {/*<Footer/>*/}
+        </div>
+      </div>
+      {/*<Footer />*/}
     </>
   );
 };
-
-const MainContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 3rem;
-  padding: 2rem;
-`;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  max-width: 500px;
-`;
-
-const ProductImage = styled.img`
-  width: 100%;
-  height: auto;
-`;
-
-const InfoContainer = styled.div`
-  width: 100%;
-  max-width: 500px;
-  margin-top: 2rem;
-  text-align: center;
-`;
-
-const ProductName = styled.h1`
-  font-size: 2rem;
-  margin-bottom: 1rem;
-`;
-
-const ProductDescription = styled.p`
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-`;
-
-const ProductPrice = styled.p`
-  font-size: 1.5rem;
-  font-weight: bold;
-`;
-
-const LoadingMessage = styled.p`
-  font-size: 1.5rem;
-  text-align: center;
-`;
-
-const BtnAddToCart = styled.button`
-  border: 0.1rem solid #595959;
-  background: #0c0c0c;
-  color: #ffffff;
-  height: 3rem;
-  width: 8rem;
-  backdrop-filter: blur(2rem);
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 0.2rem 0 #30303044;
-
-  &:hover {
-    transition: 100ms ease-in-out;
-    background: #ffc142;
-    box-shadow: 0 0 0.6rem 0 #ffc14266;
-    color: black;
-    cursor: pointer;
-  }
-`;
-
-const BtnInCart = styled.button`
-  border: 0.1rem solid #595959;
-  background: #ffc142;
-  color: black;
-  height: 3rem;
-  width: 8rem;
-  backdrop-filter: blur(2rem);
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 0.6rem 0 #ffc14266;
-`;
 
 export default ProductDetailPage;
