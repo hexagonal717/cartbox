@@ -4,35 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
-.input-autofill {
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus,
-  &:-webkit-autofill:active {
-    color: white !important;
-    -webkit-text-fill-color: white !important;
-    -webkit-box-shadow: 0 0 0 10rem #2a3240ff inset !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-  }
-}
-
 * {
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 }
-
-/** {*/
-/*    font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;*/
-/*    padding: 0;*/
-/*    margin: 0;*/
-/*    box-sizing: border-box;*/
-/*    font-synthesis: none;*/
-/*    text-rendering: optimizeLegibility;*/
-/*    -webkit-font-smoothing: antialiased;*/
-/*    -moz-osx-font-smoothing: grayscale;*/
-
-/*}*/
