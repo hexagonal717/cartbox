@@ -26,7 +26,10 @@ const LogInPage = () => {
 
   function handleCredentials(event) {
     const { name, value } = event.target;
-    setCredentials({ ...credentials, [name]: value });
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
     console.log(credentials);
   }
 
@@ -40,7 +43,7 @@ const LogInPage = () => {
 
       <div
         className={
-          'flex flex-row h-screen items-center justify-center select-none'
+          'flex h-screen select-none flex-row items-center justify-center'
         }
       >
         <form
@@ -48,9 +51,11 @@ const LogInPage = () => {
           onSubmit={handleSubmit}
         >
           <input
-            className={
-              'rounded-lg px-3 py-3 font-medium text-xs border-none outline outline-1 outline-gray-700 bg-neutral-800 text-gray-300 shadow-sm focus:outline-indigo-600 focus:shadow focus:shadow-indigo-800 hover:outline-indigo-600 hover:shadow hover:shadow-indigo-500 transition-all duration-200 ease-in-out'
-            }
+            className={`rounded-lg border-none bg-neutral-800 px-3 py-3 text-xs font-medium
+              text-gray-300 shadow-sm outline outline-1 outline-neutral-700 transition-all
+              duration-200 ease-in-out hover:shadow hover:shadow-indigo-500
+              hover:outline-indigo-600 focus:shadow focus:shadow-indigo-800
+              focus:outline-indigo-600`}
             type="email"
             name="email"
             placeholder="Email"
@@ -58,39 +63,53 @@ const LogInPage = () => {
           />
 
           <input
-            className={
-              'rounded-lg px-3 py-3 font-medium text-xs border-none outline outline-1 outline-gray-700 bg-neutral-800 text-gray-300 shadow-sm focus:outline-indigo-600 focus:shadow focus:shadow-indigo-800 hover:outline-indigo-600 hover:shadow hover:shadow-indigo-500 transition-all duration-200 ease-in-out'
-            }
+            className={`rounded-lg border-none bg-neutral-800 px-3 py-3 text-xs font-medium
+              text-gray-300 shadow-sm outline outline-1 outline-neutral-700 transition-all
+              duration-200 ease-in-out hover:shadow hover:shadow-indigo-500
+              hover:outline-indigo-600 focus:shadow focus:shadow-indigo-800
+              focus:outline-indigo-600`}
             type="password"
             name="password"
             placeholder="Password"
             onChange={handleCredentials}
           />
 
-          <NavLink to={'/forgotpassword'} style={{ textDecoration: 'none' }}>
-            <div className={'text-white font-bold mt-3 text-xs underline'}>
+          <NavLink
+            to={'/forgotpassword'}
+            style={{
+              textDecoration: 'none',
+            }}
+          >
+            <div
+              className={'mt-3 text-xs font-bold text-white hover:underline'}
+            >
               Forgot password?
             </div>
           </NavLink>
 
           <button
-            className={
-              'px-16 py-2 m-4 bg-indigo-700 text-indigo-950 text-sm font-bold rounded-lg border-0 transition-all duration-300 ease-in-out hover:bg-indigo-700 hover:text-white cursor-pointer'
-            }
+            className={`m-4 cursor-pointer rounded-lg border-0 bg-indigo-700 px-16 py-2 text-sm
+              font-bold text-indigo-950 transition-all duration-300 ease-in-out
+              hover:bg-indigo-700 hover:text-white`}
             type="submit"
           >
             Log in
           </button>
           <div
-            style={{ color: '#dadada', fontSize: '0.8rem', fontWeight: 700 }}
+            style={{
+              color: '#dadada',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+            }}
           >
             Want to create an account?
           </div>
           <Link to={'/signup'}>
             <button
-              className={
-                'py-2.5 px-20 m-4 bg-springgreen-500/10 text-springgreen-500 text-sm font-bold rounded-lg border-0 outline outline-1 outline-springgreen-500/35 transition-all duration-300 ease-in-out hover:bg-springgreen-500/15 hover:text-springgreen-500 cursor-pointer'
-              }
+              className={`m-4 cursor-pointer rounded-lg border-0 bg-springgreen-500/10 px-20 py-2.5
+                text-sm font-bold text-springgreen-500 outline outline-1
+                outline-springgreen-500/35 transition-all duration-300 ease-in-out
+                hover:bg-springgreen-500/15 hover:text-springgreen-500`}
             >
               Sign up
             </button>

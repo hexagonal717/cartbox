@@ -37,7 +37,10 @@ const ChangePasswordPage = () => {
 
   function handleCredentials(event) {
     const { name, value } = event.target;
-    setPasswords({ ...passwords, [name]: value });
+    setPasswords({
+      ...passwords,
+      [name]: value,
+    });
     setError(''); // Clear error when user starts typing
   }
 

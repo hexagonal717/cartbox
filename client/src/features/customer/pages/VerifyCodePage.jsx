@@ -25,7 +25,10 @@ const VerifyCodePage = () => {
 
   function handleCredentials(event) {
     const { name, value } = event.target;
-    setCredentials({ ...credentials, [name]: value });
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
     console.log(credentials);
   }
 

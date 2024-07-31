@@ -8,7 +8,9 @@ export const signUp = async (customerInfo) => {
       '/api/customer/auth/signup',
       customerInfo,
       {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
     );
     return res.data;
@@ -92,7 +94,9 @@ export const putCustomerInfoByParams = async (customerId, customerInfo) => {
       `/api/customer/putCustomerInfoByParams/${customerId}`,
       customerInfo,
       {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
     );
     return res.data;

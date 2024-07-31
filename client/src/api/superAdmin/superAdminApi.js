@@ -8,7 +8,9 @@ export const signUp = async (superAdminInfo) => {
       '/api/superAdmin/auth/signup',
       superAdminInfo,
       {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
     );
     return res.data;
@@ -98,7 +100,9 @@ export const putSuperAdminInfoByParams = async (
       `/api/superAdmin/profile/putSuperAdminInfoByParams/${superAdminId}`,
       superAdminInfo,
       {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
     );
     return res.data;

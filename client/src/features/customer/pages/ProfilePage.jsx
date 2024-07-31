@@ -64,10 +64,16 @@ const ProfilePage = () => {
     if (type === 'file' && files[0]) {
       event.preventDefault();
       setPreviewImage(URL.createObjectURL(files[0]));
-      setCustomerInfo({ ...customerInfo, [name]: files[0] });
+      setCustomerInfo({
+        ...customerInfo,
+        [name]: files[0],
+      });
     } else {
       event.preventDefault();
-      setCustomerInfo({ ...customerInfo, [name]: value });
+      setCustomerInfo({
+        ...customerInfo,
+        [name]: value,
+      });
     }
   }
 
@@ -143,7 +149,15 @@ const ProfilePage = () => {
             </EditProfileImageButton>
 
             <SaveProfileImageButton
-              style={previewImage ? { display: 'block' } : { display: 'none' }}
+              style={
+                previewImage
+                  ? {
+                      display: 'block',
+                    }
+                  : {
+                      display: 'none',
+                    }
+              }
               type="submit"
             >
               <span>Save</span>

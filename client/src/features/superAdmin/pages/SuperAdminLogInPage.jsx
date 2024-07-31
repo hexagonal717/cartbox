@@ -31,7 +31,10 @@ const SuperAdminLogInPage = () => {
 
   function handleCredentials(event) {
     const { name, value } = event.target;
-    setCredentials({ ...credentials, [name]: value });
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
     console.log(credentials);
   }
 
@@ -59,7 +62,11 @@ const SuperAdminLogInPage = () => {
           />
           <LogInButton type="submit">Log in</LogInButton>
           <div
-            style={{ color: '#dadada', fontSize: '0.8rem', fontWeight: 700 }}
+            style={{
+              color: '#dadada',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+            }}
           >
             Want to create an account?
           </div>

@@ -9,7 +9,9 @@ const ForgotPasswordPage = () => {
   const [email, setEmail] = useState({
     email: '',
   });
-  const [otpState, setOtpState] = useState({ error: false });
+  const [otpState, setOtpState] = useState({
+    error: false,
+  });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,15 +25,22 @@ const ForgotPasswordPage = () => {
       if (response) {
         navigate('/verifycode');
       }
-      setOtpState({ error: false });
+      setOtpState({
+        error: false,
+      });
     } catch (err) {
-      setOtpState({ error: true });
+      setOtpState({
+        error: true,
+      });
     }
   }
 
   function handleCredentials(event) {
     const { name, value } = event.target;
-    setEmail({ ...email, [name]: value });
+    setEmail({
+      ...email,
+      [name]: value,
+    });
     console.log(email);
   }
 

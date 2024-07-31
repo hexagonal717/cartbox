@@ -4,7 +4,12 @@ import { NavLink } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
   return (
-    <NavLink style={{ textDecoration: 'none' }} to={`/product/${product._id}`}>
+    <NavLink
+      style={{
+        textDecoration: 'none',
+      }}
+      to={`/product/${product._id}`}
+    >
       <Card>
         <ImageContainer>
           <Image src={product.image} alt={product.name} />

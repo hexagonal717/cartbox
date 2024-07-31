@@ -12,7 +12,7 @@ const Layout = block(() => {
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   return (
-    <div className={"font-inter"}>
+    <div className={'font-inter'}>
       {!shouldIgnore && <NavBar />}
       <Outlet />
     </div>

@@ -21,7 +21,10 @@ const SignUpPage = () => {
       value = event.target.files[0];
       setPreviewImage(URL.createObjectURL(event.target.files[0]));
     }
-    setCustomerInfo({ ...customerInfo, [name]: value });
+    setCustomerInfo({
+      ...customerInfo,
+      [name]: value,
+    });
   }
 
   function handleSignUp(event) {
@@ -43,13 +46,25 @@ const SignUpPage = () => {
         <ProfileImgLabel htmlFor="upload-photo">
           {previewImage ? null : (
             <div
-              style={{ color: 'white', fontSize: '0.8rem', fontWeight: '400' }}
+              style={{
+                color: 'white',
+                fontSize: '0.8rem',
+                fontWeight: '400',
+              }}
             >
               Upload an image
             </div>
           )}
           <ProfileImage
-            style={!previewImage ? { display: 'none' } : { display: 'block' }}
+            style={
+              !previewImage
+                ? {
+                    display: 'none',
+                  }
+                : {
+                    display: 'block',
+                  }
+            }
             src={previewImage}
             alt=""
           />
@@ -101,7 +116,13 @@ const SignUpPage = () => {
         />
 
         <SignUpButton type="submit">Sign Up</SignUpButton>
-        <div style={{ color: '#dadada', fontSize: '0.8rem', fontWeight: 700 }}>
+        <div
+          style={{
+            color: '#dadada',
+            fontSize: '0.8rem',
+            fontWeight: 700,
+          }}
+        >
           Already have an account?
         </div>
         <Link to={'/'}>

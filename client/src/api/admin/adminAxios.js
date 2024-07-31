@@ -22,5 +22,9 @@ console.log('token', token);
 
 export const userRequest = axios.create({
   baseURL: baseUrl,
-  headers: token ? { token: token } : {},
+  headers: token
+    ? {
+        token: token,
+      }
+    : {},
 });

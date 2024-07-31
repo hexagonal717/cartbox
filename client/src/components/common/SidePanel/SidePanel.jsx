@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom';
 const SidePanel = () => {
   return (
     <SidePanelListContainer>
-      <Link to={'profile'} replace style={{ textDecoration: 'none' }}>
+      <Link
+        to={'profile'}
+        replace
+        style={{
+          textDecoration: 'none',
+        }}
+      >
         <SidePanelListItem
           style={{
             display: 'flex',
@@ -13,12 +19,28 @@ const SidePanel = () => {
             alignItems: 'center',
           }}
         >
-          <AccountCircleOutlined style={{ fontSize: '1.2rem' }} />
-          <div style={{ fontSize: '1rem' }}>Profile</div>
+          <AccountCircleOutlined
+            style={{
+              fontSize: '1.2rem',
+            }}
+          />
+          <div
+            style={{
+              fontSize: '1rem',
+            }}
+          >
+            Profile
+          </div>
         </SidePanelListItem>
       </Link>
 
-      <Link to={'account'} replace style={{ textDecoration: 'none' }}>
+      <Link
+        to={'account'}
+        replace
+        style={{
+          textDecoration: 'none',
+        }}
+      >
         <SidePanelListItem
           style={{
             display: 'flex',
@@ -26,8 +48,18 @@ const SidePanel = () => {
             alignItems: 'center',
           }}
         >
-          <AccountCircleOutlined style={{ fontSize: '1.2rem' }} />
-          <div style={{ fontSize: '1rem' }}>Account</div>
+          <AccountCircleOutlined
+            style={{
+              fontSize: '1.2rem',
+            }}
+          />
+          <div
+            style={{
+              fontSize: '1rem',
+            }}
+          >
+            Account
+          </div>
         </SidePanelListItem>
       </Link>
     </SidePanelListContainer>

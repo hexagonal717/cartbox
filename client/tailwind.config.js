@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  mode: "jit",
-  content: [ "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"],
+  mode: 'jit',
+  darkMode: 'class',
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -20,10 +20,9 @@ export default {
         },
       },
       fontFamily: {
-        inter: ["Inter Variable, sans-serif"],
+        inter: ['Inter Variable, sans-serif'],
       },
     },
   },
   plugins: [],
-}
-
+};
