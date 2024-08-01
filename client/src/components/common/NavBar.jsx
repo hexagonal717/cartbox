@@ -3,13 +3,28 @@ import {
   ArrowBackIosOutlined,
   ExitToAppOutlined,
   ListAltOutlined,
+  ShoppingBagOutlined,
 } from '@mui/icons-material';
-import { useState } from 'react';
-import { clearAccessToken } from '../../../features/customer/redux/customerAuthSlice.js';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCustomerInfoByParams } from '../../../api/customer/customerApi.js';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import {
+  useState,
+} from 'react';
+import {
+  clearAccessToken,
+} from '../../features/customer/redux/customerAuthSlice.js';
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+import {
+  getCustomerInfoByParams,
+} from '../../api/customer/customerApi.js';
+import {
+  NavLink,
+  useNavigate,
+} from 'react-router-dom';
+import {
+  useQuery,
+} from '@tanstack/react-query';
 
 const NavBar = () => {
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
@@ -42,9 +57,9 @@ const NavBar = () => {
   return (
     <div
       className="h-max-content fixed z-50 flex w-full select-none items-center justify-end
-        bg-neutral-950 p-3 outline outline-1 outline-gray-800 backdrop-blur-sm"
+        bg-neutral-950 px-6 py-3 outline outline-1 outline-gray-800 backdrop-blur-sm"
     >
-      <ul className={'list-none'}>
+      <ul className={'flex list-none items-center justify-center gap-4'}>
         {token ? (
           <li className="relative">
             <button
@@ -117,6 +132,11 @@ const NavBar = () => {
             </button>
           </li>
         )}
+        <li>
+          <NavLink to={'/cart'}>
+            <ShoppingBagOutlined className={'hover:cursor-pointer text-neutral-200'} />
+          </NavLink>
+        </li>
       </ul>
     </div>
   );

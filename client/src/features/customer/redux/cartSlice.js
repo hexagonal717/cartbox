@@ -3,13 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const cartSlice = createSlice({
   name: 'cartSlice',
   initialState: {
-    phoneInfo: [],
     cartInfo: [],
   },
   reducers: {
-    addPhoneInfo: (state, action) => {
-      state.phoneInfo.push(action.payload);
-    },
     addCartInfo: (state, action) => {
       const existingItem = state.cartInfo.find(
         (item) => item.id === action.payload.id,
@@ -54,7 +50,6 @@ const cartSlice = createSlice({
 });
 
 export const {
-  addPhoneInfo,
   addCartInfo,
   decQuantity,
   removeCartItem,

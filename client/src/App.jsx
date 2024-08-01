@@ -4,7 +4,7 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
-import Layout from './components/common/Layout/Layout.jsx';
+import Layout from './components/common/Layout.jsx';
 import HomePage from './features/customer/pages/HomePage.jsx';
 import SignUpPage from './features/customer/pages/SignUpPage.jsx';
 import { useSelector } from 'react-redux';
@@ -18,6 +18,8 @@ import ChangePasswordPage from './features/customer/pages/ChangePasswordPage.jsx
 import LogInRedirectPage from './features/customer/pages/LogInRedirectPage.jsx';
 import ProductDetailPage from './features/customer/pages/ProductDetailPage.jsx';
 import DemoPage from './features/customer/pages/DemoPage.jsx';
+import CartPage
+  from './features/customer/pages/CartPage.jsx';
 
 function App() {
   const customerToken = useSelector((state) => state.customerAuthSlice.accessToken);
@@ -41,6 +43,7 @@ function App() {
         <Route path="/loginredirectPage" element={<LogInRedirectPage />} />
         <Route path="/product/:productId" element={<ProductDetailPage />} />
         <Route path="/demo" element={<DemoPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route
           path="/settings"
           element={loginStatus ? <SettingsPage /> : <LogInPage />}

@@ -1,5 +1,5 @@
-import CategoryBar from '../../../components/common/CategoryBar/CategoryBar.jsx';
-import ProductCard from '../../../components/common/ProductCard/ProductCard.jsx';
+import CategoryBar from '../../../components/common/CategoryBar.jsx';
+import ProductCard from '../../../components/common/ProductCard.jsx';
 import { getProductInfoList } from '../../../api/customer/customerApi.js';
 import { useQuery } from '@tanstack/react-query';
 

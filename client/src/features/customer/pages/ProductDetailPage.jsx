@@ -30,7 +30,9 @@ const ProductDetailPage = () => {
   }
 
   function addToCart() {
-    // Handle add to cart
+
+    dispatch()
+
   }
 
   const findData = cartData.some((li) => li.id === productId);

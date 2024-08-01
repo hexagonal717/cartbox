@@ -6,6 +6,7 @@ require('dotenv').config();
 const customerAuthRouter = require('./router/v1/customer/customerAuthRouter');
 const customerProfileRouter = require('./router/v1/customer/customerProfileRouter');
 const customerProductRouter = require('./router/v1/customer/customerProductRouter');
+const customerCartRouter = require('./router/v1/customer/customerCartRouter');
 const adminAuthRouter = require('./router/v1/admin/adminAuthRouter');
 const adminProfileRouter = require('./router/v1/admin/adminProfileRouter');
 const superAdminAuthRouter = require('./router/v1/superAdmin/superAdminAuthRouter');
@@ -26,6 +27,7 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
 app.use('/api/customer/auth', customerAuthRouter);
 app.use('/api/customer', customerProfileRouter);
 app.use('/api/customer/product', customerProductRouter);
+app.use('/api/customer/cart', customerCartRouter);
 
 // Admin routes
 
