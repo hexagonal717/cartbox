@@ -13,12 +13,18 @@ const addCartItem = async (req, res) => {
     }
 
     // Find an existing CartItem for the given productId and customerId
-    let cartItem = await CartItem.findOne({ customerId, productId },{},{});
+    let cartItem = await CartItem.findOne(
+      {
+        customerId,
+        productId,
+      },
+      {},
+      {},
+    );
 
     const price = product.price;
 
-    console.log(price,"PRICEEEEEEE");
-
+    console.log(price, 'PRICEEEEEEE');
 
     if (cartItem) {
       // If the CartItem exists, update the quantity
@@ -39,7 +45,12 @@ const addCartItem = async (req, res) => {
     // Find the customer's cart or create one if it doesn't exist
     let cart = await Cart.findOne({ customerId });
     if (!cart) {
-      cart = new Cart({ customerId, items: [], totalQuantity: 0, totalPrice: 0 });
+      cart = new Cart({
+        customerId,
+        items: [],
+        totalQuantity: 0,
+        totalPrice: 0,
+      });
     }
 
     // Update the cart with the new or updated cartItem
@@ -51,13 +62,24 @@ const addCartItem = async (req, res) => {
     // Calculate total quantity and price
     cart.totalQuantity = await CartItem.aggregate([
       { $match: { _id: { $in: cart.items } } },
-      { $group: { _id: null, totalQuantity: { $sum: '$quantity' }, totalPrice: { $sum: { $multiply: ['$quantity', '$price'] } } } }
-    ]).then(result => result[0]?.totalQuantity || 0);
+      {
+        $group: {
+          _id: null,
+          totalQuantity: { $sum: '$quantity' },
+          totalPrice: { $sum: { $multiply: ['$quantity', '$price'] } },
+        },
+      },
+    ]).then((result) => result[0]?.totalQuantity || 0);
 
     cart.totalPrice = await CartItem.aggregate([
       { $match: { _id: { $in: cart.items } } },
-      { $group: { _id: null, totalPrice: { $sum: { $multiply: ['$quantity', '$price'] } } } }
-    ]).then(result => result[0]?.totalPrice || 0);
+      {
+        $group: {
+          _id: null,
+          totalPrice: { $sum: { $multiply: ['$quantity', '$price'] } },
+        },
+      },
+    ]).then((result) => result[0]?.totalPrice || 0);
 
     // Ensure totalPrice is a valid number
     if (isNaN(cart.totalPrice)) {
@@ -66,7 +88,10 @@ const addCartItem = async (req, res) => {
 
     await cart.save();
 
-    res.status(201).json({ message: 'Item added to cart successfully', cartItem });
+    res.status(201).json({
+      message: 'Item added to cart successfully',
+      cartItem,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to add item to cart' });
