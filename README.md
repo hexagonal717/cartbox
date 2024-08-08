@@ -121,6 +121,7 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
         - components/
             - common/
                 - CartEmpty.jsx
+                - CartItemCard.jsx
                 - CategoryBar.jsx
                 - Footer.jsx
                 - Layout.jsx
