@@ -42,12 +42,10 @@ const LogInPage = () => {
       {/*</Header>*/}
 
       <div
-        className={'flex h-screen select-none flex-row items-center justify-center'}
-      >
+        className={'flex h-screen select-none flex-row items-center justify-center'}>
         <form
           className={'flex flex-col items-center justify-center gap-3'}
-          onSubmit={handleSubmit}
-        >
+          onSubmit={handleSubmit}>
           <input
             className={`rounded-lg border-none bg-neutral-800 px-3 py-3 text-xs font-medium text-gray-300
               shadow-sm outline outline-1 outline-neutral-700 transition-all duration-200
@@ -74,13 +72,11 @@ const LogInPage = () => {
             to={'/forgotpassword'}
             style={{
               textDecoration: 'none',
-            }}
-          >
+            }}>
             <div
               className={
                 'mt-2 flex flex-row text-xs font-bold text-white hover:underline'
-              }
-            >
+              }>
               Forgot password?
             </div>
           </NavLink>
@@ -89,8 +85,7 @@ const LogInPage = () => {
             className={`m-4 cursor-pointer rounded-lg border-0 bg-indigo-700 px-16 py-2 text-sm font-bold
               text-indigo-950 transition-all duration-300 ease-in-out hover:bg-indigo-700
               hover:text-white`}
-            type="submit"
-          >
+            type="submit">
             Log in
           </button>
           <div
@@ -98,8 +93,7 @@ const LogInPage = () => {
               color: '#dadada',
               fontSize: '0.8rem',
               fontWeight: 700,
-            }}
-          >
+            }}>
             Want to create an account?
           </div>
           <Link to={'/signup'}>
@@ -107,8 +101,7 @@ const LogInPage = () => {
               className={`m-4 cursor-pointer rounded-lg border-0 bg-springgreen-500/10 px-20 py-2.5 text-sm
                 font-bold text-springgreen-500 outline outline-1 outline-springgreen-500/35
                 transition-all duration-300 ease-in-out hover:bg-springgreen-500/15
-                hover:text-springgreen-500`}
-            >
+                hover:text-springgreen-500`}>
               Sign up
             </button>
           </Link>

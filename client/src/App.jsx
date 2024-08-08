@@ -44,8 +44,7 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route
           path="/settings"
-          element={loginStatus ? <SettingsPage /> : <LogInPage />}
-        >
+          element={loginStatus ? <SettingsPage /> : <LogInPage />}>
           <Route
             path="profile"
             element={loginStatus ? <ProfilePage /> : <LogInPage />}

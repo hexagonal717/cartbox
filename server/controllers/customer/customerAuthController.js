@@ -106,10 +106,7 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Email or Password is incorrect.' });
     }
 
-    const isPasswordValid = await argon.verify(
-      dbExistingUser.password,
-      password,
-    );
+    const isPasswordValid = await argon.verify(dbExistingUser.password, password);
 
     !isPasswordValid && res.status(401).json('not matched');
     if (dbExistingUser && isPasswordValid) {
@@ -129,9 +126,7 @@ const login = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
-    return res
-      .status(500)
-      .json({ error: 'Server error. Please try again later.' });
+    return res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 
@@ -147,9 +142,7 @@ const forgotPassword = async (req, res) => {
       { lean: true },
     );
     if (!existingUserEmail) {
-      return res
-        .status(400)
-        .json({ error: "This email address doesn't exist." });
+      return res.status(400).json({ error: "This email address doesn't exist." });
     }
 
     const otp = generateOTP();
@@ -215,11 +208,7 @@ const changePassword = async (req, res) => {
     console.log(password, 'password');
     console.log(email, '5555');
 
-    const existingEmail = await customerSchema.findOne(
-      email,
-      {},
-      { lean: true },
-    );
+    const existingEmail = await customerSchema.findOne(email, {}, { lean: true });
 
     if (existingEmail) {
       console.log('existing email for password change');

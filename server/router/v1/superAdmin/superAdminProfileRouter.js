@@ -11,17 +11,9 @@ const {
     filterData,*/
 } = require('../../../controllers/superAdmin/superAdminProfileController');
 
-router.get(
-  '/getSuperAdminInfoByParams/:id',
-  verifyToken,
-  getSuperAdminInfoByParams,
-);
+router.get('/getSuperAdminInfoByParams/:id', verifyToken, getSuperAdminInfoByParams);
 
-router.put(
-  '/putSuperAdminInfoByParams/:id',
-  verifyToken,
-  putSuperAdminInfoByParams,
-);
+router.put('/putSuperAdminInfoByParams/:id', verifyToken, putSuperAdminInfoByParams);
 
 router.delete(
   '/deleteSuperAdminInfoByParams/:id',

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import { deleteUser } from '../../../api/customer/customerApi.js';
 import { clearAccessToken } from '../redux/customerAuthSlice.js';
+import SidePanel from '../../../components/common/SidePanel.jsx';
 
 const AccountSettings = () => {
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
@@ -15,42 +15,20 @@ const AccountSettings = () => {
   }
 
   return (
-    <MainContainer>
-      <h1>Account Settings</h1>
-      <DeleteButton onClick={handleDeleteAccount}>Delete account</DeleteButton>
-    </MainContainer>
+    <div className="flex h-full">
+      <SidePanel />
+      <div className="w-40" />
+      <main className="flex flex-1 flex-col items-center justify-center p-4 text-white">
+        <h1 className="mb-4 text-2xl font-semibold">Account Settings</h1>
+        <button
+          onClick={handleDeleteAccount}
+          className="mt-4 rounded-md border border-red-700 bg-red-600 px-8 py-2 text-sm font-bold
+            text-white outline-none transition-colors duration-150 hover:bg-red-700">
+          Delete account
+        </button>
+      </main>
+    </div>
   );
 };
-
-const MainContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  height: 100%;
-  width: 100%;
-`;
-
-const DeleteButton = styled.button`
-  padding: 0.6rem 5rem;
-  margin: 1rem;
-  background: #ff000015;
-  font-size: 0.8rem;
-  color: #ff0000;
-  border-radius: 0.4rem;
-  border: none;
-  outline: 0.1rem solid #ff000077;
-  font-weight: 700;
-  transition: background 123ms ease-in-out;
-
-  &:hover {
-    background: #ff000025;
-    color: #ff0000;
-    cursor: pointer;
-    transition: 123ms ease-in-out;
-  }
-`;
 
 export default AccountSettings;

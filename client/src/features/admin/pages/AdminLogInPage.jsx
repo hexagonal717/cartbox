@@ -66,8 +66,7 @@ const AdminLogInPage = () => {
               color: '#dadada',
               fontSize: '0.8rem',
               fontWeight: 700,
-            }}
-          >
+            }}>
             Want to create an account?
           </div>
           <Link to={'/signup'}>

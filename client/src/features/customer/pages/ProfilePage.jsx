@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
 import { getUser, putUser } from '../../../api/customer/customerApi.js';
+import SidePanel from '../../../components/common/SidePanel.jsx';
 
 const ProfilePage = () => {
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
@@ -38,345 +38,139 @@ const ProfilePage = () => {
   if (status === 'loading') return <h1>Loading...</h1>;
   if (status === 'error') return <h1>{JSON.stringify(error)}</h1>;
 
-  function handleEdit(event) {
+  const handleEdit = (event) => {
     event.preventDefault();
     if (!isDisabled) {
       setCustomerInfo(dbCustomerInfo);
     }
-    setIsDisabled(!isDisabled);
-  }
+    setIsDisabled((prev) => !prev);
+  };
 
-  function handleEditImage() {
+  const handleEditImage = () => {
     if (previewImage) {
       profileImageInputRef.current.value = null;
-    }
-    setPreviewImage('');
-    if (!previewImage) {
+      setPreviewImage(null);
+    } else {
       profileImageInputRef.current.click();
     }
-  }
+  };
 
-  function handleOnChange(event) {
+  const handleOnChange = (event) => {
     const { name, value, files, type } = event.target;
     if (type === 'file' && files[0]) {
-      event.preventDefault();
       setPreviewImage(URL.createObjectURL(files[0]));
-      setCustomerInfo({
-        ...customerInfo,
-        [name]: files[0],
-      });
+      setCustomerInfo((prev) => ({ ...prev, [name]: files[0] }));
     } else {
-      event.preventDefault();
-      setCustomerInfo({
-        ...customerInfo,
-        [name]: value,
-      });
+      setCustomerInfo((prev) => ({ ...prev, [name]: value }));
     }
-  }
+  };
 
-  async function handleSave(event) {
+  const handleSave = async (event) => {
+    event.preventDefault();
     try {
-      event.preventDefault();
-      const updatedUserInfo = await putUser(token.customerId, customerInfo);
+      await putUser(token.customerId, customerInfo);
       setIsDisabled(true);
-      await refetch();
       setPreviewImage(null);
-
-      console.log('User Info Saved:', updatedUserInfo);
+      await refetch();
+      console.log('User Info Saved:', customerInfo);
     } catch (err) {
       console.error('Error saving user info:', err);
     }
-  }
-
-  const disabledInput = {
-    color: '#909090',
-    outline: '0.1rem solid #424242',
-    boxShadow: '0 0 0 transparent',
   };
 
-  const enabledInput = {
-    color: '#e6e6e6',
-  };
-
-  const disabledSaveButton = {
-    userSelect: 'none',
-    cursor: 'auto',
-    background: '#00ff7610',
-    color: '#00ff7688',
-    outline: '0.1rem solid #00ff7650',
-  };
-
-  const enabledSaveButton = {
-    userSelect: 'none',
-  };
+  const renderInputField = (name, placeholder) => (
+    <input
+      name={name}
+      placeholder={placeholder}
+      className={`rounded-md border-none p-3 text-sm font-medium
+        ${isDisabled ? 'text-neutral-400 outline outline-1 outline-neutral-700' : 'text-neutral-100 outline outline-1 outline-neutral-500'}
+        bg-neutral-800 transition-all`}
+      readOnly={isDisabled}
+      disabled={isDisabled}
+      value={customerInfo[name]}
+      onChange={handleOnChange}
+    />
+  );
 
   return (
     dbCustomerInfo && (
-      <MainContainer>
-        <FormContainer
-          action="/"
-          onSubmit={handleSave}
-          method="post"
-          encType="multipart/form-data"
-        >
-          <ProfileCircle>
-            {previewImage ? (
-              <ProfileImage src={previewImage} alt="Profile" />
-            ) : dbCustomerInfo.image ? (
-              <ProfileImage src={dbCustomerInfo.image} alt="Profile" />
-            ) : (
-              <div
-                style={{
-                  color: 'white',
-                  fontSize: '0.8rem',
-                  fontWeight: '400',
-                }}
-              >
-                Upload an image
-              </div>
-            )}
-          </ProfileCircle>
+      <div className={'flex h-screen flex-col pt-16 lg:flex-row'}>
+        <SidePanel />
 
-          <ProfileImageButtonGroup>
-            <EditProfileImageButton onClick={handleEditImage}>
-              {!previewImage ? 'Edit picture' : 'Cancel'}
-            </EditProfileImageButton>
+        <div className={'w-[14rem]'}></div>
 
-            <SaveProfileImageButton
-              style={
-                previewImage
-                  ? {
-                      display: 'block',
-                    }
-                  : {
-                      display: 'none',
-                    }
-              }
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 p-4 lg:pl-[10rem]">
+          <form
+            className="flex flex-col items-center justify-center gap-3"
+            onSubmit={handleSave}
+            method="post"
+            encType="multipart/form-data">
+            <label
+              className="flex h-40 w-40 cursor-pointer items-center justify-center rounded-full text-center
+                outline outline-2 outline-neutral-700">
+              {previewImage || dbCustomerInfo.image ? (
+                <img
+                  src={previewImage || dbCustomerInfo.image}
+                  alt="Profile"
+                  className="h-full w-full rounded-full object-cover"
+                />
+              ) : (
+                <div className="text-xs font-normal text-white">Upload an image</div>
+              )}
+            </label>
+
+            <div className="mb-6 flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={handleEditImage}
+                className="h-8 w-24 cursor-pointer rounded-md border-none bg-[#ffffff15] text-xs text-white
+                  transition-all hover:bg-[#ffffff25]">
+                {previewImage ? 'Cancel' : 'Edit image'}
+              </button>
+
+              {previewImage && (
+                <button
+                  type="submit"
+                  className="h-8 w-24 cursor-pointer rounded-md border-none bg-[#ffffff15] text-xs text-white
+                    transition-all hover:bg-[#ffffff25]">
+                  Save
+                </button>
+              )}
+            </div>
+
+            <input
+              type="file"
+              name="image"
+              ref={profileImageInputRef}
+              onChange={handleOnChange}
+              className="hidden"
+            />
+
+            {renderInputField('firstName', 'First Name')}
+            {renderInputField('lastName', 'Last Name')}
+            {renderInputField('email', 'Email')}
+            {renderInputField('phone', 'Phone')}
+
+            <button
+              type="button"
+              onClick={handleEdit}
+              className="h-8 w-24 cursor-pointer rounded-md border-none bg-[#ffffff15] text-xs text-white
+                transition-all hover:bg-[#ffffff25]">
+              {isDisabled ? 'Edit profile' : 'Cancel'}
+            </button>
+            <button
               type="submit"
-            >
-              <span>Save</span>
-            </SaveProfileImageButton>
-          </ProfileImageButtonGroup>
-
-          <ProfileImgUploader
-            type="file"
-            name="image"
-            id="upload-photo"
-            ref={profileImageInputRef}
-            onChange={handleOnChange}
-          />
-
-          <InputContainer
-            name="firstName"
-            style={isDisabled ? disabledInput : enabledInput}
-            readOnly={isDisabled}
-            disabled={isDisabled}
-            value={customerInfo.firstName}
-            onChange={handleOnChange}
-          />
-          <InputContainer
-            name="lastName"
-            style={isDisabled ? disabledInput : enabledInput}
-            readOnly={isDisabled}
-            disabled={isDisabled}
-            value={customerInfo.lastName}
-            onChange={handleOnChange}
-          />
-          <InputContainer
-            name="email"
-            style={isDisabled ? disabledInput : enabledInput}
-            readOnly={isDisabled}
-            disabled={isDisabled}
-            value={customerInfo.email}
-            onChange={handleOnChange}
-          />
-          <InputContainer
-            name="phone"
-            style={isDisabled ? disabledInput : enabledInput}
-            readOnly={isDisabled}
-            disabled={isDisabled}
-            value={customerInfo.phone}
-            onChange={handleOnChange}
-          />
-          <EditButton onClick={handleEdit}>
-            {isDisabled ? 'Edit profile' : 'Cancel'}
-          </EditButton>
-          <SaveButton
-            style={isDisabled ? disabledSaveButton : enabledSaveButton}
-            type="submit"
-            // onClick={isDisabled ? null : handleSave}
-          >
-            Save
-          </SaveButton>
-        </FormContainer>
-      </MainContainer>
+              className={`mt-4 cursor-pointer rounded-md border-none bg-[#00ff7615] px-20 py-3 text-xs
+                font-bold text-[#00ff76] outline outline-[0.1rem] outline-[#00ff7677] transition-all
+                hover:bg-[#00ff7625] ${isDisabled ? 'cursor-not-allowed' : ''}`}
+              disabled={isDisabled}>
+              Save
+            </button>
+          </form>
+        </div>
+      </div>
     )
   );
 };
-
-const MainContainer = styled.div`
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-`;
-
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-`;
-const InputContainer = styled.input`
-    padding: 0.7rem 0.6rem;
-    border-radius: 0.4rem;
-    border: none;
-    outline: 0.1rem solid #424242;
-    color: #e6e6e6;
-    background: #212121ff;
-    box-shadow: 0 0 0.2rem #d1d1d14c;
-    font-size: 0.8rem;
-    font-weight: 500;
-    transition: outline 123ms ease-in-out,
-    box-shadow 123ms ease-in-out,
-    padding 123ms ease-in-out;
-
-    &:hover {
-        transition: 123ms ease-in-out;
-        outline: 0.1rem solid #ffffff;
-        box-shadow: 0 0 0.5rem #ffffff4c;
-    }
-
-    &:focus {
-        transition: 332ms ease-in-out;
-        outline: 0.1rem solid #ffffff;
-        padding: 1rem 0.9rem;
-        box-shadow: 0 0 0.5rem #ffffff4c;
-    }
-
-    &::-ms-reveal {
-        filter: invert(100%);
-
-`;
-
-const ProfileImage = styled.img`
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-`;
-
-const ProfileImgUploader = styled.input`
-  display: none;
-  text-decoration: none;
-`;
-
-const ProfileCircle = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 12rem;
-  width: 12rem;
-  text-align: center;
-  border-radius: 25rem;
-  outline: 0.15rem solid #ffffff44;
-  text-decoration: none;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const EditButton = styled.button`
-  height: 2rem;
-  width: 6rem;
-  margin: 1rem;
-  background: #ffffff15;
-  font-size: 0.8rem;
-  color: #ffffff;
-  border-radius: 0.4rem;
-  border: none;
-  outline: 0.1rem solid #ffffff77;
-  font-weight: 700;
-  transition: background 123ms ease-in-out;
-
-  &:hover {
-    background: #ffffff25;
-    color: #ffffff;
-    cursor: pointer;
-    transition: 123ms ease-in-out;
-  }
-`;
-
-const EditProfileImageButton = styled.button`
-  height: 2rem;
-  width: 6rem;
-  background: #ffffff15;
-  font-size: 0.8rem;
-  color: #ffffff;
-  border-radius: 0.4rem;
-  border: none;
-  outline: 0.1rem solid #ffffff77;
-  font-weight: 700;
-  transition: background 123ms ease-in-out;
-
-  &:hover {
-    background: #ffffff25;
-    color: #ffffff;
-    cursor: pointer;
-    transition: 123ms ease-in-out;
-  }
-`;
-
-const ProfileImageButtonGroup = styled.div`
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-`;
-
-const SaveProfileImageButton = styled.button`
-  height: 2rem;
-  width: 6rem;
-  background: #ffffff15;
-  font-size: 0.8rem;
-  color: #ffffff;
-  border-radius: 0.4rem;
-  border: none;
-  outline: 0.1rem solid #ffffff77;
-  font-weight: 700;
-  transition: background 123ms ease-in-out;
-
-  &:hover {
-    background: #ffffff25;
-    color: #ffffff;
-    cursor: pointer;
-    transition: 123ms ease-in-out;
-  }
-`;
-
-const SaveButton = styled.button`
-  padding: 0.6rem 5rem;
-  margin: 1rem;
-  background: #00ff7615;
-  font-size: 0.8rem;
-  color: #00ff76;
-  border-radius: 0.4rem;
-  border: none;
-  outline: 0.1rem solid #00ff7677;
-  font-weight: 700;
-  transition: background 123ms ease-in-out;
-
-  &:hover {
-    background: #00ff7625;
-    color: #00ff76;
-    cursor: pointer;
-    transition: 123ms ease-in-out;
-  }
-`;
 
 export default ProfilePage;

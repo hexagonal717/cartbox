@@ -45,13 +45,11 @@ const SignUpPage = () => {
         onSubmit={handleSignUp}
         method="post"
         encType="multipart/form-data"
-        className={'flex flex-col items-center gap-4'}
-      >
+        className={'flex flex-col items-center gap-4'}>
         <label
           htmlFor="upload-photo"
           className={`mb-1 flex h-48 w-48 cursor-pointer items-center justify-center rounded-full border-2
-            border-neutral-500 text-center`}
-        >
+            border-neutral-500 text-center`}>
           {!previewImage ? (
             <div className={'text-xs font-light text-white'}>Upload an image</div>
           ) : (
@@ -66,8 +64,7 @@ const SignUpPage = () => {
         {previewImage ? (
           <div
             className={'text-xs underline hover:cursor-pointer'}
-            onClick={removeImage}
-          >
+            onClick={removeImage}>
             Remove image
           </div>
         ) : null}
@@ -146,8 +143,7 @@ const SignUpPage = () => {
           type="submit"
           className={`m-4 cursor-pointer rounded-lg border-0 bg-springgreen-700 px-16 py-2 text-sm
             font-bold text-springgreen-950 transition-all duration-300 ease-in-out
-            hover:bg-springgreen-700 hover:text-white`}
-        >
+            hover:bg-springgreen-700 hover:text-white`}>
           Sign Up
         </button>
         <div className={'text-xs font-bold text-neutral-200'}>
@@ -157,8 +153,7 @@ const SignUpPage = () => {
           <button
             className={`m-2 cursor-pointer rounded-lg border-0 bg-indigo-500/10 px-20 py-2.5 text-sm
               font-bold text-indigo-500 outline outline-1 outline-indigo-500/35 transition-all
-              duration-300 ease-in-out hover:bg-indigo-500/15 hover:text-indigo-500`}
-          >
+              duration-300 ease-in-out hover:bg-indigo-500/15 hover:text-indigo-500`}>
             Log In
           </button>
         </Link>

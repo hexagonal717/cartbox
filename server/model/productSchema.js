@@ -1,13 +1,7 @@
 const mongoose = require('mongoose');
 
 const validSubCategories = {
-  electronics: [
-    'mobiles',
-    'laptops',
-    'headphones',
-    'smartwatches',
-    'televisions',
-  ],
+  electronics: ['mobiles', 'laptops', 'headphones', 'smartwatches', 'televisions'],
   grocery: ['vegetables', 'fruits', 'dairy', 'snacks', 'beverages'],
   fashion: ['men', 'women', 'kids', 'accessories'],
   books: ['fiction', 'nonFiction', 'educational', 'comics'],

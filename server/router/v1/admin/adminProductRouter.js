@@ -1,7 +1,5 @@
 const router = require('express').Router();
-const {
-  verifyToken,
-} = require('../../../middleware/admin/adminAuthMiddleware');
+const { verifyToken } = require('../../../middleware/admin/adminAuthMiddleware');
 const {
   getProductList,
   addProductList,

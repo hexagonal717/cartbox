@@ -1,13 +1,16 @@
-import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, cart }) => {
   return (
-    <NavLink to={`/product/${product._id}`} className={'no-underline'}>
+    <NavLink
+      to={{
+        pathname: `/product/${product._id}`,
+        state: { cart },
+      }}
+      className={'no-underline'}>
       <div
         className={`m-0.5 flex w-full transform cursor-pointer overflow-hidden rounded-lg border
-          border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800`}
-      >
+          border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800`}>
         <div className={'h-52 w-52 flex-none'}>
           <img
             src={product.image}
@@ -25,18 +28,6 @@ const ProductCard = ({ product }) => {
       </div>
     </NavLink>
   );
-};
-
-ProductCard.propTypes = {
-  product: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    subCategory: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  }).isRequired,
 };
 
 export default ProductCard;

@@ -17,8 +17,7 @@ const ProfileButton = ({ userData, handleLogout }) => {
         className={`flex w-36 cursor-pointer items-center justify-evenly rounded-lg border-none
           bg-blue-500 bg-opacity-10 py-1.5 text-xs font-bold outline outline-1
           outline-blue-500/40 hover:bg-blue-500/15`}
-        onClick={() => setDropdownVisible(!dropdownVisible)}
-      >
+        onClick={() => setDropdownVisible(!dropdownVisible)}>
         <div className={'ml-1 text-blue-500'}>{userData?.firstName || 'User'}</div>
 
         <div>
@@ -38,13 +37,11 @@ const ProfileButton = ({ userData, handleLogout }) => {
         {dropdownVisible && (
           <div
             className={`absolute top-11 z-50 w-36 rounded-lg bg-black p-1 text-xs font-bold outline outline-1
-            outline-white/15`}
-          >
+            outline-white/15`}>
             <NavLink to="/settings/profile" className={'no-underline'}>
               <div
                 className={`flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
-                hover:bg-neutral-900 hover:text-white`}
-              >
+                hover:bg-neutral-900 hover:text-white`}>
                 <AccountCircleOutlined className={'scale-75 text-neutral-100'} />
                 <div>My Profile</div>
               </div>
@@ -52,8 +49,7 @@ const ProfileButton = ({ userData, handleLogout }) => {
             <NavLink to="/settings/orders" className={'no-underline'}>
               <div
                 className={`flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
-                hover:bg-neutral-900 hover:text-white`}
-              >
+                hover:bg-neutral-900 hover:text-white`}>
                 <ListAltOutlined className={'scale-75 text-neutral-100'} />
                 <div>Orders</div>
               </div>
@@ -61,8 +57,7 @@ const ProfileButton = ({ userData, handleLogout }) => {
             <div
               onClick={handleLogout}
               className={`flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
-              hover:bg-neutral-900 hover:text-white`}
-            >
+              hover:bg-neutral-900 hover:text-white`}>
               <ExitToAppOutlined className={'scale-75 text-neutral-100'} />
               <div>Logout</div>
             </div>

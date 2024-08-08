@@ -65,10 +65,7 @@ const login = async (req, res) => {
       return res.status(401).json({ error: 'Email or Password is incorrect.' });
     }
 
-    const isPasswordValid = await argon.verify(
-      dbExistingUser.password,
-      password,
-    );
+    const isPasswordValid = await argon.verify(dbExistingUser.password, password);
 
     !isPasswordValid && res.status(401).json('not matched');
     if (dbExistingUser && isPasswordValid) {
@@ -88,9 +85,7 @@ const login = async (req, res) => {
     }
   } catch (err) {
     console.log(err.message);
-    return res
-      .status(500)
-      .json({ error: 'Server error. Please try again later.' });
+    return res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 

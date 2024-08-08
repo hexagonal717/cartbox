@@ -1,11 +1,9 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import SidePanel from '../../../components/common/SidePanel.jsx';
 
 const SettingsPage = () => {
   return (
     <MainContainer>
-      <SidePanel />
       <Outlet />
     </MainContainer>
   );

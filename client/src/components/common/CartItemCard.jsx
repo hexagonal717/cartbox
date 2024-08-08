@@ -1,96 +1,107 @@
-import { RemoveShoppingCartOutlined } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
+import {
+  decreaseCartItemQuantity,
+  getCart,
+  increaseCartItemQuantity,
+  removeCartItem,
+} from '../../api/customer/customerApi.js';
 
-const CartItemCard = (product) => {
-  console.log(product.product, 'PRODCT');
+const CartItemCard = ({ product, cart, updateCart }) => {
+  const customerId = useSelector(
+    (state) => state.customerAuthSlice.accessToken?.customerId,
+  );
+
+  function handleIncreaseCartItemQuantity() {
+    increaseCartItemQuantity(product._id, customerId)
+      .then((res) => {
+        if (res.status === 'success') {
+          getCart(customerId).then((res) => {
+            updateCart(res.payload.cart);
+          });
+        } else {
+          // Handle failure, e.g., show an error message
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to increase cart quantity:', error);
+      });
+  }
+
+  function handleDecreaseCartItemQuantity() {
+    decreaseCartItemQuantity(product._id, customerId)
+      .then((res) => {
+        if (res.status === 'success') {
+          getCart(customerId).then((res) => {
+            updateCart(res.payload.cart);
+          });
+        } else {
+          // Handle failure, e.g., show an error message
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to decrease cart quantity:', error);
+      });
+  }
+
+  function handleRemoveCartItem() {
+    removeCartItem(product._id, customerId)
+      .then((res) => {
+        if (res.status === 'success') {
+          getCart(customerId).then((res) => {
+            updateCart(res.payload.cart);
+          });
+        } else {
+          // Handle failure, e.g., show an error message
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to remove cart item:', error);
+      });
+  }
 
   return (
-    <>
-      <div
-        className={`h-min-content border-b-0.5 border-t-0.5 grid grid-cols-[1fr_3fr_1fr] gap-8 border
-          border-neutral-700 bg-yellow-100/10 p-8 text-neutral-200`}
-      >
-        <div className={'relative block w-min'}>
-          <img
-            src={product.product?.image}
-            alt=""
-            className={'relative flex h-auto w-40'}
-          />
+    <div className={'rounded-lg bg-neutral-950 p-8 text-neutral-200'}>
+      <div className={'relative block w-min'}>
+        <img src={product.image} alt="" className={'relative flex h-auto w-40'} />
+      </div>
+      <div className={'flex w-full'}>
+        <div>
+          <div className={'text-left text-xl font-bold'}>{`${product.name}`}</div>
         </div>
-        <div className={'flex w-full'}>
-          <div>
-            <div className={'pt-8 text-left text-xl font-bold'}>
-              {`${product.product?.name}`}
-            </div>
-            <div className={'mt-4 flex w-60 flex-col gap-4 rounded p-4'}>
-              <div className={'flex justify-between'}>
-                <span>
-                  <b className={'text-neutral-400'}>•&emsp;Display Size</b>
-                </span>
-                <span>{'5.2'} inches</span>
-              </div>
-              <div className={'flex justify-between'}>
-                <span>
-                  <b className={'text-neutral-400'}>•&emsp;RAM</b>
-                </span>
-                <span>{product.name} GB</span>
-              </div>
-              <div className={'flex justify-between'}>
-                <span>
-                  <b className={'text-neutral-400'}>•&emsp;Storage</b>
-                </span>
-                <span>{product.name} GB</span>
-              </div>
-              <div className={'flex justify-between'}>
-                <span>
-                  <b className={'text-neutral-400'}>•&emsp;Release Year</b>
-                </span>
-                <span>{product.name}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
+      <div className={'flex flex-col items-end justify-between text-right text-xl'}>
+        <div>${product.price && product.price}&nbsp;</div>
+
         <div
           className={
-            'flex flex-col items-end justify-between p-8 text-right text-2xl font-bold'
-          }
-        >
-          <div>
-            <div className={'m-4'}>{product.name}</div>
-            <div>₹{product.price && product.price}&nbsp;</div>
-          </div>
-          <div
-            className={`mt-8 flex h-max w-max scale-[1.5] items-center justify-between rounded-md border
-              border-neutral-700 bg-neutral-900`}
-          >
-            <button
-              className={`h-5 w-6 rounded-l-md border-r border-neutral-700 bg-yellow-400/10 text-center
-                text-white hover:bg-yellow-400/20`}
-              onClick={() => {}}
-            >
-              <div className={'translate-y-[-10%]'}>-</div>
-            </button>
-            <div className={'3 w-6 p-0 text-xs'}>
-              <b>Qty. {product.quantity}</b>
-            </div>
-            <button
-              className={`h-5 w-6 rounded-r-md border-l border-neutral-700 bg-yellow-400/10 text-center
-                font-bold text-white hover:bg-yellow-400/20`}
-              onClick={() => {}}
-            >
-              <div className={'translate-y-[-10%]'}>+</div>
-            </button>
+            'mt-6 flex items-center justify-between rounded-xl bg-neutral-900 p-1 font-light'
+          }>
+          <button
+            className={
+              'w-7 rounded-full bg-neutral-800 text-center text-white hover:bg-neutral-700'
+            }
+            onClick={handleDecreaseCartItemQuantity}>
+            <div>-</div>
+          </button>
+          <div className={'px-2 text-xs'}>
+            <b>Qty. {cart.quantity}</b>
           </div>
           <button
             className={
-              'rounded-md border border-neutral-700 px-8 py-1 text-yellow-400 hover:bg-yellow-400/20'
+              'w-7 rounded-full bg-neutral-800 text-center text-white hover:bg-neutral-700'
             }
-            onClick={() => {}}
-          >
-            <RemoveShoppingCartOutlined />
+            onClick={handleIncreaseCartItemQuantity}>
+            <div className={'-translate-y-[0.05rem]'}>+</div>
           </button>
         </div>
+        <button
+          className={`mt-8 rounded-full border-neutral-700 px-2.5 py-1.5 text-xs text-yellow-400
+            hover:underline`}
+          onClick={handleRemoveCartItem}>
+          Remove
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 
