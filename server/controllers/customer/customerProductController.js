@@ -54,5 +54,5 @@ const getProduct = async (req, res) => {
 
 module.exports = {
   getProductList,
-  getProduct
+  getProduct,
 };
