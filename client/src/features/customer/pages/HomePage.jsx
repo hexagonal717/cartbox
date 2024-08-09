@@ -1,34 +1,25 @@
-import {
-  useQueries,
-} from '@tanstack/react-query';
-import {
-  getCart,
-  getProductList,
-} from '../../../api/customer/customerApi.js';
-import CategoryBar
-  from '../../../components/common/CategoryBar.jsx';
-import ProductCard
-  from '../../../components/common/ProductCard.jsx';
-import {
-  useSelector,
-} from 'react-redux';
+import { useQueries } from '@tanstack/react-query';
+import { getCart, getProductList } from '../../../api/customer/customerApi.js';
+import CategoryBar from '../../../components/common/CategoryBar.jsx';
+import ProductCard from '../../../components/common/ProductCard.jsx';
+import { useSelector } from 'react-redux';
 
 const HomePage = () => {
   const customerId = useSelector(
-    (state) => state.customerAuthSlice.accessToken.customerId,
+    (state) => state.customerAuthSlice.accessToken?.customerId,
   );
 
   // Run multiple queries in parallel
   const queries = useQueries({
     queries: [
       {
-        queryKey: ['productList'],
+        queryKey: ['homePageProductList'],
         queryFn: () => getProductList().then((data) => data.payload),
       },
       {
-        queryKey: ['cartList', customerId], // Include customerId to differentiate cart queries
+        queryKey: ['homePageCart', customerId],
         queryFn: () => getCart(customerId).then((data) => data.payload.cart),
-        enabled: !!customerId, // Only fetch cart if customerId is available
+        enabled: !!customerId,
       },
     ],
   });
@@ -50,33 +41,17 @@ const HomePage = () => {
   const productList = productQuery.data;
   const cartList = cartQuery.data;
 
-  const def = productList.flatMap((product) => {
-    return cartList.filter((cartItem) => cartItem.productId === product._id);
-  });
-
-  console.log(def, "DEFFFFFFFFFF");
-
-
   return (
     <>
       <div className={'box-border flex w-full flex-col items-center px-4 pt-40'}>
         <CategoryBar />
         <div className={'grid w-full max-w-screen-xl grid-cols-1'}>
           {productList && productList.length > 0 ? (
-            productList.map((product, index) => {
-
-              const cartL = cartList.filter((cartItem) => cartItem?.productId === product._id);
-
-
+            productList.flatMap((product) => {
 
               return (
-
-
-
-                <ProductCard key={index} product={product} cart={cartL} />
-              )
-
-
+                <ProductCard key={product._id} product={product} cart={cartList} />
+              );
             })
           ) : (
             <h1>No products available</h1>

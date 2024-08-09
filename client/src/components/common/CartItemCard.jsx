@@ -1,8 +1,66 @@
-const CartItemCard = ({ product, cart }) => {
+import { useSelector } from 'react-redux';
+import {
+  decreaseCartItemQuantity,
+  getCart,
+  increaseCartItemQuantity,
+  removeCartItem,
+} from '../../api/customer/customerApi.js';
+
+const CartItemCard = ({ product, cart, updateCart }) => {
+  const customerId = useSelector(
+    (state) => state.customerAuthSlice.accessToken?.customerId,
+  );
+
+  function handleIncreaseCartItemQuantity() {
+    increaseCartItemQuantity(product._id, customerId)
+      .then((res) => {
+        if (res.status === 'success') {
+          getCart(customerId).then((res) => {
+            updateCart(res.payload.cart);
+          });
+        } else {
+          // Handle failure, e.g., show an error message
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to increase cart quantity:', error);
+      });
+  }
+
+  function handleDecreaseCartItemQuantity() {
+    decreaseCartItemQuantity(product._id, customerId)
+      .then((res) => {
+        if (res.status === 'success') {
+          getCart(customerId).then((res) => {
+            updateCart(res.payload.cart);
+          });
+        } else {
+          // Handle failure, e.g., show an error message
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to decrease cart quantity:', error);
+      });
+  }
+
+  function handleRemoveCartItem() {
+    removeCartItem(product._id, customerId)
+      .then((res) => {
+        if (res.status === 'success') {
+          getCart(customerId).then((res) => {
+            updateCart(res.payload.cart);
+          });
+        } else {
+          // Handle failure, e.g., show an error message
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to remove cart item:', error);
+      });
+  }
+
   return (
-    <div
-      className={`rounded-lg bg-neutral-950 p-8
-        text-neutral-200`}>
+    <div className={'rounded-lg bg-neutral-950 p-8 text-neutral-200'}>
       <div className={'relative block w-min'}>
         <img src={product.image} alt="" className={'relative flex h-auto w-40'} />
       </div>
@@ -23,7 +81,7 @@ const CartItemCard = ({ product, cart }) => {
             className={
               'w-7 rounded-full bg-neutral-800 text-center text-white hover:bg-neutral-700'
             }
-            onClick={() => {}}>
+            onClick={handleDecreaseCartItemQuantity}>
             <div>-</div>
           </button>
           <div className={'px-2 text-xs'}>
@@ -33,14 +91,14 @@ const CartItemCard = ({ product, cart }) => {
             className={
               'w-7 rounded-full bg-neutral-800 text-center text-white hover:bg-neutral-700'
             }
-            onClick={() => {}}>
+            onClick={handleIncreaseCartItemQuantity}>
             <div className={'-translate-y-[0.05rem]'}>+</div>
           </button>
         </div>
         <button
           className={`mt-8 rounded-full border-neutral-700 px-2.5 py-1.5 text-xs text-yellow-400
-            hover:bg-neutral-800`}
-          onClick={() => {}}>
+            hover:underline`}
+          onClick={handleRemoveCartItem}>
           Remove
         </button>
       </div>

@@ -1,9 +1,14 @@
-
 import { NavLink } from 'react-router-dom';
 
-const ProductCard = ({ product,cart }) => {
+const ProductCard = ({ product, cart }) => {
   return (
-    <NavLink to={`/product/${product._id}`} state={cart} className={'no-underline'}>
+    <NavLink
+      to={{
+        pathname: `/product/${product._id}`,
+        state: { cart },
+      }}
+      className={'no-underline'}
+    >
       <div
         className={`m-0.5 flex w-full transform cursor-pointer overflow-hidden rounded-lg border
           border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800`}
@@ -26,6 +31,5 @@ const ProductCard = ({ product,cart }) => {
     </NavLink>
   );
 };
-
 
 export default ProductCard;
