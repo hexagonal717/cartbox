@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { getCart, getProduct } from '../../../api/customer/customerApi.js';
+import { getCart } from '../../../api/customer/customerApi.js';
 import CartItemCard from '../../../components/common/CartItemCard.jsx';
 
 const CartPage = () => {
@@ -15,24 +15,25 @@ const CartPage = () => {
     error: cartError,
   } = useQuery({
     queryKey: ['cart', customerId],
-    queryFn: () =>
-      getCart(customerId).then((data) =>
-        Promise.all(
-          data.payload.items.map((item) =>
-            getProduct(item.productId).then((product) => product.payload),
-          ),
-        ),
-      ),
+    queryFn: () => getCart(customerId).then((data) => data.payload),
     enabled: !!customerId,
   });
 
-  console.log(cartResult, 'CARTT');
-
   if (isCartLoading) return <div>Loading cart...</div>;
   if (cartError) return <div>Error loading cart: {cartError.message}</div>;
-  return cartResult.map((product) => (
-    <CartItemCard product={product} key={product.id} />
-  ));
+
+  return cartResult.products.map((product, index) => {
+    const cart = cartResult.cart[index];
+    return (
+
+        <div
+          className={'m-4'}
+          key={index}>
+        <CartItemCard product={product} cart={cart} />
+        </div>
+
+    );
+  });
 };
 
 export default CartPage;

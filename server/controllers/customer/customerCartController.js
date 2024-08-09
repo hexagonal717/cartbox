@@ -79,78 +79,38 @@ const getCart = async (req, res) => {
 
     console.log('cart customer id', customerId);
 
-    let cart = await Cart.findOne(
+    let cartData = await Cart.findOne(
       { customerId: customerId },
       {},
       { lean: true },
     );
 
-    console.log(cart, 'cart value');
+    console.log(cartData, 'cart value');
 
-    if (cart) {
-      const items = cart.items && cart.items.length > 0 ? cart.items : [];
+    if (cartData) {
+      const items =
+        cartData.items && cartData.items.length > 0 ? cartData.items : [];
 
-      console.log(items, 'fddddddddd');
+      const cart = cartData.items;
 
-      res.status(200).json({
-        status: 'success',
-        message: 'Cart retrieved successfully',
-        payload: {
-          ...cart,
-          items,
-        },
-      });
-    } else {
-      res.status(404).json({
-        status: 'error',
-        message: 'Cart not found for the given customerId',
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: 'An error occurred while retrieving the cart',
-      error: error.message,
-      success: false,
-    });
-  }
-};
+      const productIds = cartData.items.map((item) =>
+        item.productId.toString(),
+      );
 
-const getCartProductIds = async (req, res) => {
-  try {
-    const { id: customerId } = req.params;
-
-    console.log('cart customer id', customerId);
-
-    let cart = await Cart.findOne(
-      { customerId: customerId },
-      {},
-      { lean: true },
-    );
-
-    console.log(cart, 'cart value');
-
-    if (cart) {
-      const items = cart.items && cart.items.length > 0 ? cart.items : [];
-
-      const cartItems = cart.items;
-
-      const productIds = cart.items.map((item) => item.productId.toString());
-
-      const abc = await Promise.all(
+      const products = await Promise.all(
         productIds.map((productId) =>
           Product.find({ _id: productId }, {}, { lean: true }),
         ),
-      );
+      ).then((result) => result.flat());
 
-      console.log(items, 'fddddddddd');
+      console.log(products, 'fddddddddd');
 
       res.status(200).json({
         status: 'success',
         message: 'Cart retrieved successfully',
         payload: {
-          abc,
-          cartItems,
+          cart,
+          products,
         },
       });
     } else {
@@ -172,5 +132,4 @@ const getCartProductIds = async (req, res) => {
 module.exports = {
   addCartItem,
   getCart,
-  getCartProductIds,
 };
