@@ -2,14 +2,11 @@ const superAdminSchema = require('../../model/superAdminSchema');
 const argon = require('argon2');
 
 const getSuperAdminInfoByParams = async (req, res) => {
-  console.log('3rd check');
   try {
     const data = await superAdminSchema.findById(req.params.id);
-    console.log(data, '999999999');
     const { password, ...other } = data._doc;
 
     res.status(200).json(other);
-    console.log(data, '');
   } catch (err) {
     res.status(500).json({ error: 'Server error. Please try again later.' });
   }
@@ -25,7 +22,6 @@ const putSuperAdminInfoByParams = async (req, res) => {
       { new: true },
     );
 
-    console.log(updateData);
     res.status(200).json(updateData);
   } catch (err) {
     console.log(err);
@@ -33,7 +29,6 @@ const putSuperAdminInfoByParams = async (req, res) => {
 };
 
 const deleteSuperAdminInfoByParams = async (req, res) => {
-  console.log('delete user id', req.params.id);
   try {
     await superAdminSchema.findByIdAndDelete(req.params.id);
     res.status(200).json({ type: 'success' });
@@ -43,8 +38,6 @@ const deleteSuperAdminInfoByParams = async (req, res) => {
 };
 
 /*const insertAllData = async (req, res) => {
-  console.log("************", req.body);
-
   try {
     // Hash the passwords for each user
     const usersWithHashedPasswords = await Promise.all(
@@ -53,8 +46,6 @@ const deleteSuperAdminInfoByParams = async (req, res) => {
         return { ...user, password: hashedPassword };
       }),
     );
-
-    console.log("usersWithHashedPasswords", usersWithHashedPasswords);
 
     // Insert users into the database
     const result = await userInfo.insertMany(usersWithHashedPasswords);

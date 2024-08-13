@@ -3,6 +3,8 @@ import { publicRequest, userRequest } from './customerAxios.js';
 
 // Sign up new user
 export const signUp = async (customerInfo) => {
+  console.log(customerInfo, 'FIRST CHECK');
+
   try {
     const res = await publicRequest.post('/api/customer/auth/signup', customerInfo, {
       headers: {
@@ -22,6 +24,7 @@ export const login = async (customerInfo, dispatch) => {
     const res = await publicRequest.post('/api/customer/auth/login', customerInfo);
     dispatch(setAccessToken(res.data));
     userRequest.defaults.headers.token = res.data.tokenId;
+    return res.data;
   } catch (error) {
     console.error('Login error:', error.response);
     throw error;
@@ -32,7 +35,6 @@ export const login = async (customerInfo, dispatch) => {
 export const forgotPassword = async (email) => {
   try {
     const res = await publicRequest.post(`/api/customer/auth/forgotpassword`, email);
-    console.log(res.data, 'forgotPassword data');
     return res.data;
   } catch (error) {
     console.error('Forgot password error:', error.response);
@@ -43,7 +45,6 @@ export const forgotPassword = async (email) => {
 export const verifyOtp = async (otp) => {
   try {
     const res = await publicRequest.post('/api/customer/auth/verifyotp', otp);
-    console.log(res.data, 'otp verify check');
     return res.data;
   } catch (error) {
     console.error('otp verification failed.', error.response);
@@ -56,7 +57,6 @@ export const changePassword = async (email, password) => {
       email,
       password,
     });
-    console.log('changePassword clientSide check:', res);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -69,7 +69,7 @@ export const getUser = async (customerId) => {
     const res = await userRequest.get(
       `/api/customer/profile/get-user/${customerId}`,
     );
-    console.log('heyyyyy', res.data);
+
     return res.data;
   } catch (error) {
     console.error('Get customer info error:', error.response);
@@ -108,10 +108,14 @@ export const deleteUser = async (customerId) => {
 };
 
 // Get product info list
-export const getProductList = async () => {
+export const getProductList = async (search) => {
   try {
-    const res = await userRequest.get(`/api/customer/product/get-product-list`);
-    console.log('heyyyyy', res.data);
+    const queryString = new URLSearchParams({
+      search: search || '',
+    }).toString();
+    const res = await userRequest.get(
+      `/api/customer/product/get-product-list?${queryString}`,
+    );
     return res.data;
   } catch (error) {
     console.error('Get product list info error:', error.response);
@@ -126,8 +130,6 @@ export const getProduct = async (productId) => {
       `/api/customer/product/get-product/${productId}`,
     );
 
-    console.log(productId);
-    console.log('product detail first check', res.data);
     return res.data;
   } catch (error) {
     console.error('Get product detail error:', error.response);
@@ -203,6 +205,101 @@ export const getCart = async (customerId) => {
     return res.data;
   } catch (error) {
     console.error('Fetching cart data failed:', error.response);
+    throw error;
+  }
+};
+
+export const getProductListByCategory = async (category, subCategory) => {
+  try {
+    const queryString = new URLSearchParams({
+      category: category || '',
+      subCategory: subCategory || '',
+    }).toString();
+    const res = await userRequest.get(
+      `/api/customer/product/get-product-list-by-category?${queryString}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Get product list by category info error:', error.response);
+    throw error;
+  }
+};
+
+export const getAddress = async (customerId) => {
+  try {
+    const res = await userRequest.get(
+      `/api/customer/profile/get-address/${customerId}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('get address info error:', error.response);
+    throw error;
+  }
+};
+
+export const putAddress = async (customerId, addressId, updatedAddress) => {
+
+  try {
+    const res = await userRequest.put(
+      `/api/customer/profile/put-address/${customerId}/${addressId}`,
+      updatedAddress,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('put address info error:', error.response);
+    throw error;
+  }
+};
+
+export const addAddress = async (customerId, addressInfo) => {
+  try {
+    const res = await userRequest.post(
+      `/api/customer/profile/add-address/${customerId}`,
+      addressInfo,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Add address info error:', error.response);
+    throw error;
+  }
+};
+
+export const deleteAddress = async (customerId, addressId) => {
+  console.log(customerId,addressId,'FIRSTTTTTT CHECkkkkk');
+
+  try {
+    const res = await userRequest.delete(
+      `/api/customer/profile/delete-address/${customerId}/${addressId}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Add address info error:', error.response);
+    throw error;
+  }
+};
+
+export const getOrder = async (customerId) => {
+  try {
+    const res = await userRequest.get(`/api/customer/order/get-order/${customerId}`);
+    return res.data;
+  } catch (error) {
+    console.error('order info error:', error.response);
+    throw error;
+  }
+};
+
+export const addOrder = async (customerId, items) => {
+
+
+  console.log(customerId,items,'GGGGGGGGGGGGGGGGGG');
+  try {
+    const res = await userRequest.post(
+      `/api/customer/order/add-order/${customerId}`,
+      { items },
+    );
+    return res.data;
+  } catch (error) {
+    console.error('order info error:', error.response);
     throw error;
   }
 };

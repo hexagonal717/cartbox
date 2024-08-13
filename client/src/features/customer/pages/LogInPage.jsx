@@ -16,11 +16,13 @@ const LogInPage = () => {
     event.preventDefault();
 
     try {
-      await login(credentials, dispatch); // Await the login function
-      navigate('/'); // Navigate only after login is successful
+      const res = await login(credentials, dispatch); // Await the login function
+      if (res?.status === 'success') {
+        console.log(res.status, 'STATUS');
+        navigate('/');
+      }
     } catch (error) {
       console.error('Login failed:', error);
-      // Handle the error (e.g., display an error message)
     }
   };
 
@@ -30,17 +32,10 @@ const LogInPage = () => {
       ...credentials,
       [name]: value,
     });
-    console.log(credentials);
   }
 
   return (
     <>
-      {/*<Header>*/}
-      {/*  <Link to="/adminlogin">*/}
-      {/*    <AdminButton>For Admins</AdminButton>*/}
-      {/*  </Link>*/}
-      {/*</Header>*/}
-
       <div
         className={'flex h-screen select-none flex-row items-center justify-center'}>
         <form
@@ -82,7 +77,7 @@ const LogInPage = () => {
           </NavLink>
 
           <button
-            className={`m-4 cursor-pointer rounded-lg border-0 bg-indigo-700 px-16 py-2 text-sm font-bold
+            className={`m-4 cursor-pointer rounded-lg border-0 bg-indigo-600 px-16 py-2 text-sm font-bold
               text-indigo-950 transition-all duration-300 ease-in-out hover:bg-indigo-700
               hover:text-white`}
             type="submit">
@@ -104,6 +99,18 @@ const LogInPage = () => {
                 hover:text-springgreen-500`}>
               Sign up
             </button>
+          </Link>
+          <Link to={'/admin-login'}>
+            <div className={'text-xs'}>
+              Are you an{' '}
+              <span
+                className={
+                  'text-sm font-bold text-yellow-400 hover:text-yellow-500'
+                }>
+                admin
+              </span>
+              ?
+            </div>
           </Link>
         </form>
       </div>

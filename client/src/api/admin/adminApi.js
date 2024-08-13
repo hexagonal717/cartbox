@@ -1,42 +1,100 @@
 import { setAccessToken } from '../../features/admin/redux/adminAuthSlice.js';
 import { publicRequest, userRequest } from './adminAxios.js';
 
-export const signUp = async (adminInfo) => {
-  const res = await publicRequest.post('/api/admin/auth/signup', adminInfo);
-  console.log('final answer', res.data);
-  return res.data;
-};
-
+// Admin login
 export const login = async (adminInfo, dispatch) => {
-  console.log('check ', adminInfo);
-  const res = await publicRequest.post('/api/admin/auth/login', adminInfo);
-  console.log('final login', res.data);
-  dispatch(setAccessToken(res.data));
+  try {
+    const res = await publicRequest.post('/api/admin/auth/login', adminInfo);
+    console.log(res.data, 'FRONTEND');
+    dispatch(setAccessToken(res.data));
+    userRequest.defaults.headers.token = res.data.tokenId;
+    return res.data;
+  } catch (error) {
+    console.error('Login error:', error.response);
+    throw error;
+  }
 };
 
-export const getAdminInfoByParams = async (adminId) => {
-  console.log('second check', adminId);
-  const res = await userRequest.get(`/api/admin/getAdminInfoByParams/${adminId}`);
-  console.log(res.data, 'finL PROFILE');
-  console.log('data');
-  return res.data;
+// Admin signup
+export const signUp = async (adminInfo) => {
+  try {
+    const res = await publicRequest.post('/api/admin/auth/signup', adminInfo, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Sign-up error:', error.response);
+    throw error;
+  }
 };
 
-export const putAdminInfoById = async (adminId, adminInfo) => {
-  console.log('second check error', adminInfo, adminId);
-  const res = await userRequest.put(
-    `/api/admin/putAdminInfoByParams/${adminId}`,
-    adminInfo,
-  );
-  console.log(res.data, 'UPDATED DATA');
+// Get user info by ID
+export const getUser = async (adminId) => {
+  try {
+    const res = await userRequest.get(`/api/admin/profile/get-user/${adminId}`);
+
+    return res.data;
+  } catch (error) {
+    console.error('Get admin info error:', error.response);
+    throw error;
+  }
 };
 
-export const deleteAdminInfoById = async (adminId) => {
-  console.log('delete user id', adminId);
-  const res = await userRequest.delete(
-    `/api/admin/deleteAdminInfoByParams/${adminId}`,
-  );
+export const putUser = async (adminId, adminInfo) => {
+  try {
+    const res = await userRequest.put(
+      `/api/admin/profile/put-user/${adminId}`,
+      adminInfo,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Update user info error:', error.response);
+    throw error;
+  }
+};
 
-  console.log(res.data, 'Account deleted');
-  return res.data;
+// Delete user info by ID
+export const deleteUser = async (adminId) => {
+  try {
+    const res = await userRequest.delete(
+      `/api/admin/profile/delete-user/${adminId}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Delete user info error:', error.response);
+    throw error;
+  }
+};
+
+export const addProduct = async (productInfo) => {
+  console.log(productInfo, 'FIRSTCHECK');
+  try {
+    const res = await userRequest.post(
+      '/api/admin/product/add-product',
+      productInfo,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Product adding error:', error.response);
+    throw error;
+  }
+};
+
+export const deleteProduct = async (productId) => {
+  try {
+    const res = await userRequest.delete(
+      `/api/admin/product/delete-product/${productId}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Delete product info error:', error.response);
+    throw error;
+  }
 };

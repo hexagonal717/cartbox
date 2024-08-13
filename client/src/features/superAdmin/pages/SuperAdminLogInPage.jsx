@@ -13,9 +13,7 @@ const SuperAdminLogInPage = () => {
         if (userToken) {
 
             navigate("/login")
-            console.log('dsadas')
-
-        }
+            }
     }, [userToken]);
 */
 
@@ -35,7 +33,6 @@ const SuperAdminLogInPage = () => {
       ...credentials,
       [name]: value,
     });
-    console.log(credentials);
   }
 
   return (

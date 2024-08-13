@@ -1,21 +1,11 @@
 const router = require('express').Router();
 const { verifyToken } = require('../../../middleware/admin/adminAuthMiddleware');
 const {
-  putAdminInfoByParams,
-  deleteAdminInfoByParams,
-  getAdminInfoByParams,
-  /*insertAllData,
-    deleteAllData,
-    filterData,*/
+  getUser,
+  putUser,
 } = require('../../../controllers/admin/adminProfileController');
 
-router.get('/getAdminInfoByParams/:id', verifyToken, getAdminInfoByParams);
+router.get('/get-user/:id', verifyToken, getUser);
+router.put('/put-user/:id', verifyToken, putUser);
 
-router.put('/putAdminInfoByParams/:id', verifyToken, putAdminInfoByParams);
-
-router.delete('/deleteAdminInfoByParams/:id', verifyToken, deleteAdminInfoByParams);
-
-/*router.post("/insertAllData", insertAllData);
-router.delete("/deleteAllData", deleteAllData);
-router.get("/filterData", filterData);*/
 module.exports = router;

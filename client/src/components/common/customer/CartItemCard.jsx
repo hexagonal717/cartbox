@@ -4,7 +4,7 @@ import {
   getCart,
   increaseCartItemQuantity,
   removeCartItem,
-} from '../../api/customer/customerApi.js';
+} from '../../../api/customer/customerApi.js';
 
 const CartItemCard = ({ product, cart, updateCart }) => {
   const customerId = useSelector(

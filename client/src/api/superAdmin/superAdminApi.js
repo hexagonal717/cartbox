@@ -42,7 +42,6 @@ export const forgotPassword = async (email) => {
       `/api/superAdmin/auth/forgotpassword`,
       email,
     );
-    console.log(res.data, 'forgotPassword data');
     return res.data;
   } catch (error) {
     console.error('Forgot password error:', error.response);
@@ -53,7 +52,6 @@ export const forgotPassword = async (email) => {
 export const verifyOtp = async (otp) => {
   try {
     const res = await publicRequest.post('/api/superAdmin/auth/verifyotp', otp);
-    console.log(res.data, 'otp verify check');
     return res.data;
   } catch (error) {
     console.error('otp verification failed.', error.response);
@@ -66,7 +64,6 @@ export const changePassword = async (email, password) => {
       email,
       password,
     });
-    console.log('changePassword clientSide check:', res);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -79,7 +76,6 @@ export const getSuperAdminInfoByParams = async (superAdminId) => {
     const res = await userRequest.get(
       `/api/superAdmin/profile/getSuperAdminInfoByParams/${superAdminId}`,
     );
-    console.log('heyyyyy', res.data);
     return res.data;
   } catch (error) {
     console.error('Get customer info error:', error.response);

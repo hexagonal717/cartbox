@@ -223,21 +223,19 @@ const getCart = async (req, res) => {
   try {
     const { id: customerId } = req.params;
 
-    console.log('cart customer id', customerId);
-
     let cartData = await Cart.findOne(
       { customerId: customerId },
       {},
       { lean: true },
     );
 
-    console.log(cartData, 'cart value');
-
     if (cartData) {
       const items =
         cartData.items && cartData.items.length > 0 ? cartData.items : [];
 
-      const cart = cartData.items;
+      const cart = cartData;
+
+      const cartItems = cartData.items;
 
       const productIds = cartData.items.map((item) => item.productId.toString());
 
@@ -247,13 +245,12 @@ const getCart = async (req, res) => {
         ),
       ).then((result) => result.flat());
 
-      console.log(products, 'fddddddddd');
-
       res.status(200).json({
         status: 'success',
         message: 'Cart retrieved successfully',
         payload: {
           cart,
+          cartItems,
           products,
         },
       });

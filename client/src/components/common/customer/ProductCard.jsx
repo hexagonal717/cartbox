@@ -18,11 +18,13 @@ const ProductCard = ({ product, cart }) => {
             className={'h-full w-full object-cover'}
           />
         </div>
-        <div className={'flex flex-1 flex-col justify-start gap-2 p-4'}>
-          <h2 className={'text-xl text-neutral-200'}>{product.name}</h2>
-          <p className={'text-lg font-bold text-springgreen-500'}>
-            ${product.price}
-          </p>
+        <div className={'flex flex-1 flex-col justify-between p-4'}>
+          <div>
+            <h2 className={'text-md text-neutral-200'}>{product.name}</h2>
+            <p className={'text-md font-bold text-springgreen-500'}>
+              ${product.price}
+            </p>
+          </div>
           <p className={'text-base text-neutral-400'}>{product.description}</p>
         </div>
       </div>

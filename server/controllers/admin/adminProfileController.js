@@ -1,50 +1,86 @@
 const adminSchema = require('../../model/adminSchema');
-const argon = require('argon2');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
 
-const getAdminInfoByParams = async (req, res) => {
-  console.log('3rd check');
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = multer.diskStorage({
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+const getUser = async (req, res) => {
   try {
-    const data = await adminSchema.findById(req.params.id);
-    console.log(data, '999999999');
-    const { password, ...other } = data._doc;
+    const data = await adminSchema.find({ _id: req.params.id }, {}, { lean: true });
+    const { password, ...other } = data[0];
 
     res.status(200).json(other);
-    console.log(data, '');
   } catch (err) {
     res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 
-const putAdminInfoByParams = async (req, res) => {
+const putUser = async (req, res) => {
   try {
+    let imagePath = null;
+
+    // Fetch the user from the database to get the type and ObjectId
+    const existingUser = await adminSchema.findById(req.params.id);
+
+    if (!existingUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (req.file) {
+      // Construct the folder path based on user type and ObjectId
+      const uploadPath = `cartbox/${existingUser.role}/${existingUser._id}/profile`;
+
+      // Upload the image to Cloudinary
+      const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+        folder: uploadPath, // Specify folder path
+        public_id: req.file.originalname.split('.')[0], // Filename without extension
+        overwrite: true,
+      });
+
+      // Set the imagePath to the Cloudinary secure URL
+      imagePath = uploadedImage.secure_url;
+    }
+
+    // Prepare the fields to be updated
+    const updateFields = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      ...req.body,
+    };
+
+    if (imagePath) {
+      updateFields.image = imagePath;
+    }
+
+    // Update the user in the database
     const updateData = await adminSchema.findByIdAndUpdate(
       req.params.id,
-      {
-        $set: req.body,
-      },
+      { $set: updateFields },
       { new: true },
     );
 
-    console.log(updateData);
     res.status(200).json(updateData);
   } catch (err) {
     console.log(err);
-  }
-};
-
-const deleteAdminInfoByParams = async (req, res) => {
-  console.log('delete user id', req.params.id);
-  try {
-    await adminSchema.findByIdAndDelete(req.params.id);
-    res.status(200).json({ type: 'success' });
-  } catch (err) {
-    console.log(err);
+    res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 
 /*const insertAllData = async (req, res) => {
-  console.log("************", req.body);
-
   try {
     // Hash the passwords for each user
     const usersWithHashedPasswords = await Promise.all(
@@ -53,8 +89,6 @@ const deleteAdminInfoByParams = async (req, res) => {
         return { ...user, password: hashedPassword };
       }),
     );
-
-    console.log("usersWithHashedPasswords", usersWithHashedPasswords);
 
     // Insert users into the database
     const result = await userInfo.insertMany(usersWithHashedPasswords);
@@ -88,9 +122,8 @@ const filterData = async (req, res) => {
 };*/
 
 module.exports = {
-  getAdminInfoByParams,
-  putAdminInfoByParams,
-  deleteAdminInfoByParams,
+  getUser,
+  putUser: [upload.single('image'), putUser],
   /*insertAllData,
     deleteAllData,
     filterData,*/

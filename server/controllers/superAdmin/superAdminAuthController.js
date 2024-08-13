@@ -4,13 +4,9 @@ const jwt = require('jsonwebtoken');
 
 const signup = async (req, res) => {
   try {
-    console.log(req.body, 'super admin third check');
-
     const { firstName, lastName, age, email, phone, password } = req.body;
 
     if (!firstName || !lastName || !age || !email || !phone || !password) {
-      console.log('All fields are required.(admin)');
-
       return res.status(400).json({ error: 'All fields are required.(admin)' });
     }
 
@@ -25,7 +21,6 @@ const signup = async (req, res) => {
       { lean: true },
     );
     if (existingUserEmail || existingUserPhone) {
-      console.log('User already exists.');
       return res.status(400).json({ error: 'User already exists.' });
     }
 
@@ -37,7 +32,6 @@ const signup = async (req, res) => {
       age: req.body.age,
       password: await argon.hash(req.body.password),
     });
-    console.log(newUser);
     await newUser.save();
     res.status(200).json('success');
   } catch (err) {
@@ -47,11 +41,9 @@ const signup = async (req, res) => {
 };
 const login = async (req, res) => {
   try {
-    console.log('***************************', req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
-      console.log('Email and Password is required.');
       res.status(400).json({ error: 'Email and Password is required.' });
     }
 
@@ -60,7 +52,6 @@ const login = async (req, res) => {
       {},
       { lean: true },
     );
-    console.log(dbExistingUser);
     if (!dbExistingUser) {
       return res.status(401).json({ error: 'Email or Password is incorrect.' });
     }
@@ -69,7 +60,6 @@ const login = async (req, res) => {
 
     !isPasswordValid && res.status(401).json('not matched');
     if (dbExistingUser && isPasswordValid) {
-      console.log('Login Successful.');
       const sessionToken = jwt.sign(
         {
           id: dbExistingUser._id,

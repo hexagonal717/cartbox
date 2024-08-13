@@ -120,20 +120,44 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
             - react.svg
         - components/
             - common/
-                - CartEmpty.jsx
-                - CartItemCard.jsx
-                - CategoryBar.jsx
-                - Footer.jsx
-                - Layout.jsx
-                - NavBar.jsx
-                - ProductCard.jsx
-                - ProfileButton.jsx
-                - SidePanel.jsx
+                - admin/
+                    - AdminNavBar.jsx
+                    - AdminProfileButton.jsx
+                    - DashboardSidePanel.jsx
+                    - SettingsSidePanel.jsx
+                - customer/
+                    - AddAddressModal.jsx
+                    - Carousel.jsx
+                    - CartEmpty.jsx
+                    - CartItemCard.jsx
+                    - CategoryBar.jsx
+                    - EditAddressModal.jsx
+                    - Footer.jsx
+                    - LoadingPage.jsx
+                    - MarginTop.jsx
+                    - NavBar.jsx
+                    - OrderEmpty.jsx
+                    - ProductCard.jsx
+                    - ProfileButton.jsx
+                    - SettingsSidePanel.jsx
+                - guest/
+                    - GuestNavBar.jsx
+                - superAdmin/
+            - layouts/
+                - AdminLayout.jsx
+                - CustomerLayout.jsx
+                - GuestLayout.jsx
         - features/
             - admin/
                 - pages/
+                    - AdminAccountSettings.jsx
                     - AdminHomePage.jsx
                     - AdminLogInPage.jsx
+                    - AdminProfilePage.jsx
+                    - AdminSettingsPage.jsx
+                    - AdminSignUpPage.jsx
+                    - OverviewPage.jsx
+                    - ProductManagementPage.jsx
                 - redux/
                     - adminAuthSlice.js
                     - adminOtpSlice.js
@@ -141,15 +165,22 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
             - customer/
                 - pages/
                     - AccountSettings.jsx
+                    - AddressPage.jsx
                     - CartPage.jsx
+                    - CategoryPage.jsx
                     - ChangePasswordPage.jsx
                     - DemoPage.jsx
                     - ForgotPasswordPage.jsx
                     - HomePage.jsx
                     - LogInPage.jsx
                     - LogInRedirectPage.jsx
+                    - OrderDetailPage.jsx
+                    - OrdersPage.jsx
+                    - OrderSuccessPage.jsx
+                    - PaymentPage.jsx
                     - ProductDetailPage.jsx
                     - ProfilePage.jsx
+                    - SearchResultPage.jsx
                     - SettingsPage.jsx
                     - SignUpPage.jsx
                     - SkeletonProductCard.jsx
@@ -171,6 +202,12 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
         - main.jsx
         - redux/
             - store.js
+        - routes/
+            - GuestRoutes.jsx
+            - ProtectedAdminRoutes.jsx
+            - ProtectedCustomerRoutes.jsx
+            - ProtectedRedirectedRoutes.jsx
+            - ProtectedRoutes.jsx
 
 
 ### Backend
@@ -184,6 +221,7 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
         - customer/
             - customerAuthController.js
             - customerCartController.js
+            - customerOrderController.js
             - customerProductController.js
             - customerProfileController.js
         - superAdmin/
@@ -203,6 +241,7 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
         - customerSchema.js
         - orderSchema.js
         - otpSchema.js
+        - paymentSchema.js
         - productSchema.js
         - superAdminSchema.js
     - router/
@@ -214,6 +253,7 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
             - customer/
                 - customerAuthRouter.js
                 - customerCartRouter.js
+                - customerOrderRouter.js
                 - customerProductRouter.js
                 - customerProfileRouter.js
             - superAdmin/

@@ -1,4 +1,7 @@
 const customerSchema = require('../../model/customerSchema');
+const cartSchema = require('../../model/cartSchema');
+const orderSchema = require('../../model/orderSchema');
+const paymentSchema = require('../../model/paymentSchema');
 const argon = require('argon2');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
@@ -18,18 +21,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const getUser = async (req, res) => {
-  console.log('3rd check', req.body);
   try {
     const data = await customerSchema.find(
       { _id: req.params.id },
       {},
       { lean: true },
     );
-    console.log(data, '999999999');
     const { password, ...other } = data[0];
 
     res.status(200).json(other);
-    console.log(data, 'User Data');
   } catch (err) {
     res.status(500).json({ error: 'Server error. Please try again later.' });
   }
@@ -39,12 +39,29 @@ const putUser = async (req, res) => {
   try {
     let imagePath = null;
 
+    // Fetch the user from the database to get the type and ObjectId
+    const existingUser = await customerSchema.findById(req.params.id);
+
+    if (!existingUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
     if (req.file) {
-      const uploadedImage = await cloudinary.uploader.upload(req.file.path);
-      console.log(uploadedImage, 'UPLOADED IMAGE');
+      // Construct the folder path based on user type and ObjectId
+      const uploadPath = `cartbox/${existingUser.role}/${existingUser._id}/profile`;
+
+      // Upload the image to Cloudinary
+      const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+        folder: uploadPath, // Specify folder path
+        public_id: req.file.originalname.split('.')[0], // Filename without extension
+        overwrite: true,
+      });
+
+      // Set the imagePath to the Cloudinary secure URL
       imagePath = uploadedImage.secure_url;
     }
 
+    // Prepare the fields to be updated
     const updateFields = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -57,13 +74,13 @@ const putUser = async (req, res) => {
       updateFields.image = imagePath;
     }
 
+    // Update the user in the database
     const updateData = await customerSchema.findByIdAndUpdate(
       req.params.id,
       { $set: updateFields },
       { new: true },
     );
 
-    console.log(updateData);
     res.status(200).json(updateData);
   } catch (err) {
     console.log(err);
@@ -72,18 +89,18 @@ const putUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  console.log('delete user id', req.params.id);
   try {
     await customerSchema.findByIdAndDelete(req.params.id);
-    res.status(200).json({ type: 'success' });
+    await cartSchema.findOneAndDelete({ customerId: req.params.id });
+    await orderSchema.findOneAndDelete({ customerId: req.params.id });
+    await paymentSchema.findOneAndDelete({ customerId: req.params.id });
+    res.status(200).json({ status: 'success' });
   } catch (err) {
     console.log(err);
   }
 };
 
 const insertAllData = async (req, res) => {
-  console.log('************', req.body);
-
   try {
     // Hash the passwords for each user
     const usersWithHashedPasswords = await Promise.all(
@@ -93,16 +110,14 @@ const insertAllData = async (req, res) => {
       }),
     );
 
-    console.log('usersWithHashedPasswords', usersWithHashedPasswords);
-
     // Insert users into the database
     const result = await customerSchema.insertMany(usersWithHashedPasswords);
 
-    res.status(200).json({ type: 'success', payload: result });
+    res.status(200).json({ status: 'success', payload: result });
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      type: 'error',
+      status: 'error',
       message: 'Failed to insert data',
       error: err.message,
     });
@@ -142,6 +157,121 @@ const findUserByAge = async (req, res) => {
   } catch (err) {}
 };
 
+const getAddress = async (req, res) => {
+  const { id: customerId } = req.params;
+  console.log(customerId);
+
+  try {
+    const customer = await customerSchema.findById(customerId);
+    if (!customer) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    console.log(customer);
+
+    res.status(200).json({ payload: customer.address });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving addresses', error });
+  }
+};
+
+const addAddress = async (req, res) => {
+  const newAddress = req.body;
+
+  try {
+    const customer = await customerSchema.findById(req.params.id);
+    if (!customer) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    if (newAddress.isDefault) {
+      // If the new address is default, set all other addresses to non-default
+      customer.address.forEach((address) => (address.isDefault = false));
+    }
+
+    customer.address.push(newAddress);
+
+    const addressInfo = customer.address;
+
+    await customer.save();
+    res.status(200).json({
+      status: 'success',
+      message: 'Address added successfully',
+      payload: addressInfo,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding address', error });
+  }
+};
+
+const putAddress = async (req, res) => {
+  const { id: customerId, addressId } = req.params;
+  const updatedAddress  = req.body;
+
+  try {
+    const customer = await customerSchema.findById(customerId);
+    if (!customer) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    const address = customer.address.id(addressId);
+    if (!address) {
+      return res
+        .status(404)
+        .json({ status: 'success', message: 'Address not found' });
+    }
+
+    if (updatedAddress.isDefault) {
+      // If the updated address is default, set all other addresses to non-default
+      customer.address.forEach((addr) => (addr.isDefault = false));
+    }
+
+    Object.assign(address, updatedAddress);
+    await customer.save();
+    res.status(200).json({ status: 'success',message: 'Address updated successfully'});
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating address', error });
+  }
+};
+
+const deleteAddress = async (req, res) => {
+  const { id: customerId, addressId } = req.params;
+
+  console.log('Customer ID:', customerId);
+  console.log('Address ID:', addressId);
+
+  try {
+    const customer = await customerSchema.findById(customerId);
+    if (!customer) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    const addressIndex = customer.address.findIndex(addr => addr._id.toString() === addressId);
+
+    if (addressIndex === -1) {
+      return res.status(404).json({ message: 'Address not found' });
+    }
+
+    const wasDefault = customer.address[addressIndex].isDefault;
+
+    customer.address.splice(addressIndex, 1); // Remove the address from the array
+
+    // If the deleted address was the default and there are other addresses left, set a new default
+    if (wasDefault && customer.address.length > 0) {
+      customer.address[0].isDefault = true; // Set the first address as the new default
+    }
+
+    await customer.save();  // Save the document after removing the address
+
+    res.status(200).json({ status: 'success', message: 'Address removed successfully' });
+  } catch (error) {
+    console.error('Error removing address:', error);  // Log the full error
+    res.status(500).json({ message: 'Error removing address', error });
+  }
+};
+
+
+
 module.exports = {
   getUser,
   putUser: [upload.single('image'), putUser],
@@ -151,4 +281,8 @@ module.exports = {
   filterData,
   findAllUsers,
   findUserByAge,
+  addAddress,
+  putAddress,
+  deleteAddress,
+  getAddress,
 };

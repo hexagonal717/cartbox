@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { signUp } from '../../../api/customer/customerApi.js';
+import { login } from '../../../api/customer/customerApi.js';
+import { useDispatch } from 'react-redux';
 
 const SignUpPage = () => {
+  const dispatch = useDispatch();
   const [previewImage, setPreviewImage] = useState(null);
   const [customerInfo, setCustomerInfo] = useState({
     firstName: '',
@@ -12,6 +15,7 @@ const SignUpPage = () => {
     age: Number,
     password: '',
     image: '',
+    address: [],
   });
 
   function handleUserInfo(event) {
@@ -28,9 +32,16 @@ const SignUpPage = () => {
 
   function handleSignUp(event) {
     event.preventDefault();
-    console.log(customerInfo);
-    signUp(customerInfo).then((data) => {
-      console.log('User created successfully.', data.success);
+    signUp(customerInfo).then((signup) => {
+      if (signup.status === 'success') {
+        return setTimeout(() => {
+          login(customerInfo, dispatch).then((login) => {
+            if (login.status === 'success') {
+              return login.status;
+            }
+          });
+        }, 2000);
+      }
     });
   }
 

@@ -15,8 +15,6 @@ const VerifyCodePage = () => {
     event.preventDefault();
     const response = await verifyOtp(credentials);
 
-    console.log(response);
-
     if (response?.success) {
       setOtpVerify(true);
       navigate('/changepassword');
@@ -29,7 +27,6 @@ const VerifyCodePage = () => {
       ...credentials,
       [name]: value,
     });
-    console.log(credentials);
   }
 
   return (

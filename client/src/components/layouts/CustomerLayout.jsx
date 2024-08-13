@@ -1,16 +1,28 @@
-import { block } from 'million/react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import NavBar from './NavBar.jsx';
+import NavBar from '../common/customer/NavBar.jsx';
 import { getCart, getUser } from '../../api/customer/customerApi.js';
 
-const Layout = block(() => {
+const CustomerLayout = () => {
   const location = useLocation();
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
 
-  const ignoreLocations = ['/login', '/signup', '/forgotpassword', '/demo'];
+  const ignoreLocations = [
+    '/login',
+    '/signup',
+    '/forgotpassword',
+    '/demo',
+    '/admin-login',
+    '/admin-signup',
+    '/settings',
+    '/settings/profile',
+    '/settings/account',
+    '/settings/address',
+    '/settings/address/add-address',
+    '/settings/address/edit-address',
+  ];
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   const [user, setUser] = useState(null);
@@ -25,7 +37,8 @@ const Layout = block(() => {
       },
       {
         queryKey: ['navBarCart', token?.customerId],
-        queryFn: () => getCart(token.customerId).then((data) => data.payload.cart),
+        queryFn: () =>
+          getCart(token.customerId).then((data) => data.payload.cartItems),
         enabled: !!token,
       },
     ],
@@ -59,13 +72,13 @@ const Layout = block(() => {
   }
 
   return (
-    <div className="font-inter">
+    <div className="flex flex-col font-inter">
       {!shouldIgnore && <NavBar user={user} cart={cart} />}
       <div>
-        <Outlet />
+        <Outlet data={cart} />
       </div>
     </div>
   );
-});
+};
 
-export default Layout;
+export default CustomerLayout;

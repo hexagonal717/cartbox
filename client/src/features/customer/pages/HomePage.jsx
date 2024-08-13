@@ -1,9 +1,9 @@
 import { useQueries } from '@tanstack/react-query';
 import { getCart, getProductList } from '../../../api/customer/customerApi.js';
-import CategoryBar from '../../../components/common/CategoryBar.jsx';
-import ProductCard from '../../../components/common/ProductCard.jsx';
+import CategoryBar from '../../../components/common/customer/CategoryBar.jsx';
+import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 import { useSelector } from 'react-redux';
-import Carousel from '../../../components/common/Carousel.jsx';
+import Carousel from '../../../components/common/customer/Carousel.jsx';
 
 const HomePage = () => {
   const customerId = useSelector(
@@ -43,26 +43,22 @@ const HomePage = () => {
   const cartList = cartQuery.data;
 
   return (
-    <>
-      <div
-        className={
-          'box-border flex w-full flex-col items-center px-4 py-40 lg:py-36'
-        }>
-        <CategoryBar />
-        <Carousel></Carousel>
-        <div className={'grid w-full max-w-screen-xl grid-cols-1'}>
-          {productList && productList.length > 0 ? (
-            productList.flatMap((product) => {
-              return (
-                <ProductCard key={product._id} product={product} cart={cartList} />
-              );
-            })
-          ) : (
-            <h1>No products available</h1>
-          )}
-        </div>
+    <div
+      className={'box-border flex w-full flex-col items-center px-4 py-48 lg:py-40'}>
+      <CategoryBar />
+      <Carousel />
+      <div className={'grid w-full max-w-screen-xl grid-cols-1'}>
+        {productList && productList.length > 0 ? (
+          productList.flatMap((product) => {
+            return (
+              <ProductCard key={product._id} product={product} cart={cartList} />
+            );
+          })
+        ) : (
+          <h1>No products available</h1>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

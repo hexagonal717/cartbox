@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUser, putUser } from '../../../api/customer/customerApi.js';
-import SidePanel from '../../../components/common/SidePanel.jsx';
 
 const ProfilePage = () => {
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
@@ -72,7 +71,6 @@ const ProfilePage = () => {
       setIsDisabled(true);
       setPreviewImage(null);
       await refetch();
-      console.log('User Info Saved:', customerInfo);
     } catch (err) {
       console.error('Error saving user info:', err);
     }
@@ -94,12 +92,8 @@ const ProfilePage = () => {
 
   return (
     dbCustomerInfo && (
-      <div className={'flex h-screen flex-col pt-16 lg:flex-row'}>
-        <SidePanel />
-
-        <div className={'w-[14rem]'}></div>
-
-        <div className="flex flex-1 flex-col items-center justify-center gap-4 p-4 lg:pl-[10rem]">
+      <div className={'flex h-full flex-row items-center justify-center'}>
+        <div className="flex flex-col items-center justify-center gap-4 p-4">
           <form
             className="flex flex-col items-center justify-center gap-3"
             onSubmit={handleSave}

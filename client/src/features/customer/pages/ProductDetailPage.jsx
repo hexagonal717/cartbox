@@ -1,6 +1,6 @@
 import { ShareOutlined } from '@mui/icons-material';
 import { useQueries } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import {
@@ -10,10 +10,13 @@ import {
   getProduct,
 } from '../../../api/customer/customerApi.js';
 
+import { localAddCartItem } from '../redux/cartSlice.js';
+
 const ProductDetailPage = () => {
   const { productId } = useParams();
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
   const customerId = token?.customerId;
+  const dispatch = useDispatch();
 
   const [cartInProduct, setCartInProduct] = useState(false);
   const [product, setProduct] = useState(null);
@@ -27,7 +30,7 @@ const ProductDetailPage = () => {
       },
       {
         queryKey: ['productDetailCart', customerId],
-        queryFn: () => getCart(customerId).then((data) => data.payload.cart),
+        queryFn: () => getCart(customerId).then((data) => data.payload.cartItems),
         enabled: !!customerId,
       },
     ],
@@ -45,7 +48,16 @@ const ProductDetailPage = () => {
 
   const handleCartToggle = useCallback(async () => {
     try {
-      if (cartInProduct) {
+      if (!customerId) {
+        const price = product?.price;
+
+        dispatch(
+          localAddCartItem({
+            productId,
+            price,
+          }),
+        );
+      } else if (cartInProduct) {
         // If the product is already in the cart, remove it
         const response = await removeCartItem(productId, customerId);
         if (response.status === 'success') {
@@ -61,7 +73,7 @@ const ProductDetailPage = () => {
     } catch (error) {
       console.error('Failed to update cart:', error);
     }
-  }, [cartInProduct, productId, customerId]);
+  }, [customerId, cartInProduct, product?.price, dispatch, productId]);
 
   if (productQuery.isLoading || cartQuery.isLoading) {
     return (

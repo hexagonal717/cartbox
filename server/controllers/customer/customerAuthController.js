@@ -22,14 +22,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const signup = async (req, res) => {
+  console.log(req.body, 'SEOND CHECLLLLLLLLLLLLLLl');
   try {
-    console.log(req.body, 'third check');
-
-    const { firstName, lastName, age, email, phone, password } = req.body;
+    const { firstName, lastName, age, email, phone, address, password, role } =
+      req.body;
 
     if (!firstName || !lastName || !age || !email || !phone || !password) {
-      console.log('All fields are required.');
-
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
@@ -43,33 +41,43 @@ const signup = async (req, res) => {
       {},
       { lean: true },
     );
-    console.log(existingUserPhone, existingUserEmail, '***');
+
     if (existingUserEmail || existingUserPhone) {
-      console.log('User already exists.');
       return res.status(400).json({ error: 'User already exists.' });
     }
+
     let imagePath = null;
 
-    if (req.file) {
-      const uploadedImage = await cloudinary.uploader.upload(req.file.path);
-      console.log(uploadedImage, 'UPLOADED IMAGE');
-      imagePath = uploadedImage.secure_url;
-    }
-
+    // Create the new user document before uploading the image
     const newUser = new customerSchema({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      phone: req.body.phone,
-      age: req.body.age,
-      password: await argon.hash(req.body.password),
-      type: req.body.type,
+      firstName,
+      lastName,
+      email,
+      phone,
+      age,
+      password: await argon.hash(password),
+      role,
       image: imagePath,
+      address,
     });
-    console.log(newUser);
-    const savedCustomer = await newUser.save();
 
-    if (savedCustomer) {
+    if (req.file) {
+      // Save the user to get the ObjectId
+      const savedCustomer = await newUser.save();
+
+      // Upload the image to Cloudinary with folder path
+      const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+        folder: `cartbox/${role}/${savedCustomer._id}/profile`, // Specify folder path
+        public_id: req.file.originalname.split('.')[0], // Filename without extension
+        overwrite: true,
+      });
+
+      // Update the user document with the image path
+      imagePath = uploadedImage.secure_url;
+      savedCustomer.image = imagePath;
+      await savedCustomer.save();
+
+      // Create a new cart for the customer
       const newCart = new Cart({
         customerId: savedCustomer._id,
         items: [],
@@ -77,9 +85,21 @@ const signup = async (req, res) => {
         totalPrice: 0,
       });
       await newCart.save();
-    }
 
-    res.status(200).json({ message: 'success' });
+      res.status(200).json({ message: 'success' });
+    } else {
+      // If there's no image, just save the user and create the cart
+      const savedCustomerWithoutImage = await newUser.save();
+      const newCart = new Cart({
+        customerId: savedCustomerWithoutImage._id,
+        items: [],
+        totalQuantity: 0,
+        totalPrice: 0,
+      });
+      await newCart.save();
+
+      res.status(200).json({ status: 'success' });
+    }
   } catch (err) {
     console.error('Error during user signup:', err);
     res.status(500).json({ error: 'Server error. Please try again later.' });
@@ -88,11 +108,9 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log('***************************', req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
-      console.log('Email and Password is required.');
       res.status(400).json({ error: 'Email and Password is required.' });
     }
 
@@ -101,7 +119,6 @@ const login = async (req, res) => {
       {},
       { lean: true },
     );
-    console.log(dbExistingUser);
     if (!dbExistingUser) {
       return res.status(401).json({ error: 'Email or Password is incorrect.' });
     }
@@ -110,7 +127,6 @@ const login = async (req, res) => {
 
     !isPasswordValid && res.status(401).json('not matched');
     if (dbExistingUser && isPasswordValid) {
-      console.log('Login Successful.');
       const sessionToken = jwt.sign(
         {
           id: dbExistingUser._id,
@@ -119,7 +135,7 @@ const login = async (req, res) => {
       );
 
       return res.status(200).json({
-        success: true,
+        status: 'success',
         customerId: dbExistingUser._id,
         tokenId: sessionToken,
       });
@@ -174,8 +190,6 @@ const forgotPassword = async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('Email sent: ' + mailOptions.response);
-
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
@@ -205,13 +219,11 @@ const changePassword = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password.password;
 
-    console.log(password, 'password');
     console.log(email, '5555');
 
     const existingEmail = await customerSchema.findOne(email, {}, { lean: true });
 
     if (existingEmail) {
-      console.log('existing email for password change');
     }
 
     if (existingEmail) {
@@ -220,7 +232,6 @@ const changePassword = async (req, res) => {
         { $set: { password: await argon.hash(password) } },
         { new: true },
       );
-      console.log(updatePassword, 'password updated successfully');
     }
     res.status(200).json({ success: true });
   } catch (error) {
