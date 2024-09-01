@@ -7,25 +7,24 @@ const ProductCard = ({ product, cart }) => {
         pathname: `/product/${product._id}`,
         state: { cart },
       }}
-      className={'no-underline'}>
+      className="no-underline"
+    >
       <div
-        className={`m-0.5 flex w-full transform cursor-pointer overflow-hidden rounded-lg border
-          border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800`}>
-        <div className={'h-52 w-52 flex-none'}>
+        className={`m-0.5 flex w-full flex-row transform cursor-pointer overflow-hidden rounded-lg border
+          border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800 lg:flex-col`}
+      >
+        <div className="h-52 w-52 sm:w-auto flex-none">
           <img
             src={product.image}
             alt={product.name}
-            className={'h-full w-full object-cover'}
+            className="h-full w-full object-cover"
           />
         </div>
-        <div className={'flex flex-1 flex-col justify-between p-4'}>
-          <div>
-            <h2 className={'text-md text-neutral-200'}>{product.name}</h2>
-            <p className={'text-md font-bold text-springgreen-500'}>
-              ${product.price}
-            </p>
-          </div>
-          <p className={'text-base text-neutral-400'}>{product.description}</p>
+        <div className="flex flex-col justify-between px-4 py-4 lg:ml-0 lg:mt-4">
+          <h2 className="text-md text-neutral-200">{product.name}</h2>
+          <p className="text-md font-bold text-springgreen-500">
+            ${product.price}
+          </p>
         </div>
       </div>
     </NavLink>
