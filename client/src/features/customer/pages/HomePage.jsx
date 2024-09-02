@@ -50,7 +50,7 @@ const HomePage = () => {
       <CategoryBar />
       <Carousel />
       <div
-        className="grid w-full max-w-screen-xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        className="grid w-full max-w-screen-xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {productList && productList.length > 0 ? (
           productList.map((product) => (
             <ProductCard

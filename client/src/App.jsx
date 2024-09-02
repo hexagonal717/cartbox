@@ -41,6 +41,14 @@ import OrdersPage
   from './features/customer/pages/OrdersPage.jsx';
 import OrderSuccessPage
   from './features/customer/pages/OrderSuccessPage.jsx';
+import SuperAdminHomePage
+  from './features/superAdmin/pages/SuperAdminHomePage.jsx';
+import SuperAdminSettingsPage
+  from './features/superAdmin/pages/SuperAdminSettingsPage.jsx';
+import SuperAdminProfilePage
+  from './features/superAdmin/pages/SuperAdminProfilePage.jsx';
+import SuperAdminAccountSettings
+  from './features/superAdmin/pages/SuperAdminAccountSettings.jsx';
 
 function App() {
   const customerToken = useSelector(
@@ -49,11 +57,14 @@ function App() {
   const adminToken = useSelector(
     (state) => state.adminAuthSlice.accessToken?.status,
   );
+  const superAdminToken = useSelector(
+    (state) => state.superAdminAuthSlice.accessToken?.status,
+  );
 
   const pageRouter = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        {!customerToken && !adminToken && (
+        {!customerToken && !adminToken && !superAdminToken && (
           <>
             <Route element={<GuestLayout />}>
               <Route path="/" element={<HomePage />} />
@@ -112,7 +123,7 @@ function App() {
                 <Route path="account" element={<AccountSettings />} />
               </Route>
             </Route>
-          ) : (
+          ) ? (
             <>
               {/*Protected Customer Routes*/}
               customerToken && (
@@ -134,7 +145,32 @@ function App() {
               </Route>
               )
             </>
-          )}
+          ) : (
+            <>
+              {/*Protected Super Admin Routes*/}
+              customerToken && (
+              <Route element={<SuperAdminLayout />}>
+                <Route path="/" element={<SuperAdminHomePage />}>
+                  <Route path="overview" element={<OverviewPage />} />
+                  <Route
+                    path="product-management"
+                    element={<ProductManagementPage />}
+                  />
+                </Route>
+                <Route path="/settings" element={<SuperAdminSettingsPage />}>
+                  <Route path="profile" element={<SuperAdminProfilePage />} />
+                  <Route path="account" element={<SuperAdminAccountSettings />} />
+                </Route>
+              </Route>
+              )
+            </>
+          ) :null
+
+
+
+
+
+          }
         </Route>
       </Route>,
     ),

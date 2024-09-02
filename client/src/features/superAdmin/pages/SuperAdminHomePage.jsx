@@ -1,23 +1,28 @@
-import styled from 'styled-components';
+import AdminManagementPage from './AdminManagementPage.jsx';
+import OverviewPage from './OverviewPage.jsx';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import DashboardSidePanel from '../../../components/common/admin/DashboardSidePanel.jsx';
 
 const SuperAdminHomePage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === ('/overview' && '/')) {
+      navigate('/overview');
+    } else if (location.pathname === '/product-management') {
+      navigate('/product-management');
+    }
+  }, [location.pathname, navigate]);
+
   return (
-    <>
-      <MainContainer>
-        <h1>Admin Home</h1>
-      </MainContainer>
-    </>
+    <div className="grid h-screen w-screen grid-cols-[auto,1fr] items-center justify-center pt-16">
+      <DashboardSidePanel />
+      {location.pathname === '/overview' && <OverviewPage />}
+      {location.pathname === '/product-management' && <AdminManagementPage />}
+    </div>
   );
 };
-
-const MainContainer = styled.div`
-  display: flex;
-  font-size: 4rem;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  height: 100vh;
-  position: relative;
-`;
 
 export default SuperAdminHomePage;

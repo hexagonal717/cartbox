@@ -11,7 +11,7 @@ const ProductCard = ({ product, cart }) => {
     >
       <div
         className={`m-0.5 flex w-full flex-row transform cursor-pointer overflow-hidden rounded-lg border
-          border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800 lg:flex-col`}
+          border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800 md:flex-col`}
       >
         <div className="h-52 w-52 sm:w-auto flex-none">
           <img
