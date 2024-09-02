@@ -37,8 +37,8 @@ app.use('/api/admin/product', adminProductRouter);
 
 // SuperAdmin routes
 
-app.use('/api/superAdmin/auth', superAdminAuthRouter);
-app.use('/api/superAdmin/profile', superAdminProfileRouter);
+app.use('/api/super-admin/auth', superAdminAuthRouter);
+app.use('/api/super-admin/profile', superAdminProfileRouter);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

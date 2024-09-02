@@ -7,6 +7,7 @@ const ProtectedRedirectedRoutes = () => {
       <Route path="/signup" element={<Navigate to={'/'} />} />
       <Route path="/admin-login" element={<Navigate to={'/'} />} />
       <Route path="/admin-signup" element={<Navigate to={'/'} />} />
+      <Route path="/super-admin-login" element={<Navigate to={'/'} />} />
       <Route path="/forgotpassword" element={<Navigate to={'/'} />} />
       <Route path="/verifycode" element={<Navigate to={'/'} />} />
       <Route path="/changepassword" element={<Navigate to={'/'} />} />

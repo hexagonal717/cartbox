@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { getUser, putUser } from '../../../api/admin/adminApi.js';
 
 const SuperAdminProfilePage = () => {
-  const token = useSelector((state) => state.adminAuthSlice.accessToken);
+  const token = useSelector((state) => state.superAdminAuthSlice.accessToken.payload);
 
   const [previewImage, setPreviewImage] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -25,13 +25,13 @@ const SuperAdminProfilePage = () => {
     refetch,
     data: dbAdminInfo,
   } = useQuery({
-    queryKey: ['dbAdminInfo', token.adminId],
+    queryKey: ['dbSuperAdminInfo', token.superAdminId],
     queryFn: () =>
-      getUser(token.adminId).then((data) => {
+      getUser(token.superAdminId).then((data) => {
         setAdminInfo(data);
         return data;
       }),
-    enabled: !!token.adminId,
+    enabled: !!token.superAdminId,
   });
 
   if (status === 'loading') return <h1>Loading...</h1>;
@@ -67,7 +67,7 @@ const SuperAdminProfilePage = () => {
   const handleSave = async (event) => {
     event.preventDefault();
     try {
-      await putUser(token.adminId, adminInfo);
+      await putUser(token.superAdminId, adminInfo);
       setIsDisabled(true);
       setPreviewImage(null);
       await refetch();

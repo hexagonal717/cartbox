@@ -8,7 +8,9 @@ import SuperAdminNavBar
 
 const SuperAdminLayout = () => {
   const location = useLocation();
-  const token = useSelector((state) => state.superAdminAuthSlice.accessToken);
+  const token = useSelector((state) => state.superAdminAuthSlice.accessToken.payload);
+
+  console.log(token?.superAdminId,'OTKEMNN');
 
   const ignoreLocations = [
     '/login',
@@ -53,6 +55,8 @@ const SuperAdminLayout = () => {
   if (userQuery.error) {
     return <div>Error loading data: {userQuery.error?.message}</div>;
   }
+
+  console.log(user,'USERRRRRRR');
 
   return (
     <div className="flex font-inter">

@@ -9,7 +9,11 @@ const ProtectedRoutes = () => {
     (state) => state.adminAuthSlice.accessToken?.status,
   );
 
-  return (customerToken || adminToken) === 'success' ? (
+  const superAdminToken = useSelector(
+    (state) => state.superAdminAuthSlice.accessToken?.status,
+  );
+
+  return (customerToken || adminToken || superAdminToken) === 'success' ? (
     <Outlet />
   ) : (
     <Navigate to={'/'} />

@@ -5,7 +5,7 @@ import { publicRequest, userRequest } from './superAdminAxios.js';
 export const signUp = async (superAdminInfo) => {
   try {
     const res = await publicRequest.post(
-      '/api/superAdmin/auth/signup',
+      '/api/super-admin/auth/signup',
       superAdminInfo,
       {
         headers: {
@@ -24,11 +24,13 @@ export const signUp = async (superAdminInfo) => {
 export const login = async (superAdminInfo, dispatch) => {
   try {
     const res = await publicRequest.post(
-      '/api/superAdmin/auth/login',
+      '/api/super-admin/auth/login',
       superAdminInfo,
     );
+
     dispatch(setAccessToken(res.data));
-    userRequest.defaults.headers.token = res.data.tokenId;
+    userRequest.defaults.headers.token = res.data.payload.tokenId;
+    return res.data;
   } catch (error) {
     console.error('Login error:', error.response);
     throw error;
@@ -73,7 +75,7 @@ export const changePassword = async (email, password) => {
 // Get user info by ID
 export const getUser = async (superAdminId) => {
   try {
-    const res = await userRequest.get(`/api/superAdmin/profile/get-user/${superAdminId}`);
+    const res = await userRequest.get(`/api/super-admin/profile/get-user/${superAdminId}`);
     return res.data;
   } catch (error) {
     console.error('Get superAdmin info error:', error.response);
@@ -85,7 +87,7 @@ export const getUser = async (superAdminId) => {
 export const putUser = async (superAdminId, superAdminInfo) => {
   try {
     const res = await userRequest.put(
-      `/api/superAdmin/profile/put-user/${superAdminId}`,
+      `/api/super-admin/profile/put-user/${superAdminId}`,
       superAdminInfo,
       {
         headers: {
@@ -104,7 +106,7 @@ export const putUser = async (superAdminId, superAdminInfo) => {
 export const deleteUser = async (superAdminId) => {
   try {
     const res = await userRequest.delete(
-      `/api/superAdmin/profile/delete-user/${superAdminId}`,
+      `/api/super-admin/profile/delete-user/${superAdminId}`,
     );
     return res.data;
   } catch (error) {

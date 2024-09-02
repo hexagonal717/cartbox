@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Navigate,
   Route,
   RouterProvider,
 } from 'react-router-dom';
@@ -26,6 +25,8 @@ import ProtectedAdminRoutes from './routes/ProtectedAdminRoutes.jsx';
 import ProtectedCustomerRoutes from './routes/ProtectedCustomerRoutes.jsx';
 import ProtectedSuperAdminRoutes from './routes/ProtectedSuperAdminRoutes.jsx';
 import ProtectedRedirectedRoutes from './routes/ProtectedRedirectedRoutes.jsx';
+import SuperAdminLogInPage
+  from './features/superAdmin/pages/SuperAdminLogInPage.jsx';
 
 function App() {
   const customerToken = useSelector(
@@ -57,6 +58,7 @@ function App() {
               <Route path="/product-search" element={<SearchResultPage />} />
               <Route path="/admin-login" element={<AdminLogInPage />} />
               <Route path="/admin-signup" element={<AdminSignUpPage />} />
+              <Route path="/super-admin-login" element={<SuperAdminLogInPage />} />
             </Route>
           </>
         )}

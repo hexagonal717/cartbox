@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { login } from '../../../api/admin/adminApi.js';
+import { login } from '../../../api/superAdmin/superAdminApi.js';
 
 const SuperAdminLogInPage = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const SuperAdminLogInPage = () => {
   });
 
   const handleSubmit = async (event) => {
-    console.log(event, 'EVENTTTTTTTT');
+    console.log(event, 'SuperAdmin login');
 
     event.preventDefault();
 
@@ -43,13 +43,13 @@ const SuperAdminLogInPage = () => {
         <form
           className={'flex flex-col items-center justify-center gap-3'}
           onSubmit={handleSubmit}>
-          <div className={'mb-20 text-3xl font-bold'}>Access your dashboard</div>
+          <div className={'mb-20 text-3xl font-bold'}>Manage your clients</div>
 
           <input
-            className={`rounded-lg border-none bg-neutral-800 px-3 py-3 text-xs font-medium text-gray-300
+            className={`rounded-lg border-none bg-neutral-800 px-3 py-3 text-xs font-medium text-neutral-300
               shadow-sm outline outline-1 outline-neutral-700 transition-all duration-200
-              ease-in-out hover:shadow hover:shadow-indigo-500 hover:outline-yellow-600
-              focus:shadow focus:shadow-yellow-800 focus:outline-yellow-600`}
+              ease-in-out hover:shadow hover:shadow-orange-500 hover:outline-orange-600
+              focus:shadow focus:shadow-orange-800 focus:outline-orange-600`}
             type="email"
             name="email"
             placeholder="Email"
@@ -57,10 +57,10 @@ const SuperAdminLogInPage = () => {
           />
 
           <input
-            className={`rounded-lg border-none bg-neutral-800 px-3 py-3 text-xs font-medium text-gray-300
+            className={`rounded-lg border-none bg-neutral-800 px-3 py-3 text-xs font-medium text-neutral-300
               shadow-sm outline outline-1 outline-neutral-700 transition-all duration-200
-              ease-in-out hover:shadow hover:shadow-indigo-500 hover:outline-yellow-600
-              focus:shadow focus:shadow-yellow-800 focus:outline-yellow-600`}
+              ease-in-out hover:shadow hover:shadow-orange-500 hover:outline-orange-600
+              focus:shadow focus:shadow-orange-800 focus:outline-orange-600`}
             type="password"
             name="password"
             placeholder="Password"
@@ -81,29 +81,13 @@ const SuperAdminLogInPage = () => {
           </NavLink>
 
           <button
-            className={`m-4 cursor-pointer rounded-lg border-0 bg-yellow-600 px-16 py-2 text-sm font-bold
-              text-yellow-950 transition-all duration-300 ease-in-out hover:bg-yellow-700
+            className={`m-4 cursor-pointer rounded-lg border-0 bg-orange-600 px-16 py-2 text-sm font-bold
+              text-orange-950 transition-all duration-300 ease-in-out hover:bg-orange-700
               hover:text-white`}
             type="submit">
             Log in
           </button>
-          <div
-            style={{
-              color: '#dadada',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-            }}>
-            Want to create an account?
-          </div>
-          <Link to={'/admin-signup'}>
-            <button
-              className={`m-4 cursor-pointer rounded-lg border-0 bg-springgreen-500/10 px-20 py-2.5 text-sm
-                font-bold text-springgreen-500 outline outline-1 outline-springgreen-500/35
-                transition-all duration-300 ease-in-out hover:bg-springgreen-500/15
-                hover:text-springgreen-500`}>
-              Sign up
-            </button>
-          </Link>
+
           <Link to={'/login'}>
             <div className={'text-xs'}>
               Are you a{' '}

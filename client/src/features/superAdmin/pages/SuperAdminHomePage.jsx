@@ -2,7 +2,7 @@
 import SuperAdminOverviewPage from './SuperAdminOverviewPage.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import DashboardSidePanel from '../../../components/common/admin/DashboardSidePanel.jsx';
+import DashboardSidePanel from '../../../components/common/superAdmin/DashboardSidePanel.jsx';
 
 const SuperAdminHomePage = () => {
   const location = useLocation();

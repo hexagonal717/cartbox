@@ -1,10 +1,26 @@
-const superAdminSchema = require('../../model/superAdminSchema');
 const argon = require('argon2');
+const SuperAdmin = require('../../model/superAdminSchema');
+const multer = require('multer');
+const cloudinary  = require('cloudinary').v2;
 
-const getSuperAdminInfoByParams = async (req, res) => {
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = multer.diskStorage({
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+const getUser = async (req, res) => {
   try {
-    const data = await superAdminSchema.findById(req.params.id);
-    const { password, ...other } = data._doc;
+    const data = await SuperAdmin.find({ _id: req.params.id }, {}, { lean: true });
+    const { password, ...other } = data[0];
 
     res.status(200).json(other);
   } catch (err) {
@@ -12,31 +28,58 @@ const getSuperAdminInfoByParams = async (req, res) => {
   }
 };
 
-const putSuperAdminInfoByParams = async (req, res) => {
+const putUser = async (req, res) => {
   try {
-    const updateData = await superAdminSchema.findByIdAndUpdate(
+    let imagePath = null;
+
+    // Fetch the user from the database to get the type and ObjectId
+    const existingUser = await SuperAdmin.findById(req.params.id);
+
+    if (!existingUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (req.file) {
+      // Construct the folder path based on user type and ObjectId
+      const uploadPath = `cartbox/${existingUser.role}/${existingUser._id}/profile`;
+
+      // Upload the image to Cloudinary
+      const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+        folder: uploadPath, // Specify folder path
+        public_id: req.file.originalname.split('.')[0], // Filename without extension
+        overwrite: true,
+      });
+
+      // Set the imagePath to the Cloudinary secure URL
+      imagePath = uploadedImage.secure_url;
+    }
+
+    // Prepare the fields to be updated
+    const updateFields = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      ...req.body,
+    };
+
+    if (imagePath) {
+      updateFields.image = imagePath;
+    }
+
+    // Update the user in the database
+    const updateData = await SuperAdmin.findByIdAndUpdate(
       req.params.id,
-      {
-        $set: req.body,
-      },
+      { $set: updateFields },
       { new: true },
     );
 
     res.status(200).json(updateData);
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
-
-const deleteSuperAdminInfoByParams = async (req, res) => {
-  try {
-    await superAdminSchema.findByIdAndDelete(req.params.id);
-    res.status(200).json({ type: 'success' });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 /*const insertAllData = async (req, res) => {
   try {
     // Hash the passwords for each user
@@ -79,9 +122,8 @@ const filterData = async (req, res) => {
 };*/
 
 module.exports = {
-  getSuperAdminInfoByParams,
-  putSuperAdminInfoByParams,
-  deleteSuperAdminInfoByParams,
+  getUser,
+  putUser: [upload.single('image'), putUser],
   /*insertAllData,
     deleteAllData,
     filterData,*/

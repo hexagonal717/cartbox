@@ -42,6 +42,8 @@ const signup = async (req, res) => {
   }
 };
 const login = async (req, res) => {
+
+  console.log(req.body,'ddddd');
   try {
     const { email, password } = req.body;
 
@@ -62,7 +64,7 @@ const login = async (req, res) => {
         {
           id: dbExistingUser._id,
         },
-        process.env.JWT_ADMIN_SECRET_KEY,
+        process.env.JWT_SUPERADMIN_SECRET_KEY,
       );
 
       return res.status(200).json({
