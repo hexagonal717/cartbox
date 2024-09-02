@@ -20,7 +20,7 @@ const SuperAdminHomePage = () => {
     <div className="grid h-screen w-screen grid-cols-[auto,1fr] items-center justify-center pt-16">
       <DashboardSidePanel />
       {location.pathname === '/overview' && <SuperAdminOverviewPage />}
-      {/*{location.pathname === '/product-management' && <AdminManagementPage />}*/}
+      {/*{location.pathname === '/product-management' && <ClientManagementPage />}*/}
     </div>
   );
 };

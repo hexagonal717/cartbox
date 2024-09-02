@@ -8,8 +8,8 @@ const menuItems = [
     icon: <DashboardOutlined className="m-1 scale-75" />,
   },
   {
-    to: '/product-management',
-    label: 'Manage Products',
+    to: '/client-management',
+    label: 'Manage Admins',
     icon: <AllInboxOutlined className="m-1 scale-75" />,
   },
 ];

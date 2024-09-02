@@ -1,9 +1,8 @@
 import { useQueries } from '@tanstack/react-query';
-import { getProductList } from '../../../api/customer/customerApi.js';
 import { useEffect, useState } from 'react';
 import { addProduct, deleteProduct } from '../../../api/admin/adminApi.js';
 
-const AdminManagementPage = () => {
+const ClientManagementPage = () => {
   const [adminList, setAdminList] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -293,4 +292,4 @@ const AdminManagementPage = () => {
   );
 };
 
-export default AdminManagementPage;
+export default ClientManagementPage;

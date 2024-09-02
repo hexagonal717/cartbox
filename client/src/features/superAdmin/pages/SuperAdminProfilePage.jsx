@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser, putUser } from '../../../api/admin/adminApi.js';
+import { getUser, putUser } from '../../../api/superAdmin/superAdminApi.js';
 
 const SuperAdminProfilePage = () => {
   const token = useSelector((state) => state.superAdminAuthSlice.accessToken.payload);
@@ -9,7 +9,7 @@ const SuperAdminProfilePage = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
   const profileImageInputRef = useRef(null);
-  const [adminInfo, setAdminInfo] = useState({
+  const [superAdminInfo, setSuperAdminInfo] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -23,12 +23,12 @@ const SuperAdminProfilePage = () => {
     status,
     error,
     refetch,
-    data: dbAdminInfo,
+    data: dbSuperAdminInfo,
   } = useQuery({
-    queryKey: ['dbSuperAdminInfo', token.superAdminId],
+    queryKey: ['dbSuperAdminInfo', token?.superAdminId],
     queryFn: () =>
       getUser(token.superAdminId).then((data) => {
-        setAdminInfo(data);
+        setSuperAdminInfo(data);
         return data;
       }),
     enabled: !!token.superAdminId,
@@ -40,7 +40,7 @@ const SuperAdminProfilePage = () => {
   const handleEdit = (event) => {
     event.preventDefault();
     if (!isDisabled) {
-      setAdminInfo(dbAdminInfo);
+      setSuperAdminInfo(dbSuperAdminInfo);
     }
     setIsDisabled((prev) => !prev);
   };
@@ -58,16 +58,16 @@ const SuperAdminProfilePage = () => {
     const { name, value, files, type } = event.target;
     if (type === 'file' && files[0]) {
       setPreviewImage(URL.createObjectURL(files[0]));
-      setAdminInfo((prev) => ({ ...prev, [name]: files[0] }));
+      setSuperAdminInfo((prev) => ({ ...prev, [name]: files[0] }));
     } else {
-      setAdminInfo((prev) => ({ ...prev, [name]: value }));
+      setSuperAdminInfo((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const handleSave = async (event) => {
     event.preventDefault();
     try {
-      await putUser(token.superAdminId, adminInfo);
+      await putUser(token.superAdminId, superAdminInfo);
       setIsDisabled(true);
       setPreviewImage(null);
       await refetch();
@@ -85,13 +85,13 @@ const SuperAdminProfilePage = () => {
         bg-neutral-800 transition-all`}
       readOnly={isDisabled}
       disabled={isDisabled}
-      value={adminInfo[name]}
+      value={superAdminInfo[name]}
       onChange={handleOnChange}
     />
   );
 
   return (
-    dbAdminInfo && (
+    dbSuperAdminInfo && (
       <div className={'flex h-full flex-row items-center justify-center'}>
         <div className="flex flex-col items-center justify-center gap-4 p-4">
           <form
@@ -102,9 +102,9 @@ const SuperAdminProfilePage = () => {
             <label
               className="flex h-40 w-40 cursor-pointer items-center justify-center rounded-full text-center
                 outline outline-2 outline-neutral-700">
-              {previewImage || dbAdminInfo.image ? (
+              {previewImage || dbSuperAdminInfo.image ? (
                 <img
-                  src={previewImage || dbAdminInfo.image}
+                  src={previewImage || dbSuperAdminInfo.image}
                   alt="Profile"
                   className="h-full w-full rounded-full object-cover"
                 />

@@ -9,8 +9,8 @@ const superAdminAuthSlice = createSlice({
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
-    clearAccessToken: (state, action) => {
-      state.accessToken = action.payload;
+    clearAccessToken: (state) => {
+      state.accessToken = null;
     },
   },
 });
