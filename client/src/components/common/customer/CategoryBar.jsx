@@ -26,7 +26,7 @@ const CategoryBar = () => {
 
   return (
     <div
-      className="fixed top-[4rem] z-30 w-full rounded-b-lg border border-neutral-400/30 bg-neutral-900
+      className="fixed top-[4rem] z-30 w-full border-neutral-400/30 bg-neutral-900
         px-2 py-5 text-center text-xs text-white">
       <ul
         className="grid list-none grid-cols-3 grid-rows-2 items-center justify-center gap-2.5
