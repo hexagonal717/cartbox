@@ -2,14 +2,13 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import AdminNavBar from '../common/admin/AdminNavBar.jsx';
-import { getUser } from '../../api/admin/adminApi.js';
+import { getUser } from '../../api/superAdmin/superAdminApi.js';
 import SuperAdminNavBar
   from '../common/superAdmin/SuperAdminNavBar.jsx';
 
 const SuperAdminLayout = () => {
   const location = useLocation();
-  const token = useSelector((state) => state.adminAuthSlice.accessToken);
+  const token = useSelector((state) => state.superAdminAuthSlice.accessToken);
 
   const ignoreLocations = [
     '/login',

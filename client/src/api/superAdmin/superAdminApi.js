@@ -71,23 +71,21 @@ export const changePassword = async (email, password) => {
 };
 
 // Get user info by ID
-export const getSuperAdminInfoByParams = async (superAdminId) => {
+export const getUser = async (superAdminId) => {
   try {
-    const res = await userRequest.get(
-      `/api/superAdmin/profile/getSuperAdminInfoByParams/${superAdminId}`,
-    );
+    const res = await userRequest.get(`/api/superAdmin/profile/get-user/${superAdminId}`);
     return res.data;
   } catch (error) {
-    console.error('Get customer info error:', error.response);
+    console.error('Get superAdmin info error:', error.response);
     throw error;
   }
 };
 
 // Update user info by ID
-export const putSuperAdminInfoByParams = async (superAdminId, superAdminInfo) => {
+export const putUser = async (superAdminId, superAdminInfo) => {
   try {
     const res = await userRequest.put(
-      `/api/superAdmin/profile/putSuperAdminInfoByParams/${superAdminId}`,
+      `/api/superAdmin/profile/put-user/${superAdminId}`,
       superAdminInfo,
       {
         headers: {
@@ -103,10 +101,10 @@ export const putSuperAdminInfoByParams = async (superAdminId, superAdminInfo) =>
 };
 
 // Delete user info by ID
-export const deleteSuperAdminInfoById = async (customerId) => {
+export const deleteUser = async (superAdminId) => {
   try {
     const res = await userRequest.delete(
-      `/api/superAdmin/deleteSuperAdminInfoByParams/${customerId}`,
+      `/api/superAdmin/profile/delete-user/${superAdminId}`,
     );
     return res.data;
   } catch (error) {

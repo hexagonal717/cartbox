@@ -1,4 +1,4 @@
-const OverviewPage = () => {
+const SuperAdminOverviewPage = () => {
   return (
     <div className={'flex h-full flex-row items-center justify-center'}>
       <div>OverviewPage</div>
@@ -6,4 +6,4 @@ const OverviewPage = () => {
   );
 };
 
-export default OverviewPage;
+export default SuperAdminOverviewPage;
