@@ -46,11 +46,11 @@ const HomePage = () => {
 
   return (
     <div
-      className="box-border flex w-full flex-col items-center px-4 py-48 lg:py-40">
+      className="box-border flex w-full flex-col items-center py-[11.1rem] lg:py-40">
       <CategoryBar />
       <Carousel />
       <div
-        className="grid w-full max-w-screen-xl grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        className="grid w-full max-w-screen-xl grid-cols-1 gap-1 p-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {productList && productList.length > 0 ? (
           productList.map((product) => (
             <ProductCard
