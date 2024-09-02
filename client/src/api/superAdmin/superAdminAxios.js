@@ -10,9 +10,9 @@ let token = null;
 
 if (localStorage.getItem('persist:hexagonal717-cartbox')) {
   const data = JSON.parse(localStorage.getItem('persist:hexagonal717-cartbox'));
-  const customerAuthSlice = JSON.parse(data.customerAuthSlice);
-  if (customerAuthSlice && customerAuthSlice.accessToken) {
-    token = customerAuthSlice.accessToken.tokenId;
+  const superAdminAuthSlice = JSON.parse(data.superAdminAuthSlice);
+  if (superAdminAuthSlice && superAdminAuthSlice.accessToken) {
+    token = superAdminAuthSlice.accessToken.payload.tokenId;
   }
 }
 

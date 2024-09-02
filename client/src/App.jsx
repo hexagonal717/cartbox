@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Navigate,
   Route,
   RouterProvider,
 } from 'react-router-dom';
@@ -22,25 +21,12 @@ import AdminLogInPage from './features/admin/pages/AdminLogInPage.jsx';
 import AdminSignUpPage from './features/admin/pages/AdminSignUpPage.jsx';
 import ProtectedRoutes from './routes/ProtectedRoutes.jsx';
 import GuestLayout from './components/layouts/GuestLayout.jsx';
-import AdminLayout from './components/layouts/AdminLayout.jsx';
-import AdminHomePage from './features/admin/pages/AdminHomePage.jsx';
-import OverviewPage from './features/admin/pages/OverviewPage.jsx';
-import ProductManagementPage from './features/admin/pages/ProductManagementPage.jsx';
-import AdminSettingsPage from './features/admin/pages/AdminSettingsPage.jsx';
-import AdminProfilePage from './features/admin/pages/AdminProfilePage.jsx';
-import AccountSettings from './features/customer/pages/AccountSettings.jsx';
-import CustomerLayout from './components/layouts/CustomerLayout.jsx';
-import SettingsPage from './features/customer/pages/SettingsPage.jsx';
-import ProfilePage from './features/customer/pages/ProfilePage.jsx';
-import PaymentPage from './features/customer/pages/PaymentPage.jsx';
-import AddressPage
-  from './features/customer/pages/AddressPage.jsx';
-import OrderDetailPage
-  from './features/customer/pages/OrderDetailPage.jsx';
-import OrdersPage
-  from './features/customer/pages/OrdersPage.jsx';
-import OrderSuccessPage
-  from './features/customer/pages/OrderSuccessPage.jsx';
+import ProtectedAdminRoutes from './routes/ProtectedAdminRoutes.jsx';
+import ProtectedCustomerRoutes from './routes/ProtectedCustomerRoutes.jsx';
+import ProtectedSuperAdminRoutes from './routes/ProtectedSuperAdminRoutes.jsx';
+import ProtectedRedirectedRoutes from './routes/ProtectedRedirectedRoutes.jsx';
+import SuperAdminLogInPage
+  from './features/superAdmin/pages/SuperAdminLogInPage.jsx';
 
 function App() {
   const customerToken = useSelector(
@@ -49,11 +35,14 @@ function App() {
   const adminToken = useSelector(
     (state) => state.adminAuthSlice.accessToken?.status,
   );
+  const superAdminToken = useSelector(
+    (state) => state.superAdminAuthSlice.accessToken?.status,
+  );
 
   const pageRouter = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        {!customerToken && !adminToken && (
+        {!customerToken && !adminToken && !superAdminToken && (
           <>
             <Route element={<GuestLayout />}>
               <Route path="/" element={<HomePage />} />
@@ -69,6 +58,7 @@ function App() {
               <Route path="/product-search" element={<SearchResultPage />} />
               <Route path="/admin-login" element={<AdminLogInPage />} />
               <Route path="/admin-signup" element={<AdminSignUpPage />} />
+              <Route path="/super-admin-login" element={<SuperAdminLogInPage />} />
             </Route>
           </>
         )}
@@ -76,65 +66,16 @@ function App() {
         {/*Protected Routes*/}
         <Route element={<ProtectedRoutes />}>
           {/*Protected Redirected Routes*/}
-          <>
-            <Route path="/login" element={<Navigate to={'/'} />} />
-            <Route path="/signup" element={<Navigate to={'/'} />} />
-            <Route path="/admin-login" element={<Navigate to={'/'} />} />
-            <Route path="/admin-signup" element={<Navigate to={'/'} />} />
-            <Route path="/forgotpassword" element={<Navigate to={'/'} />} />
-            <Route path="/verifycode" element={<Navigate to={'/'} />} />
-            <Route path="/changepassword" element={<Navigate to={'/'} />} />
-            <Route path="/loginredirectPage" element={<Navigate to={'/'} />} />
-            <Route path="/payment" element={<Navigate to={'/'} />} />
-            <Route path="/orders" element={<Navigate to={'/'} />} />
-            {/*<Route path="/order-success" element={<Navigate to={'/'} />} />*/}
-            <Route path="/settings" element={<Navigate to={'/'} />}>
-              <Route path="settings/profile" element={<Navigate to={'/'} />} />
-              <Route path="settings/account" element={<Navigate to={'/'} />} />
-              <Route path="settings/address" element={<Navigate to={'/'} />} />
-              <Route path="settings/address/add-address" element={<Navigate to={'/'} />} />
-              <Route path="settings/address/edit-address" element={<Navigate to={'/'} />} />
-            </Route>
-          </>
+          {ProtectedRedirectedRoutes()}
 
           {/*Protected Admin Routes*/}
-          {adminToken ? (
-            <Route element={<AdminLayout />}>
-              <Route path="/" element={<AdminHomePage />}>
-                <Route path="overview" element={<OverviewPage />} />
-                <Route
-                  path="product-management"
-                  element={<ProductManagementPage />}
-                />
-              </Route>
-              <Route path="/settings" element={<AdminSettingsPage />}>
-                <Route path="profile" element={<AdminProfilePage />} />
-                <Route path="account" element={<AccountSettings />} />
-              </Route>
-            </Route>
-          ) : (
-            <>
-              {/*Protected Customer Routes*/}
-              customerToken && (
-              <Route element={<CustomerLayout />}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/product/:productId" element={<ProductDetailPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/product-category" element={<CategoryPage />} />
-                <Route path="/product-search" element={<SearchResultPage />} />
-                <Route path="/payment/:id" element={<PaymentPage />} />
-                <Route path="/orders/" element={<OrdersPage />} />
-                <Route path="/order/:orderId" element={<OrderDetailPage />} />
-                <Route path="/order-success" element={<OrderSuccessPage />} />
-                <Route path="/settings" element={<SettingsPage />}>
-                  <Route path="profile" element={<ProfilePage />} />
-                  <Route path="account" element={<AccountSettings />} />
-                  <Route path="address" element={<AddressPage />} />
-                </Route>
-              </Route>
-              )
-            </>
-          )}
+          {adminToken && ProtectedAdminRoutes()}
+
+          {/*Protected Customer Routes*/}
+          {customerToken && ProtectedCustomerRoutes()}
+
+          {/*Protected Super Admin Routes*/}
+          {superAdminToken && ProtectedSuperAdminRoutes()}
         </Route>
       </Route>,
     ),
