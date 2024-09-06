@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser, putUser } from '../../../api/admin/adminApi.js';
+import { getUser, putUser } from '../../../api/v1/admin/adminApi.js';
 
 const AdminProfilePage = () => {
   const token = useSelector((state) => state.adminAuthSlice.accessToken);

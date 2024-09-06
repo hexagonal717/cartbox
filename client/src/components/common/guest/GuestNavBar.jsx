@@ -1,7 +1,7 @@
 import { ShoppingBagOutlined } from '@mui/icons-material';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getProductList } from '../../../api/customer/customerApi.js';
+import { getProductList } from '../../../api/v1/customer/customerApi.js';
 
 import SearchBar from '../customer/SearchBar.jsx';
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { login } from '../../../api/superAdmin/superAdminApi.js';
+import { login } from '../../../api/v1/superAdmin/superAdminApi.js';
 
 const SuperAdminLogInPage = () => {
   const dispatch = useDispatch();

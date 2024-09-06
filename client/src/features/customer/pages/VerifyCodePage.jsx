@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { verifyOtp } from '../../../api/customer/customerApi.js';
+import { verifyOtp } from '../../../api/v1/customer/customerApi.js';
 import { setOtpVerify } from '../redux/customerOtpSlice.js';
 
 const VerifyCodePage = () => {

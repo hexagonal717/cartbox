@@ -1,6 +1,6 @@
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { addProduct, deleteProduct } from '../../../api/admin/adminApi.js';
+import { addProduct, deleteProduct } from '../../../api/v1/admin/adminApi.js';
 
 const ClientManagementPage = () => {
   const [adminList, setAdminList] = useState([]);

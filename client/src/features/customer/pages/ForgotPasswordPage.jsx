@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { forgotPassword } from '../../../api/customer/customerApi.js';
+import { forgotPassword } from '../../../api/v1/customer/customerApi.js';
 import { setEmailState } from '../redux/customerOtpSlice.js';
 
 const ForgotPasswordPage = () => {

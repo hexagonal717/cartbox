@@ -1,7 +1,7 @@
 import { useQueries } from '@tanstack/react-query';
-import { getProductList } from '../../../api/customer/customerApi.js';
+import { getProductList } from '../../../api/v1/customer/customerApi.js';
 import { useEffect, useState } from 'react';
-import { addProduct, deleteProduct } from '../../../api/admin/adminApi.js';
+import { addProduct, deleteProduct } from '../../../api/v1/admin/adminApi.js';
 
 const ProductManagementPage = () => {
   const [productList, setProductList] = useState([]);

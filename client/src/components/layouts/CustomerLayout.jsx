@@ -3,7 +3,7 @@ import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import NavBar from '../common/customer/NavBar.jsx';
-import { getCart, getUser } from '../../api/customer/customerApi.js';
+import { getCart, getUser } from '../../api/v1/customer/customerApi.js';
 
 const CustomerLayout = () => {
   const location = useLocation();

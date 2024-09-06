@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://cartbox.netlify.app';
+const baseUrl = import.meta.env.VITE_CARTBOX_RENDER_API_BASE_URL;
 
 export const publicRequest = axios.create({
   baseURL: baseUrl,
@@ -10,9 +10,9 @@ let token = null;
 
 if (localStorage.getItem('persist:hexagonal717-cartbox')) {
   const data = JSON.parse(localStorage.getItem('persist:hexagonal717-cartbox'));
-  const customerAuthSlice = JSON.parse(data.customerAuthSlice);
-  if (customerAuthSlice && customerAuthSlice.accessToken) {
-    token = customerAuthSlice.accessToken.tokenId;
+  const adminAuthSlice = JSON.parse(data.adminAuthSlice);
+  if (adminAuthSlice && adminAuthSlice.accessToken) {
+    token = adminAuthSlice.accessToken.tokenId;
   }
 }
 

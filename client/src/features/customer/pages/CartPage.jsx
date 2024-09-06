@@ -6,7 +6,7 @@ import {
   getCart,
   increaseCartItemQuantity,
   removeCartItem,
-} from '../../../api/customer/customerApi.js';
+} from '../../../api/v1/customer/customerApi.js';
 import CartEmpty from '../../../components/common/customer/CartEmpty.jsx';
 import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
 import { useNavigate } from 'react-router-dom';

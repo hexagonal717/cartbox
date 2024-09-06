@@ -1,4 +1,4 @@
-import { setAccessToken } from '../../features/superAdmin/redux/superAdminAuthSlice.js';
+import { setAccessToken } from '../../../features/superAdmin/redux/superAdminAuthSlice.js';
 import { publicRequest, userRequest } from './superAdminAxios.js';
 
 // Sign up new user

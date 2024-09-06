@@ -4,7 +4,7 @@ import {
   addOrder,
   getCart,
   getProductList,
-} from '../../../api/customer/customerApi.js';
+} from '../../../api/v1/customer/customerApi.js';
 import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 
