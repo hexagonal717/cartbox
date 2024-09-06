@@ -8,7 +8,7 @@ import {
   removeCartItem,
   getCart,
   getProduct,
-} from '../../../api/customer/customerApi.js';
+} from '../../../api/v1/customer/customerApi.js';
 
 import { localAddCartItem } from '../redux/cartSlice.js';
 

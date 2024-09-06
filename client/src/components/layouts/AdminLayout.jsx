@@ -3,7 +3,7 @@ import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import AdminNavBar from '../common/admin/AdminNavBar.jsx';
-import { getUser } from '../../api/admin/adminApi.js';
+import { getUser } from '../../api/v1/admin/adminApi.js';
 
 const AdminLayout = () => {
   const location = useLocation();

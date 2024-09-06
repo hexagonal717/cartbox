@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
-import { getOrder } from '../../../api/customer/customerApi.js';
+import { getOrder } from '../../../api/v1/customer/customerApi.js';
 import { NavLink } from 'react-router-dom';
 import OrderEmpty from '../../../components/common/customer/OrderEmpty.jsx';
 

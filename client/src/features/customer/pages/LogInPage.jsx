@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { login } from '../../../api/customer/customerApi.js';
+import { login } from '../../../api/v1/customer/customerApi.js';
 
 const LogInPage = () => {
   const dispatch = useDispatch();

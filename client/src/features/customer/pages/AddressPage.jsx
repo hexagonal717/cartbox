@@ -9,7 +9,7 @@ import {
   deleteAddress,
   getAddress,
   putAddress,
-} from '../../../api/customer/customerApi.js';
+} from '../../../api/v1/customer/customerApi.js';
 
 const AddressPage = () => {
   const customerId = useSelector(

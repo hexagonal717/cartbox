@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser, putUser } from '../../../api/superAdmin/superAdminApi.js';
+import { getUser, putUser } from '../../../api/v1/superAdmin/superAdminApi.js';
 
 const SuperAdminProfilePage = () => {
   const token = useSelector(

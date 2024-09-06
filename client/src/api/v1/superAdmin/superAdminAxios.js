@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3000';
+const baseUrl = import.meta.env.VITE_CARTBOX_RENDER_API_BASE_URL;
 
 export const publicRequest = axios.create({
   baseURL: baseUrl,
@@ -10,9 +10,9 @@ let token = null;
 
 if (localStorage.getItem('persist:hexagonal717-cartbox')) {
   const data = JSON.parse(localStorage.getItem('persist:hexagonal717-cartbox'));
-  const adminAuthSlice = JSON.parse(data.adminAuthSlice);
-  if (adminAuthSlice && adminAuthSlice.accessToken) {
-    token = adminAuthSlice.accessToken.tokenId;
+  const superAdminAuthSlice = JSON.parse(data.superAdminAuthSlice);
+  if (superAdminAuthSlice && superAdminAuthSlice.accessToken) {
+    token = superAdminAuthSlice.accessToken.payload.tokenId;
   }
 }
 

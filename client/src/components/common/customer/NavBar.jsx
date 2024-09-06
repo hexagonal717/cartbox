@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { clearAccessToken } from '../../../features/customer/redux/customerAuthSlice.js';
 import ProfileButton from './ProfileButton.jsx';
 import { useEffect, useState } from 'react';
-import { getProductList } from '../../../api/customer/customerApi.js';
+import { getProductList } from '../../../api/v1/customer/customerApi.js';
 import SearchBar from './SearchBar.jsx';
 const NavBar = ({ user, cart }) => {
   const dispatch = useDispatch();

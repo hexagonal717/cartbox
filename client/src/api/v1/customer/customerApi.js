@@ -1,4 +1,4 @@
-import { setAccessToken } from '../../features/customer/redux/customerAuthSlice.js';
+import { setAccessToken } from '../../../features/customer/redux/customerAuthSlice.js';
 import { publicRequest, userRequest } from './customerAxios.js';
 
 // Sign up new user

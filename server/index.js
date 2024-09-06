@@ -15,12 +15,16 @@ const superAdminAuthRouter = require('./router/v1/superAdmin/superAdminAuthRoute
 const superAdminProfileRouter = require('./router/v1/superAdmin/superAdminProfileRouter');
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.VITE_CARTBOX_NETLIFY_API_BASE_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URL).then(() => {});
-
-// Define routes
+mongoose.connect(process.env.MONGODB_URI).then(() => {});
 
 // Customer routes
 app.use('/api/customer/auth', customerAuthRouter);

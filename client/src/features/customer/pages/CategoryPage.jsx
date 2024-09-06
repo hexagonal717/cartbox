@@ -2,7 +2,7 @@ import { useQueries } from '@tanstack/react-query';
 import {
   getCart,
   getProductListByCategory,
-} from '../../../api/customer/customerApi.js';
+} from '../../../api/v1/customer/customerApi.js';
 import { useSelector } from 'react-redux';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 import { ArrowBackIos } from '@mui/icons-material';

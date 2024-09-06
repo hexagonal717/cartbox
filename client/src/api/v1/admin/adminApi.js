@@ -1,4 +1,4 @@
-import { setAccessToken } from '../../features/admin/redux/adminAuthSlice.js';
+import { setAccessToken } from '../../../features/admin/redux/adminAuthSlice.js';
 import { publicRequest, userRequest } from './adminAxios.js';
 
 // Admin login
@@ -30,7 +30,7 @@ export const signUp = async (adminInfo) => {
   }
 };
 
-// Get user info by ID
+// Get user info
 export const getUser = async (adminId) => {
   try {
     const res = await userRequest.get(`/api/admin/profile/get-user/${adminId}`);
@@ -42,6 +42,7 @@ export const getUser = async (adminId) => {
   }
 };
 
+// Update user info
 export const putUser = async (adminId, adminInfo) => {
   try {
     const res = await userRequest.put(

@@ -2,7 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getUser } from '../../api/superAdmin/superAdminApi.js';
+import { getUser } from '../../api/v1/superAdmin/superAdminApi.js';
 import SuperAdminNavBar from '../common/superAdmin/SuperAdminNavBar.jsx';
 
 const SuperAdminLayout = () => {

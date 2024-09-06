@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useQueries } from '@tanstack/react-query';
-import { getCart, getProductList } from '../../../api/customer/customerApi.js';
+import { getCart, getProductList } from '../../../api/v1/customer/customerApi.js';
 import { ArrowBackIos } from '@mui/icons-material';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 

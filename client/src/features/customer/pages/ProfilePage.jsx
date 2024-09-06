@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser, putUser } from '../../../api/customer/customerApi.js';
+import { getUser, putUser } from '../../../api/v1/customer/customerApi.js';
 
 const ProfilePage = () => {
   const token = useSelector((state) => state.customerAuthSlice.accessToken);

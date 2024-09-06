@@ -1,5 +1,5 @@
 import { useQueries } from '@tanstack/react-query';
-import { getCart, getProductList } from '../../../api/customer/customerApi.js';
+import { getCart, getProductList } from '../../../api/v1/customer/customerApi.js';
 import CategoryBar from '../../../components/common/customer/CategoryBar.jsx';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 import { useSelector } from 'react-redux';

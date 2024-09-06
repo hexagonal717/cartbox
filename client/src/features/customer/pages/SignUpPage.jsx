@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { signUp } from '../../../api/customer/customerApi.js';
-import { login } from '../../../api/customer/customerApi.js';
+import { signUp } from '../../../api/v1/customer/customerApi.js';
+import { login } from '../../../api/v1/customer/customerApi.js';
 import { useDispatch } from 'react-redux';
 
 const SignUpPage = () => {

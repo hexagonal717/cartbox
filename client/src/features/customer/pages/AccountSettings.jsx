@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser } from '../../../api/customer/customerApi.js';
+import { deleteUser } from '../../../api/v1/customer/customerApi.js';
 import { clearAccessToken } from '../redux/customerAuthSlice.js';
 
 const AccountSettings = () => {
