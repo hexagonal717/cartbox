@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'https://cartbox.netlify.app';
 
 export const publicRequest = axios.create({
   baseURL: baseUrl,
