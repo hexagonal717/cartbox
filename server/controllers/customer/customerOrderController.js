@@ -41,8 +41,8 @@ const getOrder = async (req, res) => {
         message: 'Orders retrieved successfully',
         payload: {
           orders,
-          orderItems, // Include orderItems in the payload
-          products, // Include products in the payload
+          orderItems,
+          products,
         },
       });
     } else {
@@ -67,7 +67,6 @@ const addOrder = async (req, res) => {
   console.log(customerId, items);
 
   try {
-
     // Ensure required fields are provided
     if (!customerId || !items || !items.length) {
       return res.status(400).json({ error: 'Required fields are missing' });
@@ -80,7 +79,7 @@ const addOrder = async (req, res) => {
     }
 
     // Find the default address
-    const defaultAddress = customer.address.find(addr => addr.isDefault);
+    const defaultAddress = customer.address.find((addr) => addr.isDefault);
 
     // Use default address if no address is provided in the request
     let shippingAddress = req.body.shippingAddress || defaultAddress;
@@ -88,7 +87,9 @@ const addOrder = async (req, res) => {
 
     // Check if we have default address to use
     if (!shippingAddress || !billingAddress) {
-      return res.status(400).json({ error: 'Shipping and billing addresses are required' });
+      return res
+        .status(400)
+        .json({ error: 'Shipping and billing addresses are required' });
     }
 
     let totalQuantity = 0;
@@ -142,7 +143,6 @@ const addOrder = async (req, res) => {
     res.status(500).json({ error: 'Failed to place order' });
   }
 };
-
 
 const generateOrderNumber = async () => {
   let orderNumber;

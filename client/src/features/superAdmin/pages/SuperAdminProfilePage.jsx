@@ -4,7 +4,9 @@ import { useSelector } from 'react-redux';
 import { getUser, putUser } from '../../../api/superAdmin/superAdminApi.js';
 
 const SuperAdminProfilePage = () => {
-  const token = useSelector((state) => state.superAdminAuthSlice.accessToken.payload);
+  const token = useSelector(
+    (state) => state.superAdminAuthSlice.accessToken.payload,
+  );
 
   const [previewImage, setPreviewImage] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);

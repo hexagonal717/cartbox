@@ -4,18 +4,29 @@ import EditAddressModal from '../../../components/common/customer/EditAddressMod
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { AddOutlined } from '@mui/icons-material';
-import { addAddress, deleteAddress, getAddress, putAddress } from '../../../api/customer/customerApi.js';
+import {
+  addAddress,
+  deleteAddress,
+  getAddress,
+  putAddress,
+} from '../../../api/customer/customerApi.js';
 
 const AddressPage = () => {
-  const customerId = useSelector(state => state.customerAuthSlice.accessToken?.customerId);
+  const customerId = useSelector(
+    (state) => state.customerAuthSlice.accessToken?.customerId,
+  );
   const [addressInfo, setAddressInfo] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [addressToEdit, setAddressToEdit] = useState(null);
 
-  const { status, error, data: dbCustomerInfo } = useQuery({
+  const {
+    status,
+    error,
+    data: dbCustomerInfo,
+  } = useQuery({
     queryKey: ['dbAddressInfo', customerId],
-    queryFn: () => getAddress(customerId).then(data => data.payload),
+    queryFn: () => getAddress(customerId).then((data) => data.payload),
     enabled: !!customerId,
   });
 
@@ -26,17 +37,17 @@ const AddressPage = () => {
   }, [dbCustomerInfo]);
 
   const updateDefaultAddress = (newDefaultId) => {
-    setAddressInfo(prev =>
-      prev.map(addr =>
+    setAddressInfo((prev) =>
+      prev.map((addr) =>
         addr._id === newDefaultId
           ? { ...addr, isDefault: true }
-          : { ...addr, isDefault: false }
-      )
+          : { ...addr, isDefault: false },
+      ),
     );
   };
 
   const handleSaveAddress = (newAddress) => {
-    addAddress(customerId, newAddress).then(res => {
+    addAddress(customerId, newAddress).then((res) => {
       if (res.status === 'success') {
         if (newAddress.isDefault) {
           updateDefaultAddress(newAddress._id);
@@ -58,15 +69,15 @@ const AddressPage = () => {
             prev.map((addr) =>
               addr._id === updatedAddress._id
                 ? { ...updatedAddress, isDefault: true }
-                : { ...addr, isDefault: false }
-            )
+                : { ...addr, isDefault: false },
+            ),
           );
         } else {
           // Otherwise, just update the single address
           setAddressInfo((prev) =>
             prev.map((addr) =>
-              addr._id === updatedAddress._id ? updatedAddress : addr
-            )
+              addr._id === updatedAddress._id ? updatedAddress : addr,
+            ),
           );
         }
         setIsEditModalOpen(false); // Close the modal
@@ -74,23 +85,21 @@ const AddressPage = () => {
     });
   };
 
-
-
   const handleDeleteAddress = (customerId, addressId) => {
-    deleteAddress(customerId, addressId).then(res => {
+    deleteAddress(customerId, addressId).then((res) => {
       if (res.status === 'success') {
-        setAddressInfo(prev =>
-          prev.filter(address => address._id !== addressId)
+        setAddressInfo((prev) =>
+          prev.filter((address) => address._id !== addressId),
         );
 
         // If the deleted address was the default, set another address as default
         const isDeletedAddressDefault = addressInfo.find(
-          address => address._id === addressId && address.isDefault
+          (address) => address._id === addressId && address.isDefault,
         );
 
         if (isDeletedAddressDefault) {
           const newDefaultAddress = addressInfo.find(
-            address => address._id !== addressId
+            (address) => address._id !== addressId,
           );
           if (newDefaultAddress) {
             handleEditAddress({ ...newDefaultAddress, isDefault: true });

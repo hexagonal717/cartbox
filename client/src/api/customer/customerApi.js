@@ -238,7 +238,6 @@ export const getAddress = async (customerId) => {
 };
 
 export const putAddress = async (customerId, addressId, updatedAddress) => {
-
   try {
     const res = await userRequest.put(
       `/api/customer/profile/put-address/${customerId}/${addressId}`,
@@ -265,7 +264,7 @@ export const addAddress = async (customerId, addressInfo) => {
 };
 
 export const deleteAddress = async (customerId, addressId) => {
-  console.log(customerId,addressId,'FIRSTTTTTT CHECkkkkk');
+  console.log(customerId, addressId, 'FIRSTTTTTT CHECkkkkk');
 
   try {
     const res = await userRequest.delete(
@@ -289,9 +288,7 @@ export const getOrder = async (customerId) => {
 };
 
 export const addOrder = async (customerId, items) => {
-
-
-  console.log(customerId,items,'GGGGGGGGGGGGGGGGGG');
+  console.log(customerId, items, 'GGGGGGGGGGGGGGGGGG');
   try {
     const res = await userRequest.post(
       `/api/customer/order/add-order/${customerId}`,

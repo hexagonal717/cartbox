@@ -5,7 +5,7 @@ const {
 
 const {
   getUser,
-  putUser
+  putUser,
 } = require('../../../controllers/superAdmin/superAdminProfileController');
 
 router.get('/get-user/:id', verifyToken, getUser);

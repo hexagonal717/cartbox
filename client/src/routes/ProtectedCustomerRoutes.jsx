@@ -8,16 +8,11 @@ import SearchResultPage from '../features/customer/pages/SearchResultPage.jsx';
 import SettingsPage from '../features/customer/pages/SettingsPage.jsx';
 import ProfilePage from '../features/customer/pages/ProfilePage.jsx';
 import AccountSettings from '../features/customer/pages/AccountSettings.jsx';
-import PaymentPage
-  from '../features/customer/pages/PaymentPage.jsx';
-import OrdersPage
-  from '../features/customer/pages/OrdersPage.jsx';
-import OrderDetailPage
-  from '../features/customer/pages/OrderDetailPage.jsx';
-import OrderSuccessPage
-  from '../features/customer/pages/OrderSuccessPage.jsx';
-import AddressPage
-  from '../features/customer/pages/AddressPage.jsx';
+import PaymentPage from '../features/customer/pages/PaymentPage.jsx';
+import OrdersPage from '../features/customer/pages/OrdersPage.jsx';
+import OrderDetailPage from '../features/customer/pages/OrderDetailPage.jsx';
+import OrderSuccessPage from '../features/customer/pages/OrderSuccessPage.jsx';
+import AddressPage from '../features/customer/pages/AddressPage.jsx';
 
 const ProtectedCustomerRoutes = () => {
   return (

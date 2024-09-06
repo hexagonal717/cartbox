@@ -18,6 +18,10 @@ const CartPage = () => {
     (state) => state.customerAuthSlice.accessToken?.customerId,
   );
 
+  const localCart = useSelector((state) => state.cartSlice.items);
+
+  console.log(localCart, 'LOCAAAAAAAAAAAAA');
+
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);

@@ -12,7 +12,7 @@ const OrderSuccessPage = () => {
         <div className="flex justify-end gap-2">
           <Link
             to={'/'}
-            className="inline-block text-black rounded-md bg-yellow-500 px-4 py-2  hover:bg-yellow-600">
+            className="inline-block rounded-md bg-yellow-500 px-4 py-2 text-black hover:bg-yellow-600">
             Go home
           </Link>
           <Link

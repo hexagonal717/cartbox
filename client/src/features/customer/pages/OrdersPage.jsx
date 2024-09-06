@@ -36,6 +36,8 @@ const OrdersPage = () => {
   if (isOrderLoading) return <LoadingPage />;
   if (orderError) return <div>Error loading cart: {orderError.message}</div>;
 
+  console.log(orderItems);
+
   if (orderItems.length === 0) {
     return <OrderEmpty />;
   }

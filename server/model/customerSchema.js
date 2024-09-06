@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const addressSchema = new mongoose.Schema(
   {
     fullName: { type: String },
-    phone: { type: Number},
+    phone: { type: Number },
     addressLine1: { type: String },
     addressLine2: { type: String },
     landmark: { type: String },

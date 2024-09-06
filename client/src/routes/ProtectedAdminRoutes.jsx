@@ -14,10 +14,7 @@ const ProtectedAdminRoutes = () => {
     <Route element={<AdminLayout />}>
       <Route path="/" element={<AdminHomePage />}>
         <Route path="overview" element={<OverviewPage />} />
-        <Route
-          path="product-management"
-          element={<ProductManagementPage />}
-        />
+        <Route path="product-management" element={<ProductManagementPage />} />
       </Route>
       <Route path="/settings" element={<AdminSettingsPage />}>
         <Route path="profile" element={<AdminProfilePage />} />

@@ -35,20 +35,21 @@ const SettingsSidePanel = () => {
 
   return (
     <ul
-      className="flex h-full flex-col gap-1 border-neutral-600 bg-neutral-800 p-2 sm:w-auto lg:w-56 lg:p-2">
+      className="flex h-full flex-col gap-1 border-neutral-600 bg-neutral-800 p-2 sm:w-auto lg:w-56
+        lg:p-2">
       {menuItems.map((item) => (
         <li key={item.to}>
           <Link
             to={item.to}
-            className={`flex w-full items-center rounded-lg no-underline p-2 ${
-              location.pathname === item.to
+            className={`flex w-full items-center rounded-lg p-2 no-underline ${
+            location.pathname === item.to
                 ? 'bg-neutral-950 text-neutral-200'
                 : 'text-neutral-500 hover:bg-neutral-900'
             }`}>
             <div className="flex items-center gap-2">
               <div
                 className={`flex items-center justify-center text-xl lg:text-lg ${
-                  location.pathname === item.to
+                location.pathname === item.to
                     ? 'text-neutral-400'
                     : 'text-neutral-500'
                 }`}>

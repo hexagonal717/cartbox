@@ -1,5 +1,8 @@
 import { useQueries } from '@tanstack/react-query';
-import { getCart, getProductListByCategory } from '../../../api/customer/customerApi.js';
+import {
+  getCart,
+  getProductListByCategory,
+} from '../../../api/customer/customerApi.js';
 import { useSelector } from 'react-redux';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 import { ArrowBackIos } from '@mui/icons-material';
@@ -7,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 
 const CategoryPage = () => {
   const navigate = useNavigate();
-  const customerId = useSelector((state) => state.customerAuthSlice.accessToken?.customerId);
+  const customerId = useSelector(
+    (state) => state.customerAuthSlice.accessToken?.customerId,
+  );
 
   // Get query parameters from URL
   const queryParams = new URLSearchParams(window.location.search);
@@ -21,7 +26,10 @@ const CategoryPage = () => {
     queries: [
       {
         queryKey: ['productListByCategory', category, subCategory],
-        queryFn: () => getProductListByCategory(category, subCategory).then((data) => data.payload),
+        queryFn: () =>
+          getProductListByCategory(category, subCategory).then(
+            (data) => data.payload,
+          ),
         enabled: !!category || !!subCategory, // Only fetch products if category or subCategory is defined
       },
       {
@@ -51,7 +59,8 @@ const CategoryPage = () => {
   const cartList = cartQuery.data || [];
 
   // Helper function to capitalize the first letter
-  const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+  const capitalizeFirstLetter = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1);
 
   // Handle back button click
   const handleBack = () => {
@@ -60,8 +69,7 @@ const CategoryPage = () => {
 
   return (
     <div className="flex w-full flex-col items-center px-4 py-8 lg:py-16">
-      <div className="flex flex-col w-full max-w-screen-xl">
-
+      <div className="flex w-full max-w-screen-xl flex-col">
         <div className="flex items-center pb-10 pt-14">
           <button onClick={handleBack} className="scale-90">
             <ArrowBackIos />
@@ -71,13 +79,15 @@ const CategoryPage = () => {
           </div>
         </div>
 
-        <div className="grid w-full gap-1 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {productList.length > 0 ? (
             productList.map((product) => (
               <ProductCard key={product._id} product={product} cart={cartList} />
             ))
           ) : (
-            <h1 className="px-10 text-center col-span-full">No products available</h1>
+            <h1 className="col-span-full px-10 text-center">
+              No products available
+            </h1>
           )}
         </div>
       </div>

@@ -1,8 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { clearAccessToken } from '../../../features/superAdmin/redux/superAdminAuthSlice.js';
-import SuperAdminProfileButton
-  from './SuperAdminProfileButton.jsx';
+import SuperAdminProfileButton from './SuperAdminProfileButton.jsx';
 
 const SuperAdminNavBar = ({ user }) => {
   const dispatch = useDispatch();

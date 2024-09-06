@@ -34,9 +34,7 @@ const HomePage = () => {
   if (productQuery.error || cartQuery.error) {
     return (
       <div>
-        Error
-        loading
-        data: {productQuery.error?.message || cartQuery.error?.message}
+        Error loading data: {productQuery.error?.message || cartQuery.error?.message}
       </div>
     );
   }
@@ -45,28 +43,22 @@ const HomePage = () => {
   const cartList = cartQuery.data;
 
   return (
-    <div
-      className="box-border flex w-full flex-col items-center py-[11.1rem] lg:py-40">
+    <div className="box-border flex w-full flex-col items-center py-[11.1rem] lg:py-40">
       <CategoryBar />
       <Carousel />
       <div
-        className="grid w-full max-w-screen-xl grid-cols-1 gap-1 p-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        className="grid w-full max-w-screen-xl grid-cols-1 gap-1 p-2 md:grid-cols-2 lg:grid-cols-3
+          xl:grid-cols-4">
         {productList && productList.length > 0 ? (
           productList.map((product) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              cart={cartList} />
+            <ProductCard key={product._id} product={product} cart={cartList} />
           ))
         ) : (
-          <h1
-            className="col-span-full text-center">No
-            products
-            available</h1>
+          <h1 className="col-span-full text-center">No products available</h1>
         )}
       </div>
     </div>
   );
-}
+};
 
-  export default HomePage;
+export default HomePage;

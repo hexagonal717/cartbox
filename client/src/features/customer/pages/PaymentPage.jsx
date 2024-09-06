@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   addOrder,
   getCart,
@@ -39,11 +36,9 @@ const PaymentPage = () => {
 
   useEffect(() => {
     if (paymentStatus === 'completed') {
-
       addOrder(customerId, cart.items).then((res) => {
         if (res.status === 'success') {
-
-          navigate('/order-success',{state: cart})
+          navigate('/order-success', { state: cart });
         }
       });
     }

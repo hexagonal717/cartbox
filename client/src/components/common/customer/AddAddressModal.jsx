@@ -11,8 +11,8 @@ const AddAddressModal = ({ isOpen, onClose, onSave }) => {
     zipCode: '',
     country: '',
     phone: Number,
-    type: '',  // Added type field
-    isDefault: false,  // Added isDefault field
+    type: '', // Added type field
+    isDefault: false, // Added isDefault field
   };
 
   const [address, setAddress] = useState(initialAddressState);
@@ -21,7 +21,7 @@ const AddAddressModal = ({ isOpen, onClose, onSave }) => {
     if (!isOpen) {
       setAddress(initialAddressState);
     }
-  }, [ isOpen]);
+  }, [isOpen]);
 
   const handleOnChange = (event) => {
     const { name, value } = event.target;
@@ -56,11 +56,10 @@ const AddAddressModal = ({ isOpen, onClose, onSave }) => {
   const renderSelectField = (name, placeholder, options) => (
     <select
       name={name}
-      className={`rounded-md border border-neutral-800 border-r-8 bg-neutral-800 p-3 text-sm font-medium text-neutral-100
-        outline outline-1 outline-neutral-700 transition-all`}
+      className={`rounded-md border border-r-8 border-neutral-800 bg-neutral-800 p-3 text-sm
+        font-medium text-neutral-100 outline outline-1 outline-neutral-700 transition-all`}
       value={address[name]}
-      onChange={handleOnChange}
-    >
+      onChange={handleOnChange}>
       <option value="">{placeholder}</option>
       {options.map((option) => (
         <option key={option} value={option}>
@@ -74,7 +73,7 @@ const AddAddressModal = ({ isOpen, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-5/6 sm:w-3/5 md:w-1/2 lg:w-2/6 rounded-lg bg-neutral-900 p-8 shadow-lg">
+      <div className="w-5/6 rounded-lg bg-neutral-900 p-8 shadow-lg sm:w-3/5 md:w-1/2 lg:w-2/6">
         <h2 className="mb-4 text-lg font-bold text-white">Add New Address</h2>
         <form className="flex flex-col gap-4" onSubmit={handleSave}>
           {renderInputField('fullName', 'Full Name')}

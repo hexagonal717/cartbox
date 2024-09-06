@@ -75,7 +75,9 @@ export const changePassword = async (email, password) => {
 // Get user info by ID
 export const getUser = async (superAdminId) => {
   try {
-    const res = await userRequest.get(`/api/super-admin/profile/get-user/${superAdminId}`);
+    const res = await userRequest.get(
+      `/api/super-admin/profile/get-user/${superAdminId}`,
+    );
     return res.data;
   } catch (error) {
     console.error('Get superAdmin info error:', error.response);

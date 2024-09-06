@@ -1,12 +1,9 @@
-import {
-  ShoppingBagOutlined,
-} from '@mui/icons-material';
+import { ShoppingBagOutlined } from '@mui/icons-material';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getProductList } from '../../../api/customer/customerApi.js';
 
-import SearchBar
-  from '../customer/SearchBar.jsx';
+import SearchBar from '../customer/SearchBar.jsx';
 
 const GuestNavBar = ({ cart }) => {
   const navigate = useNavigate();
@@ -48,12 +45,12 @@ const GuestNavBar = ({ cart }) => {
 
   return (
     <div
-      className="h-max-content fixed z-40 flex h-16 w-full select-none items-center
-        bg-neutral-950 px-6 outline outline-1 outline-neutral-800 backdrop-blur-sm">
+      className="h-max-content fixed z-40 flex h-16 w-full select-none items-center bg-neutral-950
+        px-6 outline outline-1 outline-neutral-800 backdrop-blur-sm">
       <ul className="flex w-full list-none items-center justify-center gap-4">
         <li>
           <Link to={'/'} replace>
-            <div className={'font-bold text-lg'}>CartBox</div>
+            <div className={'text-lg font-bold'}>CartBox</div>
           </Link>
         </li>
         <li
@@ -84,37 +81,29 @@ const GuestNavBar = ({ cart }) => {
           )}
         </li>
 
-
-        <li className={'flex gap-4 items-center justify-center'}>
-          <div
-            className="relative">
+        <li className={'flex items-center justify-center gap-4'}>
+          <div className="relative">
             <button
               onClick={() => navigate('/login')}
               className="flex w-36 cursor-pointer items-center justify-center rounded-lg border-none
-              bg-indigo-500 bg-opacity-10 py-2.5 text-xs font-bold text-indigo-500 outline
-              outline-1 outline-indigo-900 hover:bg-indigo-500/15">
-              Log
-              In
+                bg-indigo-500 bg-opacity-10 py-2.5 text-xs font-bold text-indigo-500 outline
+                outline-1 outline-indigo-900 hover:bg-indigo-500/15">
+              Log In
             </button>
           </div>
           <div>
-            <NavLink
-              to={'/cart'}>
-              <div
-                className="relative">
-                <ShoppingBagOutlined
-                  className="text-neutral-200 hover:cursor-pointer" />
+            <NavLink to={'/cart'}>
+              <div className="relative">
+                <ShoppingBagOutlined className="text-neutral-200 hover:cursor-pointer" />
                 <div
                   className="absolute flex h-4 w-4 -translate-y-8 translate-x-4 items-center justify-center
-                  rounded-full bg-yellow-300 text-center text-xs font-semibold text-black">
+                    rounded-full bg-yellow-300 text-center text-xs font-semibold text-black">
                   {cart?.length ?? 0}
                 </div>
               </div>
             </NavLink>
           </div>
         </li>
-
-
       </ul>
     </div>
   );

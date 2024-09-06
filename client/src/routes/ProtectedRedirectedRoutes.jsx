@@ -19,10 +19,7 @@ const ProtectedRedirectedRoutes = () => {
         <Route path="settings/profile" element={<Navigate to={'/'} />} />
         <Route path="settings/account" element={<Navigate to={'/'} />} />
         <Route path="settings/address" element={<Navigate to={'/'} />} />
-        <Route
-          path="settings/address/add-address"
-          element={<Navigate to={'/'} />}
-        />
+        <Route path="settings/address/add-address" element={<Navigate to={'/'} />} />
         <Route
           path="settings/address/edit-address"
           element={<Navigate to={'/'} />}

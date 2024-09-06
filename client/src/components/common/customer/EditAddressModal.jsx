@@ -36,7 +36,7 @@ const EditAddressModal = ({ isOpen, onClose, address, onSave }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-5/6 sm:w-3/5 md:w-1/2 lg:w-2/6 rounded-lg bg-neutral-900 p-8 shadow-lg">
+      <div className="w-5/6 rounded-lg bg-neutral-900 p-8 shadow-lg sm:w-3/5 md:w-1/2 lg:w-2/6">
         <h2 className="mb-4 text-lg font-bold text-white">Edit Address</h2>
         <form className="flex flex-col gap-4" onSubmit={handleSave}>
           {renderInputField('fullName', 'Full Name')}
@@ -60,7 +60,6 @@ const EditAddressModal = ({ isOpen, onClose, address, onSave }) => {
               <label className="text-sm text-neutral-100">Set as default</label>
             </div>
           )}
-
 
           <div className="mt-4 flex justify-end gap-2">
             <button

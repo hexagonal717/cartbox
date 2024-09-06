@@ -5,8 +5,7 @@ import { clearAccessToken } from '../../../features/customer/redux/customerAuthS
 import ProfileButton from './ProfileButton.jsx';
 import { useEffect, useState } from 'react';
 import { getProductList } from '../../../api/customer/customerApi.js';
-import SearchBar
-  from './SearchBar.jsx';
+import SearchBar from './SearchBar.jsx';
 const NavBar = ({ user, cart }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,17 +52,12 @@ const NavBar = ({ user, cart }) => {
 
   return (
     <div
-      className="h-max-content fixed z-40 flex h-16 w-full select-none items-center
-        bg-neutral-950 px-6 outline outline-1 outline-neutral-800 backdrop-blur-sm">
-      <ul
-        className="flex w-full list-none items-center justify-center gap-4">
+      className="h-max-content fixed z-40 flex h-16 w-full select-none items-center bg-neutral-950
+        px-6 outline outline-1 outline-neutral-800 backdrop-blur-sm">
+      <ul className="flex w-full list-none items-center justify-center gap-4">
         <li>
-          <Link
-            to={'/'}
-            replace>
-            <div
-              className={'font-bold text-lg'}>CartBox
-            </div>
+          <Link to={'/'} replace>
+            <div className={'text-lg font-bold'}>CartBox</div>
           </Link>
         </li>
         <li
@@ -92,19 +86,13 @@ const NavBar = ({ user, cart }) => {
             </ul>
           )}
         </li>
-        <li
-          className="relative">
-          <ProfileButton
-            userData={user}
-            handleLogout={handleLogout} />
+        <li className="relative">
+          <ProfileButton userData={user} handleLogout={handleLogout} />
         </li>
         <li>
-          <NavLink
-            to={'/cart'}>
-            <div
-              className="relative">
-              <ShoppingBagOutlined
-                className="text-neutral-200 hover:cursor-pointer" />
+          <NavLink to={`/cart`}>
+            <div className="relative">
+              <ShoppingBagOutlined className="text-neutral-200 hover:cursor-pointer" />
               <div
                 className="absolute flex h-4 w-4 -translate-y-8 translate-x-4 items-center justify-center
                   rounded-full bg-yellow-300 text-center text-xs font-semibold text-black">

@@ -206,7 +206,7 @@ const addAddress = async (req, res) => {
 
 const putAddress = async (req, res) => {
   const { id: customerId, addressId } = req.params;
-  const updatedAddress  = req.body;
+  const updatedAddress = req.body;
 
   try {
     const customer = await customerSchema.findById(customerId);
@@ -228,7 +228,9 @@ const putAddress = async (req, res) => {
 
     Object.assign(address, updatedAddress);
     await customer.save();
-    res.status(200).json({ status: 'success',message: 'Address updated successfully'});
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Address updated successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error updating address', error });
   }
@@ -246,7 +248,9 @@ const deleteAddress = async (req, res) => {
       return res.status(404).json({ message: 'Customer not found' });
     }
 
-    const addressIndex = customer.address.findIndex(addr => addr._id.toString() === addressId);
+    const addressIndex = customer.address.findIndex(
+      (addr) => addr._id.toString() === addressId,
+    );
 
     if (addressIndex === -1) {
       return res.status(404).json({ message: 'Address not found' });
@@ -261,16 +265,16 @@ const deleteAddress = async (req, res) => {
       customer.address[0].isDefault = true; // Set the first address as the new default
     }
 
-    await customer.save();  // Save the document after removing the address
+    await customer.save(); // Save the document after removing the address
 
-    res.status(200).json({ status: 'success', message: 'Address removed successfully' });
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Address removed successfully' });
   } catch (error) {
-    console.error('Error removing address:', error);  // Log the full error
+    console.error('Error removing address:', error); // Log the full error
     res.status(500).json({ message: 'Error removing address', error });
   }
 };
-
-
 
 module.exports = {
   getUser,

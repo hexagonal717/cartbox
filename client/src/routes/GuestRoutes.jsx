@@ -13,8 +13,7 @@ import SearchResultPage from '../features/customer/pages/SearchResultPage.jsx';
 import AdminLogInPage from '../features/admin/pages/AdminLogInPage.jsx';
 import AdminSignUpPage from '../features/admin/pages/AdminSignUpPage.jsx';
 import GuestLayout from '../components/layouts/GuestLayout.jsx';
-import SuperAdminLogInPage
-  from '../features/superAdmin/pages/SuperAdminLogInPage.jsx';
+import SuperAdminLogInPage from '../features/superAdmin/pages/SuperAdminLogInPage.jsx';
 
 const GuestRoutes = () => {
   return (
@@ -34,7 +33,6 @@ const GuestRoutes = () => {
         <Route path="/admin-login" element={<AdminLogInPage />} />
         <Route path="/admin-signup" element={<AdminSignUpPage />} />
         <Route path="/super-admin-login" element={<SuperAdminLogInPage />} />
-
       </Route>
     </>
   );

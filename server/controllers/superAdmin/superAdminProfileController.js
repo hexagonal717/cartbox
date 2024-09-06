@@ -1,7 +1,7 @@
 const argon = require('argon2');
 const SuperAdmin = require('../../model/superAdminSchema');
 const multer = require('multer');
-const cloudinary  = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
