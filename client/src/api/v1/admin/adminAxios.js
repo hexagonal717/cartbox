@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = import.meta.env.VITE_CARTBOX_RENDER_API_BASE_URL;
+const baseUrl = import.meta.env.VITE_CARTBOX_LOCALHOST_API_BASE_URL;
 
 export const publicRequest = axios.create({
   baseURL: baseUrl,
