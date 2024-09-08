@@ -6,7 +6,7 @@ import {
   getCart,
   increaseCartItemQuantity,
   removeCartItem,
-} from '../../../api/v1/customer/customerApi.js';
+} from '@/api/v1/customer/customerApi.js';
 import CartEmpty from '../../../components/common/customer/CartEmpty.jsx';
 import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -88,7 +88,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen justify-center">
+    <div className="flex min-h-screen justify-center bg-neutral-200 dark:bg-neutral-900">
       <div
         className="grid w-screen grid-cols-1 grid-rows-1 gap-3 px-4 pt-20 sm:w-auto md:w-auto
           md:grid-cols-2 md:grid-rows-1 md:gap-6 lg:gap-12">
@@ -101,8 +101,8 @@ const CartPage = () => {
             return (
               <div className="py-2" key={product?._id}>
                 <div
-                  className="flex flex-row justify-between gap-16 rounded-lg bg-neutral-950 p-6 text-right
-                    text-neutral-200 sm:gap-40 md:gap-28 lg:gap-56">
+                  className="flex flex-row justify-between gap-16 rounded-lg bg-neutral-100 p-6 text-right shadow
+                    dark:bg-neutral-950 sm:gap-40 md:gap-28 lg:gap-56">
                   <div className="relative block w-32">
                     <img
                       src={product?.image}
@@ -111,10 +111,11 @@ const CartPage = () => {
                     />
 
                     <div
-                      className="mt-6 flex w-32 items-center justify-between rounded-full bg-neutral-800 p-1
-                        text-center font-light">
+                      className="mt-6 flex w-32 items-center justify-between rounded-full p-1 text-center font-light
+                        outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-800">
                       <button
-                        className="h-7 w-7 rounded-full bg-neutral-800 text-center text-white hover:bg-neutral-700"
+                        className="h-7 w-7 rounded-full text-center hover:bg-neutral-200 dark:bg-neutral-950
+                          dark:text-white dark:hover:bg-neutral-800"
                         onClick={() =>
                           handleCartAction(decreaseCartItemQuantity, product)
                         }>
@@ -124,7 +125,8 @@ const CartPage = () => {
                         <b>Qty. {cartItem.quantity}</b>
                       </div>
                       <button
-                        className="h-7 w-7 rounded-full bg-neutral-800 text-center text-white hover:bg-neutral-700"
+                        className="h-7 w-7 rounded-full text-center hover:bg-neutral-200 dark:bg-neutral-950
+                          dark:text-white dark:hover:bg-neutral-800"
                         onClick={() =>
                           handleCartAction(increaseCartItemQuantity, product)
                         }>

@@ -13,6 +13,8 @@ const adminProfileRouter = require('./router/v1/admin/adminProfileRouter');
 const adminProductRouter = require('./router/v1/admin/adminProductRouter');
 const superAdminAuthRouter = require('./router/v1/superAdmin/superAdminAuthRouter');
 const superAdminProfileRouter = require('./router/v1/superAdmin/superAdminProfileRouter');
+const superAdminProductRouter = require('./router/v1/superAdmin/superAdminProductRouter');
+const superAdminClientRouter = require('./router/v1/superAdmin/superAdminClientRouter');
 
 const app = express();
 app.use(
@@ -20,7 +22,7 @@ app.use(
     origin: process.env.VITE_CARTBOX_LOCALHOST_API_BASE_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 
@@ -43,6 +45,8 @@ app.use('/api/admin/product', adminProductRouter);
 
 app.use('/api/super-admin/auth', superAdminAuthRouter);
 app.use('/api/super-admin/profile', superAdminProfileRouter);
+app.use('/api/super-admin/product', superAdminProductRouter);
+app.use('/api/super-admin/client', superAdminClientRouter);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

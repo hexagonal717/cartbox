@@ -2,16 +2,15 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getUser } from '../../api/v1/superAdmin/superAdminApi.js';
+import { getUser } from '@/api/v1/superAdmin/superAdminApi.js';
 import SuperAdminNavBar from '../common/superAdmin/SuperAdminNavBar.jsx';
+import { useDarkMode } from '@/context/DarkModeContext.jsx';
 
 const SuperAdminLayout = () => {
   const location = useLocation();
   const token = useSelector(
     (state) => state.superAdminAuthSlice.accessToken.payload,
   );
-
-  console.log(token?.superAdminId, 'OTKEMNN');
 
   const ignoreLocations = [
     '/login',
@@ -26,6 +25,9 @@ const SuperAdminLayout = () => {
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   const [user, setUser] = useState(null);
+  const { darkMode, toggleDarkMode } = useDarkMode();
+
+  console.log('SuperAdminLayout:', { darkMode, toggleDarkMode });
 
   const queries = useQueries({
     queries: [
@@ -57,13 +59,15 @@ const SuperAdminLayout = () => {
     return <div>Error loading data: {userQuery.error?.message}</div>;
   }
 
-  console.log(user, 'USERRRRRRR');
-
   return (
-    <div className="flex font-inter">
-      {!shouldIgnore && <SuperAdminNavBar user={user} />}
-      <div>
-        <Outlet />
+    <div className={`${darkMode && 'dark'} flex h-screen flex-col`}>
+      <div className="flex w-full flex-1 font-inter">
+        {!shouldIgnore && (
+          <SuperAdminNavBar user={user} toggleDarkMode={toggleDarkMode} />
+        )}
+        <div className="w-full overflow-y-hidden">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

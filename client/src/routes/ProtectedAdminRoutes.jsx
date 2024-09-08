@@ -5,7 +5,7 @@ import OverviewPage from '../features/admin/pages/OverviewPage.jsx';
 import ProductManagementPage from '../features/admin/pages/ProductManagementPage.jsx';
 import AdminSettingsPage from '../features/admin/pages/AdminSettingsPage.jsx';
 import AdminProfilePage from '../features/admin/pages/AdminProfilePage.jsx';
-import AccountSettings from '../features/customer/pages/AccountSettings.jsx';
+import AdminAccountSettings from '@/features/admin/pages/AdminAccountSettings.jsx';
 
 const ProtectedAdminRoutes = () => {
   console.log('ADMIN Child rendered');
@@ -18,7 +18,7 @@ const ProtectedAdminRoutes = () => {
       </Route>
       <Route path="/settings" element={<AdminSettingsPage />}>
         <Route path="profile" element={<AdminProfilePage />} />
-        <Route path="account" element={<AccountSettings />} />
+        <Route path="account" element={<AdminAccountSettings />} />
       </Route>
     </Route>
   );

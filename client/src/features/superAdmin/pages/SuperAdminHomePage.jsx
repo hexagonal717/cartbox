@@ -1,5 +1,4 @@
-import SuperAdminOverviewPage from './SuperAdminOverviewPage.jsx';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import DashboardSidePanel from '../../../components/common/superAdmin/DashboardSidePanel.jsx';
 
@@ -10,16 +9,19 @@ const SuperAdminHomePage = () => {
   useEffect(() => {
     if (location.pathname === ('/overview' && '/')) {
       navigate('/overview');
-    } /*else if (location.pathname === '/product-management') {
-      navigate('/product-management');
-    }*/
+    } else if (location.pathname === '/client-management') {
+      navigate('/client-management');
+    }
   }, [location.pathname, navigate]);
 
   return (
-    <div className="grid h-screen w-screen grid-cols-[auto,1fr] items-center justify-center pt-16">
-      <DashboardSidePanel />
-      {location.pathname === '/overview' && <SuperAdminOverviewPage />}
-      {/*{location.pathname === '/product-management' && <ClientManagementPage />}*/}
+    <div className="mt-16 grid h-full grid-rows-[auto,1fr] bg-neutral-50 dark:bg-neutral-900">
+      <aside>
+        <DashboardSidePanel />
+      </aside>
+      <div className="flex h-full w-auto flex-col pl-48">
+        <Outlet />
+      </div>
     </div>
   );
 };

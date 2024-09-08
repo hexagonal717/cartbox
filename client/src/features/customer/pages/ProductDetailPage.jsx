@@ -93,7 +93,7 @@ const ProductDetailPage = () => {
 
   return (
     <div
-      className="grid h-full w-full grid-cols-1 gap-8 px-0 py-16 sm:grid-cols-2 sm:px-8 sm:py-20
+      className="grid h-screen w-full grid-cols-1 gap-8 px-0 py-16 sm:grid-cols-2 sm:px-8 sm:py-20
         lg:grid-cols-2 lg:px-36">
       <div className="mx-auto w-full max-w-lg">
         <img
@@ -103,12 +103,14 @@ const ProductDetailPage = () => {
         />
       </div>
       <div className="flex flex-col justify-start p-4">
-        <div className="scale-90 text-right hover:cursor-pointer">
+        <div className="scale-90 text-right hover:cursor-pointer dark:text-white">
           <ShareOutlined />
         </div>
-        <div className="mb-4 text-lg font-light">{product?.name}</div>
-        <div className="mb-4">{product?.description}</div>
-        <div className="text-2xl font-medium">${product?.price}</div>
+        <div className="mb-4 text-lg font-semibold dark:text-white">
+          {product?.name}
+        </div>
+        <div className="mb-4 dark:text-white">{product?.description}</div>
+        <div className="text-2xl font-medium dark:text-white">${product?.price}</div>
 
         <div className="mt-4">
           <button

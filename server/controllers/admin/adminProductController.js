@@ -1,4 +1,22 @@
 const Product = require('../../model/productSchema');
+const Admin = require('../../model/adminSchema');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = multer.diskStorage({
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const addProductList = async (req, res) => {
   // Validate that the request body is an array
@@ -17,6 +35,7 @@ const addProductList = async (req, res) => {
     'description',
     'image',
     'price',
+    'quantity', // Added quantity field
   ];
   for (const product of req.body) {
     for (let field of requiredFields) {
@@ -53,10 +72,12 @@ const addProductList = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    const { name, description, image, price, category, subCategory } = req.body;
+    const adminId = req.params.id;
+    const { name, description, image, price, category, subCategory, quantity } =
+      req.body;
 
     // Basic validation checks
-    if (!name || !price || !category || !subCategory) {
+    if (!name || !price || !category || !subCategory || quantity === undefined) {
       return res.status(400).json({
         status: 'fail',
         message: 'All fields are required',
@@ -75,11 +96,14 @@ const addProduct = async (req, res) => {
     // Create and save the product
     const product = new Product({
       name: name,
+      adminId: adminId,
       description: description,
       image: image,
       price: price,
       category: category,
       subCategory: subCategory,
+      quantity: quantity,
+      // Added quantity field
     });
 
     await product.save();
@@ -96,6 +120,62 @@ const addProduct = async (req, res) => {
       status: 'error',
       message: 'An error occurred while adding the product.',
     });
+  }
+};
+
+const putProduct = async (req, res) => {
+  try {
+    // Fetch the product from the database
+    const existingProduct = await Product.findById(req.params.id);
+    const existingUser = await Admin.findById(existingProduct.adminId);
+
+    if (!existingProduct) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    let imagePaths = [...existingProduct.image]; // Copy existing image URLs
+
+    if (req.file) {
+      // Construct the folder path based on the product's category and ID
+      const uploadPath = `cartbox/${existingUser.role}/${existingUser._id}/products/${existingProduct._id}/images`;
+
+      // Upload the image to Cloudinary
+      const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+        folder: uploadPath,
+        public_id: req.file.originalname.split('.')[0], // Filename without extension
+        overwrite: true,
+      });
+
+      // Add the new image URL to the imagePaths array
+      imagePaths.push(uploadedImage.secure_url);
+    }
+
+    // Prepare the fields to be updated
+    const updateFields = {
+      category: req.body.category,
+      subCategory: req.body.subCategory,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      image: imagePaths, // Use the updated image array
+      ...req.body,
+    };
+
+    // Update the product in the database
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateFields },
+      { new: true },
+    );
+
+    res.status(200).json({
+      status: 'success',
+      payload: product,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: 'Server error. Please try again later.' });
   }
 };
 
@@ -125,9 +205,18 @@ const deleteProduct = async (req, res) => {
 };
 
 const getProductList = async (req, res) => {
+  console.log(req.params.id);
+  const adminId = req.params.id;
+
   try {
-    // Fetch all products from the database
-    const products = await Product.find();
+    const adminIdString = adminId.toString();
+    const products = await Product.find(
+      {
+        adminId: new mongoose.Types.ObjectId(adminIdString),
+      },
+      {},
+      { lean: true },
+    );
 
     // Send success response with fetched products
     res.status(200).json({
@@ -148,6 +237,7 @@ const getProductList = async (req, res) => {
 };
 module.exports = {
   addProduct,
+  putProduct: [upload.single('image'), putProduct],
   deleteProduct,
   addProductList,
   getProductList,

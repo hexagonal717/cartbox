@@ -1,11 +1,14 @@
 import { ShoppingBagOutlined } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { clearAccessToken } from '../../../features/customer/redux/customerAuthSlice.js';
+import { clearAccessToken } from '@/features/customer/redux/customerAuthSlice.js';
 import ProfileButton from './ProfileButton.jsx';
 import { useEffect, useState } from 'react';
-import { getProductList } from '../../../api/v1/customer/customerApi.js';
+import { getProductList } from '@/api/v1/customer/customerApi.js';
 import SearchBar from './SearchBar.jsx';
+import { Button } from '@/components/ui-custom/super-admin/button.jsx';
+import { Moon, Sun } from 'lucide-react';
+import { useDarkMode } from '@/context/DarkModeContext.jsx';
 const NavBar = ({ user, cart }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,7 +16,7 @@ const NavBar = ({ user, cart }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionWindow, setSuggestionWindow] = useState(false);
-
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const handleLogout = () => {
     dispatch(clearAccessToken());
     navigate('/');
@@ -52,12 +55,13 @@ const NavBar = ({ user, cart }) => {
 
   return (
     <div
-      className="h-max-content fixed z-40 flex h-16 w-full select-none items-center bg-neutral-950
-        px-6 outline outline-1 outline-neutral-800 backdrop-blur-sm">
+      className="h-max-content fixed z-40 flex h-16 w-full select-none items-center bg-neutral-50 px-6
+        outline outline-1 outline-neutral-300 backdrop-blur-sm dark:bg-neutral-950
+        dark:outline-neutral-800">
       <ul className="flex w-full list-none items-center justify-center gap-4">
         <li>
           <Link to={'/'} replace>
-            <div className={'text-lg font-bold'}>CartBox</div>
+            <div className={'text text-lg font-bold dark:text-white'}>CartBox</div>
           </Link>
         </li>
         <li
@@ -92,7 +96,7 @@ const NavBar = ({ user, cart }) => {
         <li>
           <NavLink to={`/cart`}>
             <div className="relative">
-              <ShoppingBagOutlined className="text-neutral-200 hover:cursor-pointer" />
+              <ShoppingBagOutlined className="text-neutral-950 hover:cursor-pointer dark:text-neutral-200" />
               <div
                 className="absolute flex h-4 w-4 -translate-y-8 translate-x-4 items-center justify-center
                   rounded-full bg-yellow-300 text-center text-xs font-semibold text-black">
@@ -100,6 +104,18 @@ const NavBar = ({ user, cart }) => {
               </div>
             </div>
           </NavLink>
+        </li>
+        <li className="relative">
+          <Button
+            variant={'outline'}
+            onClick={toggleDarkMode}
+            className={'rounded-lg p-2'}>
+            {darkMode ? (
+              <Moon className={'scale-75'} />
+            ) : (
+              <Sun className={'scale-75'} />
+            )}
+          </Button>
         </li>
       </ul>
     </div>

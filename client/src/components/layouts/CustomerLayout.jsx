@@ -3,12 +3,13 @@ import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import NavBar from '../common/customer/NavBar.jsx';
-import { getCart, getUser } from '../../api/v1/customer/customerApi.js';
+import { getCart, getUser } from '@/api/v1/customer/customerApi.js';
+import { useDarkMode } from '@/context/DarkModeContext.jsx';
 
 const CustomerLayout = () => {
   const location = useLocation();
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
-
+  const { darkMode } = useDarkMode();
   const ignoreLocations = [
     '/login',
     '/signup',
@@ -72,10 +73,15 @@ const CustomerLayout = () => {
   }
 
   return (
-    <div className="flex flex-col font-inter">
-      {!shouldIgnore && <NavBar user={user} cart={cart} />}
-      <div>
-        <Outlet data={cart} />
+    <div className={`${darkMode && 'dark'} `}>
+      <div className="flex flex-col font-inter">
+        {!shouldIgnore && <NavBar user={user} cart={cart} />}
+        <div
+          className={
+            'bg-neutral-100 text-neutral-950 dark:bg-neutral-900 dark:text-white'
+          }>
+          <Outlet data={cart} />
+        </div>
       </div>
     </div>
   );

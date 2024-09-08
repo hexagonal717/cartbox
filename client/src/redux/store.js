@@ -20,6 +20,7 @@ import customerProfileSliceReducer from '../features/customer/redux/customerProf
 import superAdminAuthSliceReducer from '../features/superAdmin/redux/superAdminAuthSlice.js';
 import superAdminOtpSliceReducer from '../features/superAdmin/redux/superAdminOtpSlice.js';
 import superAdminProfileSliceReducer from '../features/superAdmin/redux/superAdminProfileSlice.js';
+import themeSliceReducer from '../context/themeSlice.js';
 
 const persistConfig = {
   key: 'hexagonal717-cartbox',
@@ -33,6 +34,7 @@ const persistConfig = {
     'superAdminAuthSlice',
     'superAdminProfileSlice',
     'cartSlice',
+    'themeSlice',
   ],
 };
 
@@ -47,6 +49,7 @@ const rootReducer = combineReducers({
   superAdminProfileSlice: superAdminProfileSliceReducer,
   superAdminOtpSlice: superAdminOtpSliceReducer,
   cartSlice: cartSliceReducer,
+  themeSlice: themeSliceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

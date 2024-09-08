@@ -1,4 +1,11 @@
 import { NavLink } from 'react-router-dom';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
 
 const ProductCard = ({ product, cart }) => {
   return (
@@ -8,22 +15,36 @@ const ProductCard = ({ product, cart }) => {
         state: { cart },
       }}
       className="no-underline">
-      <div
-        className={`flex w-full transform cursor-pointer flex-row overflow-hidden rounded-lg border
-          border-neutral-700 shadow-md transition-transform duration-200 hover:bg-neutral-800
-          lg:flex-col`}>
-        <div className="h-52 w-52 flex-none sm:w-auto">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="flex flex-col justify-between px-4 py-4 lg:ml-0 lg:mt-4">
-          <h2 className="text-md text-neutral-200">{product.name}</h2>
-          <p className="text-md font-bold text-springgreen-500">${product.price}</p>
-        </div>
-      </div>
+      <Card
+        className="flex h-full w-full flex-col overflow-hidden rounded-lg border p-4 shadow-md
+          transition-transform duration-300 hover:scale-[101%] hover:shadow-lg
+          dark:border-neutral-800 dark:bg-neutral-950 lg:max-w-sm">
+        {' '}
+        {/* Product Image */}
+        <CardHeader className="p-0">
+          <div className="relative h-52 w-full overflow-hidden">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </CardHeader>
+        {/* Product Details */}
+        <CardContent className="flex flex-grow flex-col justify-between px-4 py-4 lg:mt-4">
+          <CardTitle className="text-sm">{product.name}</CardTitle>
+          <CardDescription className="text-sm text-springgreen-700 dark:text-springgreen-400">
+            ${product.price}
+          </CardDescription>
+        </CardContent>
+        {/* Card Footer */}
+        {/*<CardFooter className="flex justify-end px-4 py-4">*/}
+        {/*  <Button variant="default" className="flex items-center gap-2">*/}
+        {/*    <ShoppingCart className="w-4 h-4" />*/}
+        {/*    Add to Cart*/}
+        {/*  </Button>*/}
+        {/*</CardFooter>*/}
+      </Card>
     </NavLink>
   );
 };
