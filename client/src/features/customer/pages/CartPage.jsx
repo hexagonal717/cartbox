@@ -1,15 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
-import { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect} from 'react';
+import { getCart } from '@/api/v1/customer/customerApi.js';
 import {
-  decreaseCartItemQuantity,
-  getCart,
-  increaseCartItemQuantity,
   removeCartItem,
-} from '@/api/v1/customer/customerApi.js';
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity,
+} from '@/api/v1/customer/cart/cartActions.js';
 import CartEmpty from '../../../components/common/customer/CartEmpty.jsx';
 import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui-custom/button.jsx';
+import { Minus, Plus } from 'lucide-react';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -18,9 +20,9 @@ const CartPage = () => {
     (state) => state.customerAuthSlice.accessToken?.customerId,
   );
 
-  const localCart = useSelector((state) => state.cartSlice.items);
-
-  console.log(localCart, 'LOCAAAAAAAAAAAAA');
+  const localCart = useSelector((state) => state.cartSlice.cart);
+  const localCartItems = useSelector((state) => state.cartSlice.cart?.items);
+  const dispatch = useDispatch();
 
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
@@ -44,38 +46,11 @@ const CartPage = () => {
     }
   }, [cartResult]);
 
-  const updateCart = useCallback((newCart) => {
-    setCartItems(newCart);
-  }, []);
-
-  const handleCartAction = useCallback(
-    async (actionFn, product) => {
-      try {
-        const res = await actionFn(product._id, customerId);
-        if (res.status === 'success') {
-          const updatedCart = await getCart(customerId);
-          updateCart(updatedCart.payload.cartItems);
-        } else {
-          console.error('Failed to update cart:', res.message);
-        }
-      } catch (error) {
-        console.error('Cart action failed:', error);
-      }
-    },
-    [customerId, updateCart],
-  );
-
-  const calculateTotalPrice = useCallback(() => {
-    return cartItems.reduce((total, cartItem) => {
-      const product = products.find((product) => product._id === cartItem.productId);
-      return total + (product?.price || 0) * cartItem.quantity;
-    }, 0);
-  }, [cartItems, products]);
 
   if (isCartLoading) return <LoadingPage />;
   if (cartError) return <div>Error loading cart: {cartError.message}</div>;
 
-  if (cartItems.length === 0) {
+  if (localCartItems.length === 0) {
     return <CartEmpty />;
   }
 
@@ -93,13 +68,13 @@ const CartPage = () => {
         className="grid w-screen grid-cols-1 grid-rows-1 gap-3 px-4 pt-20 sm:w-auto md:w-auto
           md:grid-cols-2 md:grid-rows-1 md:gap-6 lg:gap-12">
         <div>
-          {cartItems.map((cartItem) => {
+          {localCartItems?.map((cartItem) => {
             const product = products.find(
               (product) => product._id === cartItem.productId,
             );
 
             return (
-              <div className="py-2" key={product?._id}>
+              <div className="py-2" key={cartItem?.productId}>
                 <div
                   className="flex flex-row justify-between gap-16 rounded-lg bg-neutral-100 p-6 text-right shadow
                     dark:bg-neutral-950 sm:gap-40 md:gap-28 lg:gap-56">
@@ -110,28 +85,38 @@ const CartPage = () => {
                       className="relative flex h-auto"
                     />
 
-                    <div
-                      className="mt-6 flex w-32 items-center justify-between rounded-full p-1 text-center font-light
-                        outline outline-1 outline-neutral-300 dark:bg-neutral-950 dark:outline-neutral-800">
-                      <button
-                        className="h-7 w-7 rounded-full text-center hover:bg-neutral-200 dark:bg-neutral-950
-                          dark:text-white dark:hover:bg-neutral-800"
+                    <div className="mt-6 flex w-36 items-center justify-between rounded-full text-center font-light">
+                      <Button
+                        variant={'outline'}
+                        size={'xs'}
+                        className={'rounded-full'}
                         onClick={() =>
-                          handleCartAction(decreaseCartItemQuantity, product)
+                          dispatch(decreaseCartItemQuantity({
+                            productId: product._id,
+                            customerId: customerId,
+                          }))
                         }>
-                        <div>-</div>
-                      </button>
-                      <div className="px-2 text-xs">
+                        <Minus className={'m-0.5 scale-75'} />
+                      </Button>
+                      <div
+                        className="rounded p-1.5 px-3 text-xs outline outline-1 outline-neutral-300 dark:bg-neutral-950
+                          dark:outline-neutral-800">
                         <b>Qty. {cartItem.quantity}</b>
                       </div>
-                      <button
-                        className="h-7 w-7 rounded-full text-center hover:bg-neutral-200 dark:bg-neutral-950
-                          dark:text-white dark:hover:bg-neutral-800"
+                      <Button
+                        variant={'outline'}
+                        size={'xs'}
+                        className={'rounded-full'}
                         onClick={() =>
-                          handleCartAction(increaseCartItemQuantity, product)
+                          dispatch(
+                            increaseCartItemQuantity({
+                              productId: product._id,
+                              customerId: customerId,
+                            }),
+                          )
                         }>
-                        <div className="-translate-y-[0.05rem]">+</div>
-                      </button>
+                        <Plus className={'m-0.5 scale-75'} />
+                      </Button>
                     </div>
                   </div>
 
@@ -143,7 +128,12 @@ const CartPage = () => {
                     <button
                       className="mt-8 rounded-full border-neutral-700 px-2.5 py-1.5 text-xs text-yellow-400
                         hover:underline"
-                      onClick={() => handleCartAction(removeCartItem, product)}>
+                      onClick={() => dispatch(
+                        removeCartItem({
+                          productId: product._id,
+                          customerId: customerId,
+                        }),
+                      )}>
                       Remove
                     </button>
                   </div>
@@ -180,7 +170,7 @@ const CartPage = () => {
 
           <div className="mb-4 flex w-full justify-between">
             <div className="text-xl font-bold">Total:</div>
-            <div className="text-xl">${calculateTotalPrice().toFixed(2)}</div>
+            <div className="text-xl">${localCart?.totalPrice.toFixed(2)}</div>
           </div>
           <button
             onClick={() => handlePlaceOrder()}
@@ -196,7 +186,7 @@ const CartPage = () => {
           sm:w-auto md:hidden">
         <div className="mb-4 flex w-full justify-between sm:gap-72">
           <div className="text-xl font-bold">Total:</div>
-          <div className="text-xl">${calculateTotalPrice().toFixed(2)}</div>
+          <div className="text-xl">${localCart?.totalPrice.toFixed(2)}</div>
         </div>
         <button
           onClick={() => handlePlaceOrder()}

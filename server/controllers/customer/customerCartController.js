@@ -17,10 +17,10 @@ const addCartItem = async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    // Find the customer's cart or create one if it doesn't exist
-    let cart = await Cart.findOne({ customerId }, {}, {});
-    if (!cart) {
-      cart = new Cart({
+    // Find the customer's existingCart or create one if it doesn't exist
+    let existingCart = await Cart.findOne({ customerId }, {}, {});
+    if (!existingCart) {
+      existingCart = new Cart({
         _id: new mongoose.Types.ObjectId(),
         customerId,
         items: [],
@@ -29,38 +29,38 @@ const addCartItem = async (req, res) => {
       });
     }
 
-    // Check if the product already exists in the cart's items
-    const itemIndex = cart.items.findIndex(
+    // Check if the product already exists in the existingCart's items
+    const itemIndex = existingCart.items.findIndex(
       (item) => item.productId.toString() === productId.toString(),
     );
     if (itemIndex !== -1) {
       // Update existing item
-      cart.items[itemIndex].quantity += quantity;
-      cart.items[itemIndex].price = product.price;
-      cart.items[itemIndex].updatedAt = new Date(); // Update timestamp
+      existingCart.items[itemIndex].quantity += quantity;
+      existingCart.items[itemIndex].price = product.price;
+      existingCart.items[itemIndex].updatedAt = new Date(); // Update timestamp
     } else {
-      // Create a new cart item
+      // Create a new existingCart item
       const newItem = {
         _id: new mongoose.Types.ObjectId(),
         productId,
         quantity,
         price: product.price,
       };
-      cart.items.push(newItem);
+      existingCart.items.push(newItem);
     }
 
     // Recalculate total quantity and price
-    cart.totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
-    cart.totalPrice = cart.items.reduce(
+    existingCart.totalQuantity = existingCart.items.reduce((acc, item) => acc + item.quantity, 0);
+    existingCart.totalPrice = existingCart.items.reduce(
       (acc, item) => acc + item.quantity * item.price,
       0,
     );
 
-    // Save the cart
-    await cart.save();
+    // Save the existingCart
+    const cart = await existingCart.save();
 
     res.status(200).json({
-      message: 'Item added to cart successfully',
+      message: 'Item added to existingCart successfully',
       status: 'success',
       payload: cart,
     });

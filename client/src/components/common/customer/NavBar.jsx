@@ -1,5 +1,7 @@
 import { ShoppingBagOutlined } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import {
+  useDispatch,
+} from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { clearAccessToken } from '@/features/customer/redux/customerAuthSlice.js';
 import ProfileButton from './ProfileButton.jsx';
@@ -9,7 +11,7 @@ import SearchBar from './SearchBar.jsx';
 import { Button } from '@/components/ui-custom/super-admin/button.jsx';
 import { Moon, Sun } from 'lucide-react';
 import { useDarkMode } from '@/context/DarkModeContext.jsx';
-const NavBar = ({ user, cart }) => {
+const NavBar = ({ user, cartItems }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -100,7 +102,7 @@ const NavBar = ({ user, cart }) => {
               <div
                 className="absolute flex h-4 w-4 -translate-y-8 translate-x-4 items-center justify-center
                   rounded-full bg-yellow-300 text-center text-xs font-semibold text-black">
-                {cart?.length ?? 0}
+                {cartItems?.length ?? 0}
               </div>
             </div>
           </NavLink>

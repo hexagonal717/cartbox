@@ -1,14 +1,17 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import NavBar from '../common/customer/NavBar.jsx';
-import { getCart, getUser } from '@/api/v1/customer/customerApi.js';
+import {  getUser } from '@/api/v1/customer/customerApi.js';
 import { useDarkMode } from '@/context/DarkModeContext.jsx';
-
+import {
+  getCart
+} from '@/api/v1/customer/cart/cartActions.js';
 const CustomerLayout = () => {
   const location = useLocation();
-  const token = useSelector((state) => state.customerAuthSlice.accessToken);
+  const customerId = useSelector((state) => state.customerAuthSlice.accessToken?.customerId);
+  const cartItems = useSelector((state) => state.cartSlice.cart?.items);
   const { darkMode } = useDarkMode();
   const ignoreLocations = [
     '/login',
@@ -27,36 +30,34 @@ const CustomerLayout = () => {
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState(null);
+
+  const dispatch = useDispatch();
 
   const queries = useQueries({
     queries: [
       {
-        queryKey: ['navBarUser', token?.customerId],
-        queryFn: () => getUser(token.customerId),
-        enabled: !!token,
-      },
-      {
-        queryKey: ['navBarCart', token?.customerId],
-        queryFn: () =>
-          getCart(token.customerId).then((data) => data.payload.cartItems),
-        enabled: !!token,
+        queryKey: ['navBarUser', customerId],
+        queryFn: () => getUser(customerId),
+        enabled: !!customerId,
       },
     ],
   });
 
-  const [userQuery, cartQuery] = queries;
+  const [userQuery] = queries;
 
   useEffect(() => {
+
+
     if (userQuery.data) {
       setUser(userQuery.data);
+      dispatch(getCart({ customerId: customerId }));
     }
-    if (cartQuery.data) {
-      setCart(cartQuery.data);
-    }
-  }, [userQuery?.data, cartQuery?.data]);
 
-  if (userQuery.isLoading || cartQuery.isLoading) {
+
+
+  }, [userQuery.data, dispatch, customerId]);
+
+  if (userQuery.isLoading) {
     return (
       <div
         className="h-max-content fixed z-40 flex h-16 w-full select-none items-center justify-end
@@ -64,10 +65,10 @@ const CustomerLayout = () => {
     );
   }
 
-  if (userQuery.error || cartQuery.error) {
+  if (userQuery.error) {
     return (
       <div>
-        Error loading data: {userQuery.error?.message || cartQuery.error?.message}
+        Error loading data: {userQuery.error?.message}
       </div>
     );
   }
@@ -75,12 +76,12 @@ const CustomerLayout = () => {
   return (
     <div className={`${darkMode && 'dark'} `}>
       <div className="flex flex-col font-inter">
-        {!shouldIgnore && <NavBar user={user} cart={cart} />}
+        {!shouldIgnore && <NavBar user={user} cartItems={cartItems} />}
         <div
           className={
             'bg-neutral-100 text-neutral-950 dark:bg-neutral-900 dark:text-white'
           }>
-          <Outlet data={cart} />
+          <Outlet cart={cartItems} />
         </div>
       </div>
     </div>

@@ -2,15 +2,13 @@ import { ShareOutlined } from '@mui/icons-material';
 import { useQueries } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState} from 'react';
 import {
-  addCartItem,
-  removeCartItem,
   getCart,
   getProduct,
-} from '../../../api/v1/customer/customerApi.js';
+} from '@/api/v1/customer/customerApi.js';
 
-import { localAddCartItem } from '../redux/cartSlice.js';
+import { addCartItem } from '@/api/v1/customer/cart/cartActions.js';
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
@@ -45,35 +43,6 @@ const ProductDetailPage = () => {
       setCartInProduct(productInCart);
     }
   }, [productQuery.data, cartQuery.data, productId]);
-
-  const handleCartToggle = useCallback(async () => {
-    try {
-      if (!customerId) {
-        const price = product?.price;
-
-        dispatch(
-          localAddCartItem({
-            productId,
-            price,
-          }),
-        );
-      } else if (cartInProduct) {
-        // If the product is already in the cart, remove it
-        const response = await removeCartItem(productId, customerId);
-        if (response.status === 'success') {
-          setCartInProduct(false);
-        }
-      } else {
-        // Otherwise, add it to the cart
-        const response = await addCartItem(productId, customerId, 1);
-        if (response.status === 'success') {
-          setCartInProduct(true);
-        }
-      }
-    } catch (error) {
-      console.error('Failed to update cart:', error);
-    }
-  }, [customerId, cartInProduct, product?.price, dispatch, productId]);
 
   if (productQuery.isLoading || cartQuery.isLoading) {
     return (
@@ -114,7 +83,7 @@ const ProductDetailPage = () => {
 
         <div className="mt-4">
           <button
-            onClick={handleCartToggle}
+            onClick={()=> dispatch(addCartItem({productId:productId,customerId: customerId,quantity:1}))}
             className={`h-12 w-32 rounded-md border border-neutral-600 text-xs font-bold transition-all ${
               cartInProduct
                 ? 'bg-yellow-400 text-black'
