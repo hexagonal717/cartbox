@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { userRequest } from '@/api/v1/customer/customerAxios.js';
 
-
 // Add item to cart
 export const addCartItem = createAsyncThunk(
   'cart/addCartItem',
@@ -17,7 +16,7 @@ export const addCartItem = createAsyncThunk(
       console.error('Add cart item error:', error.response);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // Remove item from cart
@@ -34,7 +33,7 @@ export const removeCartItem = createAsyncThunk(
       console.error('Remove cart item error:', error.response);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // Increase item quantity
@@ -44,14 +43,14 @@ export const increaseCartItemQuantity = createAsyncThunk(
     try {
       const res = await userRequest.patch(
         `/api/customer/cart/increase-cart-item-quantity`,
-        { productId, customerId }
+        { productId, customerId },
       );
       return res.data;
     } catch (error) {
       console.error('Increase cart item quantity error:', error.response);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // Decrease item quantity
@@ -61,14 +60,14 @@ export const decreaseCartItemQuantity = createAsyncThunk(
     try {
       const res = await userRequest.patch(
         `/api/customer/cart/decrease-cart-item-quantity`,
-        { productId, customerId }
+        { productId, customerId },
       );
       return res.data;
     } catch (error) {
       console.error('Decrease cart item quantity error:', error.response);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
 );
 
 // Fetch customer cart
@@ -82,5 +81,20 @@ export const getCart = createAsyncThunk(
       console.error('Fetching cart data failed:', error.response);
       return rejectWithValue(error.response.data);
     }
-  }
+  },
+);
+
+
+// clear cart
+export const clearCart = createAsyncThunk(
+  'cart/clearCart',
+  async ({ customerId }, { rejectWithValue }) => {
+    try {
+      const res = await userRequest.delete(`/api/customer/cart/clear-cart/${customerId}`);
+      return res.data;
+    } catch (error) {
+      console.error('Fetching cart data failed:', error.response);
+      return rejectWithValue(error.response.data);
+    }
+  },
 );

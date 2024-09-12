@@ -5,6 +5,7 @@ import {
   increaseCartItemQuantity,
   decreaseCartItemQuantity,
   removeCartItem,
+  clearCart,
 } from '@/api/v1/customer/cart/cartActions.js';
 
 // Create the slice
@@ -17,7 +18,6 @@ const cartSlice = createSlice({
   },
   reducers: {
     AddCartItem(state, action) {
-
       const { items, totalPrice, totalQuantity } = action.payload;
 
       // Push each item individually into the state
@@ -85,91 +85,92 @@ const cartSlice = createSlice({
         state.cart.totalPrice -= existingItem.price;
       }
     },
+
+    ClearCart(state) {
+      state.cart = null;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getCart.pending, (state) => {
-        console.log('getCart pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(getCart.fulfilled, (state, { payload }) => {
-        console.log('getCart fulfilled', payload);
-
         // Destructure payload safely
         const { cart, cartItems } = payload.payload || {};
-
-        // Ensure cart is always initialized before assigning values
-        state.cart = state.cart || { items: [cartItems], totalQuantity: 0, totalPrice: 0 };
-
-        // Assign the cart items, total quantity, and total price from the payload
-        state.cart.items = cartItems || []; // Set cart items safely
-        state.cart.totalQuantity = cart?.totalQuantity || 0; // Use optional chaining for cart properties
-        state.cart.totalPrice = cart?.totalPrice || 0; // Safely set totalPrice
+        state.loading = false;
+        state.cart = state.cart || {
+          items: [cartItems],
+          totalQuantity: 0,
+          totalPrice: 0,
+        };
+        state.cart.items = cartItems || [];
+        state.cart.totalQuantity = cart?.totalQuantity || 0;
+        state.cart.totalPrice = cart?.totalPrice || 0;
       })
       .addCase(getCart.rejected, (state, { payload }) => {
-        console.log('getCart rejected');
         state.loading = false;
         state.error = payload;
       })
       .addCase(addCartItem.pending, (state) => {
-        console.log('addCartItem pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(addCartItem.fulfilled, (state, { payload }) => {
-        console.log('addCartItem fulfilled');
         const cart = payload.payload;
         state.loading = false;
         state.cart = cart; // Adjust based on the actual payload structure
       })
       .addCase(addCartItem.rejected, (state, { payload }) => {
-        console.log('addCartItem rejected');
         state.loading = false;
         state.error = payload;
       })
       .addCase(removeCartItem.pending, (state) => {
-        console.log('removeCartItem pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(removeCartItem.fulfilled, (state, { payload }) => {
-        console.log('removeCartItem fulfilled');
         state.loading = false;
         state.cart = payload.cart; // Adjust based on the actual payload structure
       })
       .addCase(removeCartItem.rejected, (state, { payload }) => {
-        console.log('removeCartItem rejected');
         state.loading = false;
         state.error = payload;
       })
       .addCase(increaseCartItemQuantity.pending, (state) => {
-        console.log('increaseCartItemQuantity pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(increaseCartItemQuantity.fulfilled, (state, { payload }) => {
-        console.log('increaseCartItemQuantity fulfilled');
         state.loading = false;
         state.cart = payload.cart; // Adjust based on the actual payload structure
       })
       .addCase(increaseCartItemQuantity.rejected, (state, { payload }) => {
-        console.log('increaseCartItemQuantity rejected');
         state.loading = false;
         state.error = payload;
       })
       .addCase(decreaseCartItemQuantity.pending, (state) => {
-        console.log('decreaseCartItemQuantity pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(decreaseCartItemQuantity.fulfilled, (state, { payload }) => {
-        console.log('decreaseCartItemQuantity fulfilled');
         state.loading = false;
         state.cart = payload.cart; // Adjust based on the actual payload structure
       })
       .addCase(decreaseCartItemQuantity.rejected, (state, { payload }) => {
-        console.log('decreaseCartItemQuantity rejected');
+        state.loading = false;
+        state.error = payload;
+      })
+      .addCase(clearCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(clearCart.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.cart = payload.cart;
+      })
+      .addCase(clearCart.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });
@@ -181,5 +182,6 @@ export const {
   DecreaseItemQuantity,
   RemoveCartItem,
   IncreaseItemQuantity,
+  ClearCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

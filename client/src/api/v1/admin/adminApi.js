@@ -5,7 +5,6 @@ import { publicRequest, userRequest } from './adminAxios.js';
 export const login = async (adminInfo, dispatch) => {
   try {
     const res = await publicRequest.post('/api/admin/auth/login', adminInfo);
-    console.log(res.data, 'FRONTEND');
     dispatch(setAccessToken(res.data));
     userRequest.defaults.headers.token = res.data.tokenId;
     return res.data;
@@ -100,7 +99,6 @@ export const putProduct = async (productId, productInfo) => {
 };
 
 export const addProduct = async (adminId, productInfo) => {
-  console.log(productInfo, 'FIRSTCHECK');
   try {
     const res = await userRequest.post(
       `/api/admin/product/add-product/${adminId}`,

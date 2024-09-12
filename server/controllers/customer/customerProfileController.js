@@ -159,15 +159,11 @@ const findUserByAge = async (req, res) => {
 
 const getAddress = async (req, res) => {
   const { id: customerId } = req.params;
-  console.log(customerId);
-
   try {
     const customer = await customerSchema.findById(customerId);
     if (!customer) {
       return res.status(404).json({ message: 'Customer not found' });
     }
-
-    console.log(customer);
 
     res.status(200).json({ payload: customer.address });
   } catch (error) {
@@ -238,9 +234,6 @@ const putAddress = async (req, res) => {
 
 const deleteAddress = async (req, res) => {
   const { id: customerId, addressId } = req.params;
-
-  console.log('Customer ID:', customerId);
-  console.log('Address ID:', addressId);
 
   try {
     const customer = await customerSchema.findById(customerId);

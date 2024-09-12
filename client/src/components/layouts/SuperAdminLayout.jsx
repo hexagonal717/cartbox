@@ -27,8 +27,6 @@ const SuperAdminLayout = () => {
   const [user, setUser] = useState(null);
   const { darkMode, toggleDarkMode } = useDarkMode();
 
-  console.log('SuperAdminLayout:', { darkMode, toggleDarkMode });
-
   const queries = useQueries({
     queries: [
       {

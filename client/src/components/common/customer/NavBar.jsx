@@ -1,7 +1,5 @@
 import { ShoppingBagOutlined } from '@mui/icons-material';
-import {
-  useDispatch,
-} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { clearAccessToken } from '@/features/customer/redux/customerAuthSlice.js';
 import ProfileButton from './ProfileButton.jsx';
@@ -11,16 +9,17 @@ import SearchBar from './SearchBar.jsx';
 import { Button } from '@/components/ui-custom/super-admin/button.jsx';
 import { Moon, Sun } from 'lucide-react';
 import { useDarkMode } from '@/context/DarkModeContext.jsx';
+import { ClearCart } from '@/features/customer/redux/cart/cartSlice.js';
 const NavBar = ({ user, cartItems }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionWindow, setSuggestionWindow] = useState(false);
   const { darkMode, toggleDarkMode } = useDarkMode();
   const handleLogout = () => {
     dispatch(clearAccessToken());
+    dispatch(ClearCart());
     navigate('/');
   };
 

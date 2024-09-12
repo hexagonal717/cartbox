@@ -42,7 +42,6 @@ const signup = async (req, res) => {
   }
 };
 const login = async (req, res) => {
-  console.log(req.body, 'ddddd');
   try {
     const { email, password } = req.body;
 

@@ -1,25 +1,51 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { login } from '../../../api/v1/customer/customerApi.js';
+import { login } from '@/api/v1/customer/customerApi.js';
+import { addCartItem } from '@/api/v1/customer/cart/cartActions.js';
+import {
+  ClearGuestCart
+} from '@/features/customer/redux/cart/guestCartSlice.js';
 
 const LogInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const guestCart = useSelector((state) => state.guestCartSlice.cart);
 
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
   });
 
+  const transferGuestCart = async (customerId) => {
+    if (guestCart?.items?.length > 0) {
+      try {
+        const addItemPromises = guestCart.items.map((item) => {
+          return dispatch(addCartItem({
+            productId: item._id,
+            customerId: customerId,
+            quantity: item.quantity,
+          }));
+        });
+
+        await Promise.all(addItemPromises);
+        } catch (error) {
+        console.error('Error while transferring guest cart items:', error);
+      }
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const res = await login(credentials, dispatch); // Await the login function
-      if (res?.status === 'success') {
-        console.log(res.status, 'STATUS');
+      const res = await login(credentials, dispatch);
+      if (res?.status === 'success' && res && res.customerId) {
+        await transferGuestCart(res.customerId);
+        dispatch(ClearGuestCart())
         navigate('/');
+      } else {
+        console.error('Login successful but customerId not received');
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -64,7 +90,7 @@ const LogInPage = () => {
           />
 
           <NavLink
-            to={'/forgotpassword'}
+            to={`/forgotpassword`}
             style={{
               textDecoration: 'none',
             }}>
@@ -91,7 +117,7 @@ const LogInPage = () => {
             }}>
             Want to create an account?
           </div>
-          <Link to={'/signup'}>
+          <Link to={`/signup`}>
             <button
               className={`m-4 cursor-pointer rounded-lg border-0 bg-springgreen-500/10 px-20 py-2.5 text-sm
                 font-bold text-springgreen-500 outline outline-1 outline-springgreen-500/35
@@ -100,7 +126,7 @@ const LogInPage = () => {
               Sign up
             </button>
           </Link>
-          <Link to={'/admin-login'}>
+          <Link to={`/admin-login`}>
             <div className={'text-xs'}>
               Are you an{' '}
               <span

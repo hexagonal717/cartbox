@@ -1,10 +1,9 @@
 const Order = require('../../model/orderSchema');
 const Product = require('../../model/productSchema');
 const Customer = require('../../model/customerSchema');
+const Cart = require('../../model/cartSchema');
 
 const getOrder = async (req, res) => {
-  console.log(req.params.id, 'FROM ORDERPAGE');
-
   try {
     const { id: customerId } = req.params;
 
@@ -64,7 +63,6 @@ const getOrder = async (req, res) => {
 const addOrder = async (req, res) => {
   const { id: customerId } = req.params;
   const { items } = req.body;
-  console.log(customerId, items);
 
   try {
     // Ensure required fields are provided
@@ -85,7 +83,7 @@ const addOrder = async (req, res) => {
     let shippingAddress = req.body.shippingAddress || defaultAddress;
     let billingAddress = req.body.billingAddress || defaultAddress;
 
-    // Check if we have default address to use
+    // Check if we have default addresses to use
     if (!shippingAddress || !billingAddress) {
       return res
         .status(400)
@@ -108,6 +106,16 @@ const addOrder = async (req, res) => {
         totalQuantity += quantity;
         totalPrice += quantity * price;
 
+        // Ensure there's enough stock
+        if (product.stockQuantity < quantity) {
+          throw new Error(`Not enough stock for product ID ${item.productId}`);
+        }
+
+        // Decrease stock quantity
+        await Product.findByIdAndUpdate(item.productId, {
+          $inc: { stockQuantity: -quantity },
+        });
+
         return {
           productId: product._id,
           quantity,
@@ -126,18 +134,49 @@ const addOrder = async (req, res) => {
       items: orderItems,
       totalQuantity,
       totalPrice,
-      status: 'pending', // Default status can be 'pending' or 'processing'
+      status: 'pending',
       shippingAddress,
       billingAddress,
     });
 
     await order.save();
 
-    res.status(200).json({
-      message: 'Order placed successfully',
-      status: 'success',
-      payload: order,
-    });
+    const paymentSuccess = Math.random() < 0.9;
+
+    if (paymentSuccess) {
+      order.status = 'processing';
+      await order.save();
+
+      // Clear the customer's cart
+      await Cart.findOneAndUpdate(
+        { customerId },
+        { $set: { items: [], totalQuantity: 0, totalPrice: 0 } },
+        { new: true }
+      );
+
+      res.status(200).json({
+        message: 'Order placed successfully',
+        status: 'success',
+        payload: order,
+      });
+    } else {
+      // Payment failed, restore the stock quantity
+      await Promise.all(
+        orderItems.map(async (item) => {
+          await Product.findByIdAndUpdate(item.productId, {
+            $inc: { stockQuantity: item.quantity },
+          });
+        }),
+      );
+
+      order.status = 'pending';
+
+      res.status(200).json({
+        message: 'Payment failed',
+        status: 'pending',
+        payload: order,
+      });
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to place order' });

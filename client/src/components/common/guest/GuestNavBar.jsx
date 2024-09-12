@@ -7,10 +7,11 @@ import SearchBar from '../customer/SearchBar.jsx';
 import { Button } from '@/components/ui-custom/super-admin/button.jsx';
 import { Moon, Sun } from 'lucide-react';
 import { useDarkMode } from '@/context/DarkModeContext.jsx';
+import { useSelector } from 'react-redux';
 
-const GuestNavBar = ({ cart }) => {
+const GuestNavBar = () => {
+  const cartItems = useSelector((state) => state.guestCartSlice.cart?.items);
   const navigate = useNavigate();
-
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionWindow, setSuggestionWindow] = useState(false);
@@ -100,13 +101,13 @@ const GuestNavBar = ({ cart }) => {
             </button>
           </div>
           <div>
-            <NavLink to={'/cart'}>
+            <NavLink to={`/cart`}>
               <div className="relative">
                 <ShoppingBagOutlined className="text-neutral-950 hover:cursor-pointer dark:text-neutral-200" />
                 <div
                   className="absolute flex h-4 w-4 -translate-y-8 translate-x-4 items-center justify-center
                     rounded-full bg-yellow-300 text-center text-xs font-semibold text-black">
-                  {cart?.length ?? 0}
+                  {cartItems?.length ?? 0}
                 </div>
               </div>
             </NavLink>

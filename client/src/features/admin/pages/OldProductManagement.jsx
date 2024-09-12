@@ -81,15 +81,11 @@ const OldProductManagementPage = () => {
   };
 
   async function handleAddProduct(event) {
-    console.log(newProduct, 'NEW PROUDCT');
     event.preventDefault();
     try {
       const response = await addProduct(newProduct).then((data) => data);
 
-      console.log(response, 'responseeeeeeeeeee');
-
       if (response.status === 'success') {
-        console.log('success');
         setProductList((prevList) => [...prevList, response.payload]);
         setIsModalOpen(false);
       } else {

@@ -283,9 +283,9 @@ const ProductManagementPage = () => {
       ),
     },
     {
-      accessorKey: 'quantity',
+      accessorKey: 'stockQuantity',
       header: 'Quantity',
-      cell: ({ row }) => <div>{row.getValue('quantity')}</div>,
+      cell: ({ row }) => <div>{row.getValue('stockQuantity')}</div>,
     },
     {
       accessorKey: 'stock',
@@ -667,16 +667,16 @@ const ProductManagementPage = () => {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="quantity" className="text-right">
+              <Label htmlFor="stockQuantity" className="text-right">
                 Quantity
               </Label>
               <Input
-                id="quantity"
-                value={editingProduct?.quantity ?? ''}
+                id="stockQuantity"
+                value={editingProduct?.stockQuantity ?? ''}
                 onChange={(e) =>
                   setEditingProduct((prev) => ({
                     ...prev,
-                    quantity: e.target.value,
+                    stockQuantity: e.target.value,
                   }))
                 }
                 className="col-span-3"

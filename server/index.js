@@ -1,7 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
+if (process.env.NODE_ENV === 'production') {
+  require('dotenv').config({ path: '.env' });
+} else if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config({ path: '.env.local' });
+}
 
 const customerAuthRouter = require('./router/v1/customer/customerAuthRouter');
 const customerProfileRouter = require('./router/v1/customer/customerProfileRouter');
@@ -19,14 +23,15 @@ const superAdminClientRouter = require('./router/v1/superAdmin/superAdminClientR
 const app = express();
 app.use(
   cors({
-    origin: process.env.VITE_CARTBOX_LOCALHOST_API_BASE_URL,
+    origin: process.env.VITE_CARTBOX_API_BASE_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   }),
 );
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI).then(() => {});
+mongoose.connect(process.env.MONGODB_URI).then(() => {
+  });
 
 // Customer routes
 app.use('/api/customer/auth', customerAuthRouter);
@@ -49,5 +54,6 @@ app.use('/api/super-admin/product', superAdminProductRouter);
 app.use('/api/super-admin/client', superAdminClientRouter);
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {});
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  });

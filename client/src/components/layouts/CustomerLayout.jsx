@@ -3,15 +3,15 @@ import { useQueries } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import NavBar from '../common/customer/NavBar.jsx';
-import {  getUser } from '@/api/v1/customer/customerApi.js';
+import { getUser } from '@/api/v1/customer/customerApi.js';
 import { useDarkMode } from '@/context/DarkModeContext.jsx';
-import {
-  getCart
-} from '@/api/v1/customer/cart/cartActions.js';
+import { getCart } from '@/api/v1/customer/cart/cartActions.js';
 const CustomerLayout = () => {
   const location = useLocation();
-  const customerId = useSelector((state) => state.customerAuthSlice.accessToken?.customerId);
-  const cartItems = useSelector((state) => state.cartSlice.cart?.items);
+  const customerId = useSelector(
+    (state) => state.customerAuthSlice.accessToken?.customerId,
+  );
+
   const { darkMode } = useDarkMode();
   const ignoreLocations = [
     '/login',
@@ -44,17 +44,18 @@ const CustomerLayout = () => {
   });
 
   const [userQuery] = queries;
-
+  const cartItems = useSelector((state) => {
+    if (customerId) {
+      return state.cartSlice.cart?.items;
+    } else {
+      return state.guestCartSlice.cart?.items;
+    }
+  });
   useEffect(() => {
-
-
     if (userQuery.data) {
       setUser(userQuery.data);
       dispatch(getCart({ customerId: customerId }));
     }
-
-
-
   }, [userQuery.data, dispatch, customerId]);
 
   if (userQuery.isLoading) {
@@ -66,11 +67,7 @@ const CustomerLayout = () => {
   }
 
   if (userQuery.error) {
-    return (
-      <div>
-        Error loading data: {userQuery.error?.message}
-      </div>
-    );
+    return <div>Error loading data: {userQuery.error?.message}</div>;
   }
 
   return (
@@ -81,7 +78,7 @@ const CustomerLayout = () => {
           className={
             'bg-neutral-100 text-neutral-950 dark:bg-neutral-900 dark:text-white'
           }>
-          <Outlet cart={cartItems} />
+          <Outlet />
         </div>
       </div>
     </div>

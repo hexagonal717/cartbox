@@ -2,22 +2,33 @@ import { ShareOutlined } from '@mui/icons-material';
 import { useQueries } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState} from 'react';
-import {
-  getCart,
-  getProduct,
-} from '@/api/v1/customer/customerApi.js';
+import { useEffect, useState } from 'react';
+import { getCart, getProduct } from '@/api/v1/customer/customerApi.js';
 
 import { addCartItem } from '@/api/v1/customer/cart/cartActions.js';
+import { AddCartItem } from '@/features/customer/redux/cart/guestCartSlice.js';
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
   const customerId = token?.customerId;
-  const dispatch = useDispatch();
+  const productInCart = useSelector((state) =>
+    state.cartSlice.cart?.items.find((item) => item.productId === productId),
+  );
 
-  const [cartInProduct, setCartInProduct] = useState(false);
+  const localStorageProductInCart = useSelector((state) => {
+    if (!customerId) {
+      return state.guestCartSlice.cart?.items.find((item) => item._id === productId);
+    } else if (customerId) {
+      return state.cartSlice.cart?.items.find(
+        (item) => item.productId === productId,
+      );
+    }
+  });
+
+  const dispatch = useDispatch();
   const [product, setProduct] = useState(null);
+  const [cart, setCart] = useState(null);
 
   const [productQuery, cartQuery] = useQueries({
     queries: [
@@ -36,12 +47,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     if (productQuery.data) setProduct(productQuery.data);
-    if (cartQuery.data) {
-      const productInCart = cartQuery.data.some(
-        (cartItem) => cartItem.productId === productId,
-      );
-      setCartInProduct(productInCart);
-    }
+    if (cartQuery.data) setCart(cartQuery.data);
   }, [productQuery.data, cartQuery.data, productId]);
 
   if (productQuery.isLoading || cartQuery.isLoading) {
@@ -59,6 +65,16 @@ const ProductDetailPage = () => {
       </div>
     );
   }
+
+  const handleAddCartItem = () => {
+    if (!customerId) {
+      dispatch(AddCartItem({ product }));
+    } else {
+      dispatch(
+        addCartItem({ productId: productId, customerId: customerId, quantity: 1 }),
+      );
+    }
+  };
 
   return (
     <div
@@ -83,13 +99,13 @@ const ProductDetailPage = () => {
 
         <div className="mt-4">
           <button
-            onClick={()=> dispatch(addCartItem({productId:productId,customerId: customerId,quantity:1}))}
+            onClick={() => handleAddCartItem()}
             className={`h-12 w-32 rounded-md border border-neutral-600 text-xs font-bold transition-all ${
-              cartInProduct
+              localStorageProductInCart
                 ? 'bg-yellow-400 text-black'
                 : 'bg-black text-white hover:bg-yellow-400 hover:text-black'
               }`}>
-            {cartInProduct ? 'In Cart' : 'Add to Cart'}
+            {localStorageProductInCart ? 'In Cart' : 'Add to Cart'}
           </button>
         </div>
       </div>

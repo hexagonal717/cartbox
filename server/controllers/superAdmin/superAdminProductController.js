@@ -35,7 +35,7 @@ const addProductList = async (req, res) => {
     'description',
     'image',
     'price',
-    'quantity', // Added quantity field
+    'stockQuantity',
   ];
   for (const product of req.body) {
     for (let field of requiredFields) {
@@ -73,11 +73,11 @@ const addProductList = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const adminId = req.params.id;
-    const { name, description, image, price, category, subCategory, quantity } =
+    const { name, description, image, price, category, subCategory, stockQuantity } =
       req.body;
 
     // Basic validation checks
-    if (!name || !price || !category || !subCategory || quantity === undefined) {
+    if (!name || !price || !category || !subCategory || stockQuantity === undefined) {
       return res.status(400).json({
         status: 'fail',
         message: 'All fields are required',
@@ -102,8 +102,8 @@ const addProduct = async (req, res) => {
       price: price,
       category: category,
       subCategory: subCategory,
-      quantity: quantity,
-      // Added quantity field
+      stockQuantity: stockQuantity,
+      // Added stockQuantity field
     });
 
     await product.save();
@@ -157,7 +157,7 @@ const putProduct = async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      quantity: req.body.quantity,
+      stockQuantity: req.body.stockQuantity,
       image: imagePaths, // Use the updated image array
       ...req.body,
     };

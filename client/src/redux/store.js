@@ -14,6 +14,7 @@ import adminAuthSliceReducer from '../features/admin/redux/adminAuthSlice.js';
 import adminOtpSliceReducer from '../features/admin/redux/adminOtpSlice.js';
 import adminProfileSliceReducer from '../features/admin/redux/adminProfileSlice.js';
 import cartSliceReducer from '../features/customer/redux/cart/cartSlice.js';
+import guestCartSliceReducer from '../features/customer/redux/cart/guestCartSlice.js';
 import customerAuthSliceReducer from '../features/customer/redux/customerAuthSlice.js';
 import customerOtpSliceReducer from '../features/customer/redux/customerOtpSlice.js';
 import customerProfileSliceReducer from '../features/customer/redux/customerProfileSlice.js';
@@ -34,6 +35,7 @@ const persistConfig = {
     'superAdminAuthSlice',
     'superAdminProfileSlice',
     'cartSlice',
+    'guestCartSlice',
     'themeSlice',
   ],
 };
@@ -49,6 +51,7 @@ const rootReducer = combineReducers({
   superAdminProfileSlice: superAdminProfileSliceReducer,
   superAdminOtpSlice: superAdminOtpSliceReducer,
   cartSlice: cartSliceReducer,
+  guestCartSlice: guestCartSliceReducer,
   themeSlice: themeSliceReducer,
 });
 

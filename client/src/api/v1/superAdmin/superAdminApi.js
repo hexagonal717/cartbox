@@ -141,7 +141,6 @@ export const putProduct = async (productId, productInfo) => {
 };
 
 export const addProduct = async (superAdminId, productInfo) => {
-  console.log(productInfo, 'FIRSTCHECK');
   try {
     const res = await userRequest.post(
       `/api/super-admin/product/add-product/${superAdminId}`,
@@ -167,7 +166,6 @@ export const deleteProduct = async (productId) => {
 };
 
 export const addClient = async (adminId, adminInfo) => {
-  console.log(adminInfo, 'FIRSTCHECK');
   try {
     const res = await userRequest.post(
       `/api/super-admin/client/add-client/${adminId}`,

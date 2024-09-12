@@ -198,7 +198,7 @@ const productSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    quantity: {
+    stockQuantity: {
       type: Number,
       default: 0,
       min: 0,
@@ -206,7 +206,7 @@ const productSchema = new mongoose.Schema(
     stock: {
       type: Boolean,
       default: function () {
-        return this.quantity > 0;
+        return this.stockQuantity > 0;
       },
     },
   },

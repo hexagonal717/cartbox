@@ -1,64 +1,131 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect} from 'react';
-import { getCart } from '@/api/v1/customer/customerApi.js';
+import { useEffect, useState } from 'react';
+import { getCart, getProduct } from '@/api/v1/customer/customerApi.js';
 import {
-  removeCartItem,
-  increaseCartItemQuantity,
   decreaseCartItemQuantity,
+  increaseCartItemQuantity,
+  removeCartItem,
 } from '@/api/v1/customer/cart/cartActions.js';
 import CartEmpty from '../../../components/common/customer/CartEmpty.jsx';
 import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui-custom/button.jsx';
 import { Minus, Plus } from 'lucide-react';
+import {
+  DecreaseItemQuantity,
+  IncreaseItemQuantity,
+  RemoveCartItem,
+} from '@/features/customer/redux/cart/guestCartSlice.js';
+import GuestRedirectModal from '@/features/customer/pages/GuestRedirectModal.jsx';
+import {
+  Card
+} from '@/components/ui-custom/card.jsx';
 
 const CartPage = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
   const customerId = useSelector(
     (state) => state.customerAuthSlice.accessToken?.customerId,
   );
-
-  const localCart = useSelector((state) => state.cartSlice.cart);
-  const localCartItems = useSelector((state) => state.cartSlice.cart?.items);
-  const dispatch = useDispatch();
-
-  const [cartItems, setCartItems] = useState([]);
+  const localStorageCart = useSelector((state) => {
+    if (!customerId) {
+      return state.guestCartSlice.cart;
+    } else if (customerId) {
+      return state.cartSlice.cart;
+    }
+  });
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
 
-  const {
-    data: cartResult,
-    isLoading: isCartLoading,
-    error: cartError,
-  } = useQuery({
-    queryKey: ['cartPage', customerId],
-    queryFn: () => getCart(customerId).then((data) => data.payload),
-    enabled: !!customerId,
+  const queries = useQueries({
+    queries: [
+      {
+        queryKey: ['guestCartProducts'],
+        queryFn: async () => {
+          const items = localStorageCart.items;
+          const productPromises = items.map((item) =>
+            getProduct(item._id).then((response) => response.payload),
+          );
+          return Promise.all(productPromises);
+        },
+        enabled: !customerId, // Only run for guest users
+      },
+      {
+        queryKey: ['CartPage', customerId],
+        queryFn: () => getCart(customerId).then((data) => data.payload),
+        enabled: !!customerId,
+      },
+    ],
   });
 
+  const [guestProductQuery, cartResult] = queries;
+
   useEffect(() => {
-    if (cartResult) {
-      setCartItems(cartResult.cartItems);
-      setProducts(cartResult.products);
-      setCart(cartResult.cart);
+    if (customerId && cartResult.data) {
+      setProducts(cartResult.data?.products);
+      setCart(cartResult.data);
+    } else if (!customerId && guestProductQuery.data) {
+      setProducts(guestProductQuery.data);
+      setCart(localStorageCart);
     }
-  }, [cartResult]);
+  }, [customerId, cartResult.data, guestProductQuery.data, localStorageCart]);
 
+  if (cartResult.isLoading || guestProductQuery.isLoading) {
+    return <LoadingPage />;
+  }
 
-  if (isCartLoading) return <LoadingPage />;
-  if (cartError) return <div>Error loading cart: {cartError.message}</div>;
-
-  if (localCartItems.length === 0) {
+  if (localStorageCart?.length === 0) {
     return <CartEmpty />;
   }
 
   function handlePlaceOrder() {
-    if (cart?.customerId) {
+    if (localStorageCart?.customerId) {
       navigate(`/payment/${cart._id}`, {
-        state: { cart },
+        state: { cart:localStorageCart },
       });
+    } else if (!customerId) {
+      setIsGuestModalOpen(true);
+      }
+  }
+
+  function handleIncreaseCartItemQuantity(productId) {
+    if (customerId) {
+      dispatch(
+        increaseCartItemQuantity({
+          productId: productId,
+          customerId: customerId,
+        }),
+      );
+    } else if (!customerId) {
+      dispatch(IncreaseItemQuantity(productId));
+    }
+  }
+
+  function handleDecreaseCartItemQuantity(productId) {
+    if (customerId) {
+      dispatch(
+        decreaseCartItemQuantity({
+          productId: productId,
+          customerId: customerId,
+        }),
+      );
+    } else if (!customerId) {
+      dispatch(DecreaseItemQuantity(productId));
+    }
+  }
+
+  function handleRemoveCartItem(productId) {
+    if (customerId) {
+      dispatch(
+        removeCartItem({
+          productId: productId,
+          customerId: customerId,
+        }),
+      );
+    } else if (!customerId) {
+      dispatch(RemoveCartItem(productId));
     }
   }
 
@@ -68,14 +135,15 @@ const CartPage = () => {
         className="grid w-screen grid-cols-1 grid-rows-1 gap-3 px-4 pt-20 sm:w-auto md:w-auto
           md:grid-cols-2 md:grid-rows-1 md:gap-6 lg:gap-12">
         <div>
-          {localCartItems?.map((cartItem) => {
-            const product = products.find(
-              (product) => product._id === cartItem.productId,
+          {localStorageCart.items?.map((cartItem, index) => {
+            const product = products?.find(
+              (product) =>
+                product._id === cartItem._id || product._id === cartItem.productId,
             );
 
             return (
-              <div className="py-2" key={cartItem?.productId}>
-                <div
+              <div key={product?._id || index} className="py-2">
+                <Card
                   className="flex flex-row justify-between gap-16 rounded-lg bg-neutral-100 p-6 text-right shadow
                     dark:bg-neutral-950 sm:gap-40 md:gap-28 lg:gap-56">
                   <div className="relative block w-32">
@@ -90,12 +158,7 @@ const CartPage = () => {
                         variant={'outline'}
                         size={'xs'}
                         className={'rounded-full'}
-                        onClick={() =>
-                          dispatch(decreaseCartItemQuantity({
-                            productId: product._id,
-                            customerId: customerId,
-                          }))
-                        }>
+                        onClick={() => handleDecreaseCartItemQuantity(product._id)}>
                         <Minus className={'m-0.5 scale-75'} />
                       </Button>
                       <div
@@ -107,14 +170,7 @@ const CartPage = () => {
                         variant={'outline'}
                         size={'xs'}
                         className={'rounded-full'}
-                        onClick={() =>
-                          dispatch(
-                            increaseCartItemQuantity({
-                              productId: product._id,
-                              customerId: customerId,
-                            }),
-                          )
-                        }>
+                        onClick={() => handleIncreaseCartItemQuantity(product._id)}>
                         <Plus className={'m-0.5 scale-75'} />
                       </Button>
                     </div>
@@ -128,16 +184,11 @@ const CartPage = () => {
                     <button
                       className="mt-8 rounded-full border-neutral-700 px-2.5 py-1.5 text-xs text-yellow-400
                         hover:underline"
-                      onClick={() => dispatch(
-                        removeCartItem({
-                          productId: product._id,
-                          customerId: customerId,
-                        }),
-                      )}>
+                      onClick={() => handleRemoveCartItem(product._id)}>
                       Remove
                     </button>
                   </div>
-                </div>
+                </Card>
               </div>
             );
           })}
@@ -150,14 +201,15 @@ const CartPage = () => {
             'mt-2 hidden w-full flex-col rounded-lg bg-neutral-950 p-8 text-neutral-200 md:flex'
           }>
           <div className="mb-10 flex flex-col justify-between gap-1">
-            {cartItems.map((cartItem) => {
-              const product = products.find(
-                (product) => product._id === cartItem.productId,
+            {localStorageCart.items.map((cartItem, index) => {
+              const product = products?.find(
+                (product) =>
+                  product._id === cartItem._id || product._id === cartItem.productId,
               );
 
               return (
                 <div
-                  key={product._id}
+                  key={product?._id || index}
                   className={
                     'flex flex-row justify-between text-sm text-neutral-300'
                   }>
@@ -170,7 +222,7 @@ const CartPage = () => {
 
           <div className="mb-4 flex w-full justify-between">
             <div className="text-xl font-bold">Total:</div>
-            <div className="text-xl">${localCart?.totalPrice.toFixed(2)}</div>
+            <div className="text-xl">${localStorageCart?.totalPrice.toFixed(2)}</div>
           </div>
           <button
             onClick={() => handlePlaceOrder()}
@@ -186,7 +238,7 @@ const CartPage = () => {
           sm:w-auto md:hidden">
         <div className="mb-4 flex w-full justify-between sm:gap-72">
           <div className="text-xl font-bold">Total:</div>
-          <div className="text-xl">${localCart?.totalPrice.toFixed(2)}</div>
+          <div className="text-xl">${localStorageCart?.totalPrice.toFixed(2)}</div>
         </div>
         <button
           onClick={() => handlePlaceOrder()}
@@ -195,6 +247,11 @@ const CartPage = () => {
           Place Order
         </button>
       </footer>
+
+      <GuestRedirectModal
+        isOpen={isGuestModalOpen}
+        onClose={() => setIsGuestModalOpen(false)}
+      />
     </div>
   );
 };

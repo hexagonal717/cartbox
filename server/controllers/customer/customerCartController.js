@@ -50,7 +50,10 @@ const addCartItem = async (req, res) => {
     }
 
     // Recalculate total quantity and price
-    existingCart.totalQuantity = existingCart.items.reduce((acc, item) => acc + item.quantity, 0);
+    existingCart.totalQuantity = existingCart.items.reduce(
+      (acc, item) => acc + item.quantity,
+      0,
+    );
     existingCart.totalPrice = existingCart.items.reduce(
       (acc, item) => acc + item.quantity * item.price,
       0,
@@ -270,10 +273,47 @@ const getCart = async (req, res) => {
   }
 };
 
+const clearCart = async (req, res) => {
+  try {
+    const { id:customerId } = req.params;
+
+    // Ensure required fields are provided
+    if (!customerId) {
+      return res.status(400).json({ error: 'Required fields are missing' });
+    }
+
+    // Find the customer's cart
+    let cartItems = await Cart.findOne({ customerId });
+    if (!cartItems) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    // Clear the cart by setting items to an empty array and resetting totals
+    cartItems.items = [];
+    cartItems.totalQuantity = 0;
+    cartItems.totalPrice = 0;
+
+    // Save the updated cart
+    const cart = await cartItems.save();
+
+    res.status(200).json({
+      message: 'Cart items have been successfully removed.',
+      status: 'success',
+      payload: cart,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to clear the cart' });
+  }
+};
+
+
+
 module.exports = {
   addCartItem,
   removeCartItem,
   increaseCartItemQuantity,
   decreaseCartItemQuantity,
   getCart,
+  clearCart
 };

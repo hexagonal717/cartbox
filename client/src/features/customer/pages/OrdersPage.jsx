@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
-import { getOrder } from '../../../api/v1/customer/customerApi.js';
+import { getOrder } from '@/api/v1/customer/customerApi.js';
 import { NavLink } from 'react-router-dom';
 import OrderEmpty from '../../../components/common/customer/OrderEmpty.jsx';
 
@@ -10,8 +10,6 @@ const OrdersPage = () => {
   const customerId = useSelector(
     (state) => state.customerAuthSlice.accessToken?.customerId,
   );
-
-  console.log(customerId, 'ORder');
 
   const [orderItems, setOrderItems] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -34,9 +32,7 @@ const OrdersPage = () => {
   }, [orderResult]);
 
   if (isOrderLoading) return <LoadingPage />;
-  if (orderError) return <div>Error loading cart: {orderError.message}</div>;
-
-  console.log(orderItems);
+  if (orderError) return <OrderEmpty />;
 
   if (orderItems.length === 0) {
     return <OrderEmpty />;

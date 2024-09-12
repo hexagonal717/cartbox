@@ -8,8 +8,6 @@ import AdminProfilePage from '../features/admin/pages/AdminProfilePage.jsx';
 import AdminAccountSettings from '@/features/admin/pages/AdminAccountSettings.jsx';
 
 const ProtectedAdminRoutes = () => {
-  console.log('ADMIN Child rendered');
-
   return (
     <Route element={<AdminLayout />}>
       <Route path="/" element={<AdminHomePage />}>

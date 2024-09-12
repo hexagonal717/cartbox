@@ -9,8 +9,6 @@ import ClientManagementPage from '@/features/superAdmin/pages/ClientManagementPa
 import ProductManagementPage from '@/features/superAdmin/pages/ProductManagementPage.jsx';
 
 const ProtectedAdminRoutes = () => {
-  console.log('SUPERADMIN Child rendered');
-
   return (
     <Route element={<SuperAdminLayout />}>
       <Route path="/" element={<SuperAdminHomePage />}>
