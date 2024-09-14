@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import SettingsSidePanel from '../../../components/common/Admin/SettingsSidePanel.jsx';
+import SettingsSidePanel from '../../../components/common/admin/SettingsSidePanel.jsx';
 
 const SuperAdminSettingsPage = () => {
   const navigate = useNavigate();
