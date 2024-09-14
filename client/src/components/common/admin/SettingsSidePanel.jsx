@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui-custom/super-admin/button.jsx';
+import { Button } from '@/components/ui-custom/admin/button.jsx';
 import { Settings, UserRound } from 'lucide-react';
 
 const menuItems = [
