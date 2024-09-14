@@ -13,13 +13,15 @@ import storage from 'redux-persist/lib/storage';
 import adminAuthSliceReducer from '../features/admin/redux/adminAuthSlice.js';
 import adminOtpSliceReducer from '../features/admin/redux/adminOtpSlice.js';
 import adminProfileSliceReducer from '../features/admin/redux/adminProfileSlice.js';
-import cartSliceReducer from '../features/customer/redux/cartSlice.js';
+import cartSliceReducer from '../features/customer/redux/cart/cartSlice.js';
+import guestCartSliceReducer from '../features/customer/redux/cart/guestCartSlice.js';
 import customerAuthSliceReducer from '../features/customer/redux/customerAuthSlice.js';
 import customerOtpSliceReducer from '../features/customer/redux/customerOtpSlice.js';
 import customerProfileSliceReducer from '../features/customer/redux/customerProfileSlice.js';
 import superAdminAuthSliceReducer from '../features/superAdmin/redux/superAdminAuthSlice.js';
 import superAdminOtpSliceReducer from '../features/superAdmin/redux/superAdminOtpSlice.js';
 import superAdminProfileSliceReducer from '../features/superAdmin/redux/superAdminProfileSlice.js';
+import themeSliceReducer from '../context/themeSlice.js';
 
 const persistConfig = {
   key: 'hexagonal717-cartbox',
@@ -33,6 +35,8 @@ const persistConfig = {
     'superAdminAuthSlice',
     'superAdminProfileSlice',
     'cartSlice',
+    'guestCartSlice',
+    'themeSlice',
   ],
 };
 
@@ -47,6 +51,8 @@ const rootReducer = combineReducers({
   superAdminProfileSlice: superAdminProfileSliceReducer,
   superAdminOtpSlice: superAdminOtpSliceReducer,
   cartSlice: cartSliceReducer,
+  guestCartSlice: guestCartSliceReducer,
+  themeSlice: themeSliceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

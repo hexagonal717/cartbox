@@ -13,6 +13,8 @@ import ProtectedSuperAdminRoutes from './routes/ProtectedSuperAdminRoutes.jsx';
 import ProtectedRedirectedRoutes from './routes/ProtectedRedirectedRoutes.jsx';
 import GuestRoutes from './routes/GuestRoutes.jsx';
 
+import { DarkModeProvider } from '@/context/DarkModeContext.jsx'; // Import DarkModeProvider
+
 function App() {
   const customerToken = useSelector(
     (state) => state.customerAuthSlice.accessToken?.status,
@@ -29,25 +31,29 @@ function App() {
       <Route>
         {!customerToken && !adminToken && !superAdminToken && GuestRoutes()}
 
-        {/*Protected Routes*/}
+        {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
-          {/*Protected Redirected Routes*/}
+          {/* Protected Redirected Routes */}
           {ProtectedRedirectedRoutes()}
 
-          {/*Protected Admin Routes*/}
+          {/* Protected Admin Routes */}
           {adminToken && ProtectedAdminRoutes()}
 
-          {/*Protected Customer Routes*/}
+          {/* Protected Customer Routes */}
           {customerToken && ProtectedCustomerRoutes()}
 
-          {/*Protected Super Admin Routes*/}
+          {/* Protected Super Admin Routes */}
           {superAdminToken && ProtectedSuperAdminRoutes()}
         </Route>
       </Route>,
     ),
   );
 
-  return <RouterProvider router={pageRouter} />;
+  return (
+    <DarkModeProvider>
+      <RouterProvider router={pageRouter} />
+    </DarkModeProvider>
+  );
 }
 
 export default App;

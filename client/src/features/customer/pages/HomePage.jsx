@@ -1,5 +1,5 @@
 import { useQueries } from '@tanstack/react-query';
-import { getCart, getProductList } from '../../../api/v1/customer/customerApi.js';
+import { getCart, getProductList } from '@/api/v1/customer/customerApi.js';
 import CategoryBar from '../../../components/common/customer/CategoryBar.jsx';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 import { useSelector } from 'react-redux';
@@ -43,12 +43,12 @@ const HomePage = () => {
   const cartList = cartQuery.data;
 
   return (
-    <div className="box-border flex w-full flex-col items-center py-[11.1rem] lg:py-40">
+    <div className="flex w-full flex-col items-center py-[11.1rem] lg:py-40">
       <CategoryBar />
       <Carousel />
       <div
-        className="grid w-full max-w-screen-xl grid-cols-1 gap-1 p-2 md:grid-cols-2 lg:grid-cols-3
-          xl:grid-cols-4">
+        className="grid w-full max-w-screen-xl grid-flow-row-dense grid-cols-2 gap-1 p-2 sm:grid-cols-2
+          md:grid-cols-3 lg:grid-cols-3 lg:gap-3 xl:grid-cols-5">
         {productList && productList.length > 0 ? (
           productList.map((product) => (
             <ProductCard key={product._id} product={product} cart={cartList} />

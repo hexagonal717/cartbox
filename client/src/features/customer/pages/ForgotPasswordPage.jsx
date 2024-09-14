@@ -45,17 +45,16 @@ const ForgotPasswordPage = () => {
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center user-select-none">
-        <form
-          className="flex flex-col items-center gap-3"
-          onSubmit={handleSubmit}
-        >
+      <div className="user-select-none fixed inset-0 flex items-center justify-center">
+        <form className="flex flex-col items-center gap-3" onSubmit={handleSubmit}>
           <input
             type="email"
             name="email"
             placeholder="Email"
             onChange={handleCredentials}
-            className="px-3 py-2 rounded-md border-none outline outline-gray-600 bg-gray-900 text-gray-200 shadow-md text-sm font-medium caret-white focus:outline-purple-600 focus:py-3 focus:px-4 focus:shadow-lg transition-all"
+            className="rounded-md border-none bg-gray-900 px-3 py-2 text-sm font-medium text-gray-200
+              caret-white shadow-md outline outline-gray-600 transition-all focus:px-4 focus:py-3
+              focus:shadow-lg focus:outline-purple-600"
           />
           {otpState.error && (
             <div>
@@ -64,8 +63,8 @@ const ForgotPasswordPage = () => {
           )}
           <button
             type="submit"
-            className="px-8 py-2 my-4 bg-purple-700 text-blue-900 rounded-md font-bold hover:bg-purple-600 hover:text-white transition-colors"
-          >
+            className="my-4 rounded-md bg-purple-700 px-8 py-2 font-bold text-blue-900 transition-colors
+              hover:bg-purple-600 hover:text-white">
             <span>Send OTP</span>
           </button>
         </form>

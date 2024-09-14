@@ -1,4 +1,4 @@
-import { setAccessToken } from '../../../features/superAdmin/redux/superAdminAuthSlice.js';
+import { setAccessToken } from '@/features/superAdmin/redux/superAdminAuthSlice.js';
 import { publicRequest, userRequest } from './superAdminAxios.js';
 
 // Sign up new user
@@ -113,6 +113,102 @@ export const deleteUser = async (superAdminId) => {
     return res.data;
   } catch (error) {
     console.error('Delete user info error:', error.response);
+    throw error;
+  }
+};
+
+export const getProductList = async () => {
+  try {
+    const res = await userRequest.get(`/api/super-admin/product/get-product-list/`);
+    return res.data;
+  } catch (error) {
+    console.error('Get product list info error:', error.response);
+    throw error;
+  }
+};
+
+export const putProduct = async (productId, productInfo) => {
+  try {
+    const res = await userRequest.put(
+      `/api/super-admin/product/put-product/${productId}`,
+      productInfo,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Product updating error:', error.response);
+    throw error;
+  }
+};
+
+export const addProduct = async (superAdminId, productInfo) => {
+  try {
+    const res = await userRequest.post(
+      `/api/super-admin/product/add-product/${superAdminId}`,
+      productInfo,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Product adding error:', error.response);
+    throw error;
+  }
+};
+
+export const deleteProduct = async (productId) => {
+  try {
+    const res = await userRequest.delete(
+      `/api/super-admin/product/delete-product/${productId}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Delete product info error:', error.response);
+    throw error;
+  }
+};
+
+export const addClient = async (adminId, adminInfo) => {
+  try {
+    const res = await userRequest.post(
+      `/api/super-admin/client/add-client/${adminId}`,
+      adminInfo,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Product adding error:', error.response);
+    throw error;
+  }
+};
+
+export const getClientList = async () => {
+  try {
+    const res = await userRequest.get(`/api/super-admin/client/get-client-list/`);
+    return res.data;
+  } catch (error) {
+    console.error('Get admin list info error:', error.response);
+    throw error;
+  }
+};
+
+export const deleteClient = async (adminId) => {
+  try {
+    const res = await userRequest.delete(
+      `/api/super-admin/client/delete-client/${adminId}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Delete admin info error:', error.response);
+    throw error;
+  }
+};
+
+export const putClient = async (adminId, adminInfo) => {
+  try {
+    const res = await userRequest.put(
+      `/api/super-admin/client/put-client/${adminId}`,
+      adminInfo,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Admin updating error:', error.response);
     throw error;
   }
 };

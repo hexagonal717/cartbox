@@ -2,24 +2,33 @@ import { ShareOutlined } from '@mui/icons-material';
 import { useQueries } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
-import {
-  addCartItem,
-  removeCartItem,
-  getCart,
-  getProduct,
-} from '../../../api/v1/customer/customerApi.js';
+import { useEffect, useState } from 'react';
+import { getCart, getProduct } from '@/api/v1/customer/customerApi.js';
 
-import { localAddCartItem } from '../redux/cartSlice.js';
+import { addCartItem } from '@/api/v1/customer/cart/cartActions.js';
+import { AddCartItem } from '@/features/customer/redux/cart/guestCartSlice.js';
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
   const customerId = token?.customerId;
-  const dispatch = useDispatch();
+  const productInCart = useSelector((state) =>
+    state.cartSlice.cart?.items.find((item) => item.productId === productId),
+  );
 
-  const [cartInProduct, setCartInProduct] = useState(false);
+  const localStorageProductInCart = useSelector((state) => {
+    if (!customerId) {
+      return state.guestCartSlice.cart?.items.find((item) => item._id === productId);
+    } else if (customerId) {
+      return state.cartSlice.cart?.items.find(
+        (item) => item.productId === productId,
+      );
+    }
+  });
+
+  const dispatch = useDispatch();
   const [product, setProduct] = useState(null);
+  const [cart, setCart] = useState(null);
 
   const [productQuery, cartQuery] = useQueries({
     queries: [
@@ -38,42 +47,8 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     if (productQuery.data) setProduct(productQuery.data);
-    if (cartQuery.data) {
-      const productInCart = cartQuery.data.some(
-        (cartItem) => cartItem.productId === productId,
-      );
-      setCartInProduct(productInCart);
-    }
+    if (cartQuery.data) setCart(cartQuery.data);
   }, [productQuery.data, cartQuery.data, productId]);
-
-  const handleCartToggle = useCallback(async () => {
-    try {
-      if (!customerId) {
-        const price = product?.price;
-
-        dispatch(
-          localAddCartItem({
-            productId,
-            price,
-          }),
-        );
-      } else if (cartInProduct) {
-        // If the product is already in the cart, remove it
-        const response = await removeCartItem(productId, customerId);
-        if (response.status === 'success') {
-          setCartInProduct(false);
-        }
-      } else {
-        // Otherwise, add it to the cart
-        const response = await addCartItem(productId, customerId, 1);
-        if (response.status === 'success') {
-          setCartInProduct(true);
-        }
-      }
-    } catch (error) {
-      console.error('Failed to update cart:', error);
-    }
-  }, [customerId, cartInProduct, product?.price, dispatch, productId]);
 
   if (productQuery.isLoading || cartQuery.isLoading) {
     return (
@@ -91,9 +66,19 @@ const ProductDetailPage = () => {
     );
   }
 
+  const handleAddCartItem = () => {
+    if (!customerId) {
+      dispatch(AddCartItem({ product }));
+    } else {
+      dispatch(
+        addCartItem({ productId: productId, customerId: customerId, quantity: 1 }),
+      );
+    }
+  };
+
   return (
     <div
-      className="grid h-full w-full grid-cols-1 gap-8 px-0 py-16 sm:grid-cols-2 sm:px-8 sm:py-20
+      className="grid h-screen w-full grid-cols-1 gap-8 px-0 py-16 sm:grid-cols-2 sm:px-8 sm:py-20
         lg:grid-cols-2 lg:px-36">
       <div className="mx-auto w-full max-w-lg">
         <img
@@ -103,22 +88,24 @@ const ProductDetailPage = () => {
         />
       </div>
       <div className="flex flex-col justify-start p-4">
-        <div className="scale-90 text-right hover:cursor-pointer">
+        <div className="scale-90 text-right hover:cursor-pointer dark:text-white">
           <ShareOutlined />
         </div>
-        <div className="mb-4 text-lg font-light">{product?.name}</div>
-        <div className="mb-4">{product?.description}</div>
-        <div className="text-2xl font-medium">${product?.price}</div>
+        <div className="mb-4 text-lg font-semibold dark:text-white">
+          {product?.name}
+        </div>
+        <div className="mb-4 dark:text-white">{product?.description}</div>
+        <div className="text-2xl font-medium dark:text-white">${product?.price}</div>
 
         <div className="mt-4">
           <button
-            onClick={handleCartToggle}
+            onClick={() => handleAddCartItem()}
             className={`h-12 w-32 rounded-md border border-neutral-600 text-xs font-bold transition-all ${
-              cartInProduct
+              localStorageProductInCart
                 ? 'bg-yellow-400 text-black'
                 : 'bg-black text-white hover:bg-yellow-400 hover:text-black'
               }`}>
-            {cartInProduct ? 'In Cart' : 'Add to Cart'}
+            {localStorageProductInCart ? 'In Cart' : 'Add to Cart'}
           </button>
         </div>
       </div>

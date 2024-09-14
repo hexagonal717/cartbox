@@ -1,6 +1,4 @@
-import ProductManagementPage from './ProductManagementPage.jsx';
-import OverviewPage from './OverviewPage.jsx';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import DashboardSidePanel from '../../../components/common/admin/DashboardSidePanel.jsx';
 
@@ -17,10 +15,13 @@ const AdminHomePage = () => {
   }, [location.pathname, navigate]);
 
   return (
-    <div className="grid h-screen w-screen grid-cols-[auto,1fr] items-center justify-center pt-16">
-      <DashboardSidePanel />
-      {location.pathname === '/overview' && <OverviewPage />}
-      {location.pathname === '/product-management' && <ProductManagementPage />}
+    <div className="mt-16 grid h-full grid-rows-[auto,1fr] bg-neutral-50 dark:bg-neutral-900">
+      <aside>
+        <DashboardSidePanel />
+      </aside>
+      <div className="flex h-full w-auto flex-col pl-48">
+        <Outlet />
+      </div>
     </div>
   );
 };

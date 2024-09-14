@@ -4,9 +4,9 @@ const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const slides = [
-    'https://via.placeholder.com/800x400',
-    'https://via.placeholder.com/800x400',
-    'https://via.placeholder.com/800x400',
+    'https://placehold.co/800x400',
+    'https://placehold.co/800x400',
+    'https://placehold.co/800x400',
   ];
 
   const handlePrev = () => {

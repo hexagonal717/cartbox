@@ -1,11 +1,10 @@
-import { setAccessToken } from '../../../features/admin/redux/adminAuthSlice.js';
+import { setAccessToken } from '@/features/admin/redux/adminAuthSlice.js';
 import { publicRequest, userRequest } from './adminAxios.js';
 
 // Admin login
 export const login = async (adminInfo, dispatch) => {
   try {
     const res = await publicRequest.post('/api/admin/auth/login', adminInfo);
-    console.log(res.data, 'FRONTEND');
     dispatch(setAccessToken(res.data));
     userRequest.defaults.headers.token = res.data.tokenId;
     return res.data;
@@ -74,11 +73,35 @@ export const deleteUser = async (adminId) => {
   }
 };
 
-export const addProduct = async (productInfo) => {
-  console.log(productInfo, 'FIRSTCHECK');
+export const getProductList = async (adminId) => {
+  try {
+    const res = await userRequest.get(
+      `/api/admin/product/get-product-list/${adminId}`,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Get product list info error:', error.response);
+    throw error;
+  }
+};
+
+export const putProduct = async (productId, productInfo) => {
+  try {
+    const res = await userRequest.put(
+      `/api/admin/product/put-product/${productId}`,
+      productInfo,
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Product updating error:', error.response);
+    throw error;
+  }
+};
+
+export const addProduct = async (adminId, productInfo) => {
   try {
     const res = await userRequest.post(
-      '/api/admin/product/add-product',
+      `/api/admin/product/add-product/${adminId}`,
       productInfo,
     );
     return res.data;

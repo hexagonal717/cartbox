@@ -26,8 +26,8 @@ const CategoryBar = () => {
 
   return (
     <div
-      className="fixed top-[4rem] z-30 w-full border-neutral-400/30 bg-neutral-900 px-2 py-5
-        text-center text-xs text-white">
+      className="fixed top-[4rem] z-30 w-full border-neutral-400/30 bg-neutral-100 px-2 py-5
+        text-center text-xs text-white dark:bg-neutral-900">
       <ul
         className="grid list-none grid-cols-3 grid-rows-2 items-center justify-center gap-2.5
           sm:grid-cols-3 sm:grid-rows-2 md:grid-cols-3 md:grid-rows-2 md:px-20 lg:grid-cols-6
@@ -35,8 +35,9 @@ const CategoryBar = () => {
         {categories.map((category) => (
           <li
             key={category}
-            className="cursor-pointer rounded-lg bg-neutral-800 p-2 font-bold hover:bg-neutral-200
-              hover:text-black"
+            className="cursor-pointer rounded-lg bg-white p-2 font-bold text-neutral-950 shadow-md
+              hover:bg-neutral-100 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-200
+              dark:hover:text-black"
             onClick={() => handleCategoryClick(category)}>
             {category}
           </li>

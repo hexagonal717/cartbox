@@ -1,10 +1,8 @@
-import { setAccessToken } from '../../../features/customer/redux/customerAuthSlice.js';
+import { setAccessToken } from '@/features/customer/redux/customerAuthSlice.js';
 import { publicRequest, userRequest } from './customerAxios.js';
 
 // Sign up new user
 export const signUp = async (customerInfo) => {
-  console.log(customerInfo, 'FIRST CHECK');
-
   try {
     const res = await publicRequest.post('/api/customer/auth/signup', customerInfo, {
       headers: {
@@ -264,8 +262,6 @@ export const addAddress = async (customerId, addressInfo) => {
 };
 
 export const deleteAddress = async (customerId, addressId) => {
-  console.log(customerId, addressId, 'FIRSTTTTTT CHECkkkkk');
-
   try {
     const res = await userRequest.delete(
       `/api/customer/profile/delete-address/${customerId}/${addressId}`,
@@ -288,7 +284,6 @@ export const getOrder = async (customerId) => {
 };
 
 export const addOrder = async (customerId, items) => {
-  console.log(customerId, items, 'GGGGGGGGGGGGGGGGGG');
   try {
     const res = await userRequest.post(
       `/api/customer/order/add-order/${customerId}`,

@@ -41,14 +41,14 @@ const getProduct = async (req, res) => {
 
     if (!product) {
       return res.status(404).json({
-        type: 'error',
+        status: 'error',
         message: 'Product not found',
       });
     }
 
     // Send success response with fetched product
     res.status(200).json({
-      type: 'success',
+      status: 'success',
       payload: product,
     });
   } catch (err) {
@@ -57,7 +57,7 @@ const getProduct = async (req, res) => {
 
     // Respond with error details
     res.status(500).json({
-      type: 'error',
+      status: 'error',
       message: 'Failed to fetch product data',
       error: err.message,
     });

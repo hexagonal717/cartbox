@@ -1,48 +1,53 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { addOrder, getCart, getProductList } from '@/api/v1/customer/customerApi.js'
+import { useQueries } from '@tanstack/react-query'
 import {
-  addOrder,
-  getCart,
-  getProductList,
-} from '../../../api/v1/customer/customerApi.js';
-import { useQueries } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+  useDispatch,
+  useSelector,
+} from 'react-redux';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui-custom/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui-custom/select"
+import { Button } from "@/components/ui-custom/button"
+import { Loader2 } from "lucide-react"
+import {
+  clearCart
+} from '@/api/v1/customer/cart/cartActions.js';
 
-const PaymentPage = () => {
-  const customerId = useSelector(
-    (state) => state.customerAuthSlice.accessToken?.customerId,
-  );
+export default function PaymentPage() {
+  const customerId = useSelector((state) => state.customerAuthSlice.accessToken?.customerId)
+  const [paymentMethod, setPaymentMethod] = useState('')
+  const [paymentStatus, setPaymentStatus] = useState('pending')
+  const dispatch = useDispatch();
 
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState('pending');
-
-  const location = useLocation();
-  const { cart } = location.state;
-  const navigate = useNavigate();
+  const location = useLocation()
+  const { cart } = location.state
+  const navigate = useNavigate()
 
   const handlePayment = () => {
     if (!paymentMethod) {
-      alert('Please select a payment method');
-      return;
+      alert('Please select a payment method')
+      return
     }
 
-    setPaymentStatus('processing');
+    setPaymentStatus('processing')
 
     setTimeout(() => {
-      const isSuccess = Math.random() > 0.5;
-      setPaymentStatus(isSuccess ? 'completed' : 'failed');
-    }, 2000);
-  };
+      const isSuccess = Math.random() > 0.5
+      setPaymentStatus(isSuccess ? 'completed' : 'failed')
+    }, 2000)
+  }
 
   useEffect(() => {
     if (paymentStatus === 'completed') {
-      addOrder(customerId, cart.items).then((res) => {
+      addOrder(customerId, cart?.items).then((res) => {
         if (res.status === 'success') {
-          navigate('/order-success', { state: cart });
+         // dispatch(clearCart({customerId: customerId }))
+          navigate('/order-success', { state: cart })
         }
-      });
+      })
     }
-  }, [cart.items, customerId, paymentStatus]);
+  }, [cart?.items, customerId, paymentStatus, navigate])
 
   const queries = useQueries({
     queries: [
@@ -56,77 +61,87 @@ const PaymentPage = () => {
         enabled: !!customerId,
       },
     ],
-  });
+  })
 
-  const [productQuery, cartQuery] = queries;
+  const [productQuery, cartQuery] = queries
 
   if (productQuery.isLoading || cartQuery.isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
   }
 
   if (productQuery.error || cartQuery.error) {
     return (
-      <div>
+      <div className="flex text-red-500">
         Error loading data: {productQuery.error?.message || cartQuery.error?.message}
       </div>
-    );
+    )
   }
 
   return (
-    <div className="flex h-screen flex-col items-center px-4 pt-32">
-      <div className="mb-6 w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-2xl font-semibold text-neutral-900">
-          Order Summary
-        </h2>
-        <div className="mb-4 text-sm">
-          <div className="mb-2 flex justify-between">
-            <span className="font-medium text-neutral-700">Total Items:</span>
-            <span className="font-bold text-neutral-900">{cart?.totalQuantity}</span>
+    <div className="min-h-screen justify-center flex flex-col mx-auto max-w-md px-4 py-8">
+      <Card>
+        <CardHeader>
+          <CardTitle>Order Summary</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Total Items:</span>
+            <span className="font-medium">{cart?.totalQuantity}</span>
           </div>
-          <div className="mb-2 flex justify-between">
-            <span className="font-medium text-neutral-700">Total Amount:</span>
-            <span className="font-bold text-neutral-900">
-              ${cart?.totalPrice.toFixed(2)}
-            </span>
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Total Amount:</span>
+            <span className="font-medium">${cart?.totalPrice.toFixed(2)}</span>
           </div>
-        </div>
-        <div className="w-full">
-          <label className="mb-2 block text-sm font-bold text-neutral-600">
-            Payment Method
-          </label>
-          <select
-            value={paymentMethod}
-            className="w-full rounded-md border border-r-8 border-neutral-900 py-2 pl-3 pr-10 text-sm
-              shadow-sm outline-none transition duration-150 ease-in-out"
-            onChange={(e) => setPaymentMethod(e.target.value)}>
-            <option disabled hidden value="">
-              Select a payment method
-            </option>
-            <option value="Credit Card">Credit Card</option>
-            <option value="PayPal">PayPal</option>
-            <option value="UPI">UPI</option>
-            <option value="Cash on Delivery">Cash on Delivery</option>
-          </select>
-        </div>
-        <button
-          className="mt-6 w-full rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white
-            shadow-sm transition duration-150 ease-in-out hover:bg-green-700 focus:outline-none"
-          onClick={handlePayment}>
-          Submit Payment
-        </button>
-      </div>
-      <div className="mt-6">
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Payment Method
+            </label>
+            <Select onValueChange={(value) => setPaymentMethod(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a payment method" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Credit Card">Credit Card</SelectItem>
+                <SelectItem value="PayPal">PayPal</SelectItem>
+                <SelectItem value="UPI">UPI</SelectItem>
+                <SelectItem value="Cash on Delivery">Cash on Delivery</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button className="w-full" onClick={handlePayment}>
+            {paymentStatus === 'processing' ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Processing
+              </>
+            ) : (
+              'Submit Payment'
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
+      <div className="mt-6 text-center">
         <h3 className="text-lg font-semibold">
           Payment Status:{' '}
           <span
-            className={`capitalize
-              ${paymentStatus === 'completed' ? 'text-green-600' : paymentStatus === 'processing' ? 'text-yellow-600' : 'text-red-600'}`}>
+            className={`capitalize ${
+              paymentStatus === 'completed'
+                ? 'text-green-600'
+                : paymentStatus === 'processing'
+                  ? 'text-yellow-600'
+                  : 'text-red-600'
+            }`}
+          >
             {paymentStatus}
           </span>
         </h3>
       </div>
     </div>
-  );
-};
-
-export default PaymentPage;
+  )
+}

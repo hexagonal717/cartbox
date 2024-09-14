@@ -3,7 +3,9 @@ import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import AdminNavBar from '../common/admin/AdminNavBar.jsx';
-import { getUser } from '../../api/v1/admin/adminApi.js';
+import { getUser } from '@/api/v1/admin/adminApi.js';
+
+import { useDarkMode } from '@/context/DarkModeContext.jsx';
 
 const AdminLayout = () => {
   const location = useLocation();
@@ -22,6 +24,7 @@ const AdminLayout = () => {
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   const [user, setUser] = useState(null);
+  const { darkMode, toggleDarkMode } = useDarkMode();
 
   const queries = useQueries({
     queries: [
@@ -54,10 +57,14 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className="flex font-inter">
-      {!shouldIgnore && <AdminNavBar user={user} />}
-      <div>
-        <Outlet />
+    <div className={`${darkMode && 'dark'} flex h-screen flex-col`}>
+      <div className="flex w-full flex-1 font-inter">
+        {!shouldIgnore && (
+          <AdminNavBar user={user} toggleDarkMode={toggleDarkMode} />
+        )}
+        <div className="w-full overflow-y-hidden">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

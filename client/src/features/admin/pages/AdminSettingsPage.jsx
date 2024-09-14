@@ -1,11 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import AdminProfilePage from './AdminProfilePage.jsx';
-import AdminAccountSettings from './AdminAccountSettings.jsx';
-import SettingsSidePanel from '../../../components/common/admin/SettingsSidePanel.jsx';
+import SettingsSidePanel from '../../../components/common/Admin/SettingsSidePanel.jsx';
 
-const AdminSettingsPage = () => {
-  const location = useLocation();
+const SuperAdminSettingsPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,12 +10,15 @@ const AdminSettingsPage = () => {
   }, [navigate]);
 
   return (
-    <div className="grid h-screen w-screen grid-cols-[auto,1fr] items-center justify-center">
-      <SettingsSidePanel />
-      {location.pathname === '/settings/profile' && <AdminProfilePage />}
-      {location.pathname === '/settings/account' && <AdminAccountSettings />}
+    <div className="flex h-full bg-neutral-50 dark:bg-neutral-900">
+      <aside>
+        <SettingsSidePanel />
+      </aside>
+      <div className="flex w-full py-8 pl-[11.9rem]">
+        <Outlet />
+      </div>
     </div>
   );
 };
 
-export default AdminSettingsPage;
+export default SuperAdminSettingsPage;

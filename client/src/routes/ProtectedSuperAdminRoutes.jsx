@@ -5,14 +5,16 @@ import SuperAdminSettingsPage from '../features/superAdmin/pages/SuperAdminSetti
 import SuperAdminProfilePage from '../features/superAdmin/pages/SuperAdminProfilePage.jsx';
 import SuperAdminAccountSettings from '../features/superAdmin/pages/SuperAdminAccountSettings.jsx';
 import SuperAdminHomePage from '../features/superAdmin/pages/SuperAdminHomePage.jsx';
+import ClientManagementPage from '@/features/superAdmin/pages/ClientManagementPage.jsx';
+import ProductManagementPage from '@/features/superAdmin/pages/ProductManagementPage.jsx';
 
 const ProtectedAdminRoutes = () => {
-  console.log('SUPERADMIN Child rendered');
-
   return (
     <Route element={<SuperAdminLayout />}>
       <Route path="/" element={<SuperAdminHomePage />}>
         <Route path="overview" element={<SuperAdminOverviewPage />} />
+        <Route path="client-management" element={<ClientManagementPage />} />
+        <Route path="product-management" element={<ProductManagementPage />} />
       </Route>
       <Route path="/settings" element={<SuperAdminSettingsPage />}>
         <Route path="profile" element={<SuperAdminProfilePage />} />

@@ -22,7 +22,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const signup = async (req, res) => {
-  console.log(req.body, 'SEOND CHECLLLLLLLLLLLLLLl');
   try {
     const { firstName, lastName, age, email, phone, address, password, role } =
       req.body;
