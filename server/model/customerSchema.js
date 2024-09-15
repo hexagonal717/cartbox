@@ -23,7 +23,7 @@ const customerInfoSchema = new mongoose.Schema(
     lastName: { type: String, required: true },
     age: { type: Number },
     email: { type: String, required: true, unique: true },
-    phone: { type: Number, required: true, unique: true },
+    phone: { type: Number, unique: true },
     password: { type: String, required: true },
     address: [addressSchema],
     role: {

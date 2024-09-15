@@ -26,7 +26,7 @@ const signup = async (req, res) => {
     const { firstName, lastName, age, email, phone, address, password, role } =
       req.body;
 
-    if (!firstName || !lastName || !age || !email || !phone || !password) {
+    if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
@@ -35,13 +35,13 @@ const signup = async (req, res) => {
       {},
       { lean: true },
     );
-    const existingUserPhone = await customerSchema.findOne(
+    /*const existingUserPhone = await customerSchema.findOne(
       { phone },
       {},
       { lean: true },
-    );
+    );*/
 
-    if (existingUserEmail || existingUserPhone) {
+    if (existingUserEmail /*|| existingUserPhone*/) {
       return res.status(400).json({ error: 'User already exists.' });
     }
 

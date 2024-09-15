@@ -3,9 +3,9 @@ import HomePage from '../features/customer/pages/HomePage.jsx';
 import LogInPage from '../features/customer/pages/LogInPage.jsx';
 import SignUpPage from '../features/customer/pages/SignUpPage.jsx';
 import ForgotPasswordPage from '../features/customer/pages/ForgotPasswordPage.jsx';
-import VerifyCodePage from '../features/customer/pages/VerifyCodePage.jsx';
+import VerifyOtpPage from '../features/customer/pages/VerifyOtpPage.jsx';
 import ChangePasswordPage from '../features/customer/pages/ChangePasswordPage.jsx';
-import LogInRedirectPage from '../features/customer/pages/LogInRedirectPage.jsx';
+import ChangePasswordSuccessRedirect from '../features/customer/pages/ChangePasswordSuccessRedirect.jsx';
 import ProductDetailPage from '../features/customer/pages/ProductDetailPage.jsx';
 import CartPage from '../features/customer/pages/CartPage.jsx';
 import CategoryPage from '../features/customer/pages/CategoryPage.jsx';
@@ -22,10 +22,10 @@ const GuestRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LogInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-        <Route path="/verifycode" element={<VerifyCodePage />} />
-        <Route path="/changepassword" element={<ChangePasswordPage />} />
-        <Route path="/loginredirectPage" element={<LogInRedirectPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/verify-otp" element={<VerifyOtpPage />} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
+        <Route path="/change-password-success-redirect" element={<ChangePasswordSuccessRedirect />} />
         <Route path="/product/:productId" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/product-category" element={<CategoryPage />} />
