@@ -84,13 +84,14 @@ export const getCart = createAsyncThunk(
   },
 );
 
-
 // clear cart
 export const clearCart = createAsyncThunk(
   'cart/clearCart',
   async ({ customerId }, { rejectWithValue }) => {
     try {
-      const res = await userRequest.delete(`/api/customer/cart/clear-cart/${customerId}`);
+      const res = await userRequest.delete(
+        `/api/customer/cart/clear-cart/${customerId}`,
+      );
       return res.data;
     } catch (error) {
       console.error('Fetching cart data failed:', error.response);

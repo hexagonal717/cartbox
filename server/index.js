@@ -30,8 +30,7 @@ app.use(
 );
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI).then(() => {
-  });
+mongoose.connect(process.env.MONGODB_URI).then(() => {});
 
 // Customer routes
 app.use('/api/customer/auth', customerAuthRouter);
@@ -55,5 +54,4 @@ app.use('/api/super-admin/client', superAdminClientRouter);
 
 // Start the server
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  });
+app.listen(PORT, () => {});

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDarkMode } from './themeSlice'; // Import the action from your themeSlice
+import { setDarkMode } from './themeSlice';
 
 const DarkModeContext = createContext();
 
@@ -12,8 +12,10 @@ export const DarkModeProvider = ({ children }) => {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
+      document.documentElement.style.setProperty('color-scheme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.style.setProperty('color-scheme', 'light');
     }
   }, [darkMode]);
 
@@ -27,7 +29,7 @@ export const DarkModeProvider = ({ children }) => {
       darkMode,
       toggleDarkMode,
     }),
-    [darkMode],
+    [darkMode, toggleDarkMode],
   );
 
   return (

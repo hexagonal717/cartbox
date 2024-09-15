@@ -151,7 +151,7 @@ const addOrder = async (req, res) => {
       await Cart.findOneAndUpdate(
         { customerId },
         { $set: { items: [], totalQuantity: 0, totalPrice: 0 } },
-        { new: true }
+        { new: true },
       );
 
       res.status(200).json({

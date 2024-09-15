@@ -275,7 +275,7 @@ const getCart = async (req, res) => {
 
 const clearCart = async (req, res) => {
   try {
-    const { id:customerId } = req.params;
+    const { id: customerId } = req.params;
 
     // Ensure required fields are provided
     if (!customerId) {
@@ -307,13 +307,11 @@ const clearCart = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   addCartItem,
   removeCartItem,
   increaseCartItemQuantity,
   decreaseCartItemQuantity,
   getCart,
-  clearCart
+  clearCart,
 };

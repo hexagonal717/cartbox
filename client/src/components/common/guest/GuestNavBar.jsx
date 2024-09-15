@@ -81,7 +81,9 @@ const GuestNavBar = () => {
         className="fixed z-40 h-28 w-full select-none flex-col items-center bg-neutral-50 p-3 px-6
           outline outline-1 outline-neutral-300 backdrop-blur-sm dark:bg-neutral-950
           dark:outline-neutral-800 sm:flex sm:h-16">
-        <ul className="flex w-full list-none items-center justify-between gap-4 sm:justify-center">
+        <ul
+          className="flex w-full list-none items-center justify-between sm:justify-center sm:gap-1
+            md:gap-4">
           <li>
             <Link to={'/'} replace>
               <div className={'text text-lg font-bold dark:text-white'}>CartBox</div>
@@ -204,15 +206,14 @@ const GuestNavBar = () => {
       {mobileModalOpen && (
         <div
           className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm"
-          onClick={toggleMobileModal}
-        ></div>
+          onClick={toggleMobileModal}></div>
       )}
 
       {mobileModalOpen && (
         <div
           ref={modalRef}
-          className="fixed bottom-0 left-0 right-0 z-50 transform rounded-t-2xl bg-neutral-100 px-6 pt-8 pb-10 shadow-lg
-            transition-transform duration-300 ease-in-out dark:bg-neutral-900">
+          className="fixed bottom-0 left-0 right-0 z-50 transform rounded-t-2xl bg-neutral-100 px-6 pb-10
+            pt-8 shadow-lg transition-transform duration-300 ease-in-out dark:bg-neutral-900">
           <Button
             variant={'ghost'}
             onClick={toggleMobileModal}

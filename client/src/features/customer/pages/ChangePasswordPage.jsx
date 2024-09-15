@@ -86,7 +86,9 @@ const ChangePasswordPage = () => {
           </CardContent>
 
           <CardFooter className={'flex flex-col items-center space-y-2'}>
-            <Button  className="w-full" type="submit">Change Password</Button>
+            <Button className="w-full" type="submit">
+              Change Password
+            </Button>
           </CardFooter>
         </form>
       </Card>
