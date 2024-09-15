@@ -8,7 +8,10 @@ const GuestLayout = () => {
   const ignoreLocations = [
     '/login',
     '/signup',
-    '/forgotpassword',
+    '/forgot-password',
+    '/change-password',
+    '/verify-otp',
+    '/change-password-success-redirect',
     '/admin-login',
     '/super-admin-login',
     '/admin-signup',

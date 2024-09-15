@@ -16,8 +16,10 @@ const CustomerLayout = () => {
   const ignoreLocations = [
     '/login',
     '/signup',
-    '/forgotpassword',
-    '/demo',
+    '/forgot-password',
+    '/change-password',
+    '/verify-otp',
+    '/change-password-success-redirect',
     '/admin-login',
     '/admin-signup',
     '/settings',

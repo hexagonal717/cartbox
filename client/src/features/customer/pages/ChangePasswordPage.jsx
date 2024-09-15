@@ -1,8 +1,18 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { changePassword } from '../../../api/v1/customer/customerApi.js';
+import { changePassword } from '@/api/v1/customer/customerApi.js';
 import { clearEmailState, setOtpVerify } from '../redux/customerOtpSlice.js';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui-custom/card.jsx';
+import { Input } from '@/components/ui-custom/input.jsx';
+import { Label } from '@/components/ui-custom/label.jsx';
+import { Button } from '@/components/ui-custom/button.jsx';
 
 const ChangePasswordPage = () => {
   const navigate = useNavigate();
@@ -28,7 +38,7 @@ const ChangePasswordPage = () => {
     if (response?.success) {
       dispatch(setOtpVerify(false));
       dispatch(clearEmailState());
-      navigate('/loginredirectpage');
+      navigate('/change-password-success-redirect');
     } else {
       setError('Failed to change password');
     }
@@ -40,40 +50,46 @@ const ChangePasswordPage = () => {
       ...passwords,
       [name]: value,
     });
-    setError(''); // Clear error when user starts typing
+    setError('');
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
-      <form className="flex flex-col items-center gap-3" onSubmit={handleSubmit}>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleCredentials}
-          value={passwords.password}
-          className="rounded-lg border-none bg-gray-800 p-3 text-sm font-medium text-gray-300 caret-white
-            shadow-sm outline outline-1 outline-gray-600 transition-all duration-300
-            hover:shadow-md hover:outline-purple-600 focus:p-4 focus:outline-purple-600"
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm password"
-          onChange={handleCredentials}
-          value={passwords.confirmPassword}
-          className="rounded-lg border-none bg-gray-800 p-3 text-sm font-medium text-gray-300 caret-white
-            shadow-sm outline outline-1 outline-gray-600 transition-all duration-300
-            hover:shadow-md hover:outline-purple-600 focus:p-4 focus:outline-purple-600"
-        />
-        {error && <div className="-mt-2 text-red-500">{error}</div>}
-        <button
-          type="submit"
-          className="mt-4 rounded-lg bg-purple-600 p-3 text-sm font-semibold text-white transition-colors
-            duration-200 hover:bg-purple-700">
-          Change Password
-        </button>
-      </form>
+    <div className="flex min-h-screen w-full items-center justify-center dark:bg-neutral-950">
+      <Card className="m-2 w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-bold">
+            Change your Password
+          </CardTitle>
+        </CardHeader>
+        <form className="space-y-2" onSubmit={handleSubmit}>
+          <CardContent>
+            <div className="flex flex-col space-y-2">
+              <Label htmlFor={'password'}>Password</Label>
+              <Input
+                type="password"
+                name="password"
+                placeholder="Enter your new password"
+                onChange={handleCredentials}
+                value={passwords.password}
+              />
+              <div className="space-y-2" />
+              <Label htmlFor={'confirmPassword'}>Confirm password</Label>
+              <Input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm your new password"
+                onChange={handleCredentials}
+                value={passwords.confirmPassword}
+              />
+              {error && <div className="-mt-2 text-red-500">{error}</div>}
+            </div>
+          </CardContent>
+
+          <CardFooter className={'flex flex-col items-center space-y-2'}>
+            <Button  className="w-full" type="submit">Change Password</Button>
+          </CardFooter>
+        </form>
+      </Card>
     </div>
   );
 };
