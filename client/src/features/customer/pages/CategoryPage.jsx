@@ -2,9 +2,8 @@ import { useQueries } from '@tanstack/react-query';
 import { getCart, getProductListByCategory } from '@/api/v1/customer/customerApi.js';
 import { useSelector } from 'react-redux';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
-import { ArrowBackIos } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button.jsx';
+import { Button } from '@/components/ui-custom/button.jsx';
 import { ChevronLeft } from 'lucide-react';
 
 const CategoryPage = () => {
@@ -67,7 +66,7 @@ const CategoryPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center px-4 py-8 lg:py-16">
+    <div className="flex min-h-screen w-full flex-col items-center px-4 py-16 lg:py-16">
       <div className="flex w-full max-w-screen-xl flex-col">
         <div className="flex items-center pb-10 pt-14">
           <Button
@@ -76,7 +75,7 @@ const CategoryPage = () => {
             className="scale-90 hover:bg-neutral-300">
             <ChevronLeft />
           </Button>
-          <div className="lg:px-74 px-1 text-3xl font-bold">
+          <div className="lg:px-74 px-1 text-xl font-bold">
             {capitalizeFirstLetter(category || subCategory || 'Category')}
           </div>
         </div>

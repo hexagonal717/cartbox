@@ -43,7 +43,7 @@ const HomePage = () => {
   const cartList = cartQuery.data;
 
   return (
-    <div className="flex w-full flex-col items-center py-[11.1rem] lg:py-40">
+    <div className="flex w-full flex-col items-center py-28 lg:py-40">
       <CategoryBar />
       <Carousel />
       <div

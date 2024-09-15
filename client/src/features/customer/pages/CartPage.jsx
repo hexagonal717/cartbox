@@ -18,9 +18,7 @@ import {
   RemoveCartItem,
 } from '@/features/customer/redux/cart/guestCartSlice.js';
 import GuestRedirectModal from '@/features/customer/pages/GuestRedirectModal.jsx';
-import {
-  Card
-} from '@/components/ui-custom/card.jsx';
+import { Card } from '@/components/ui-custom/card.jsx';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -76,18 +74,18 @@ const CartPage = () => {
     return <LoadingPage />;
   }
 
-  if (localStorageCart?.length === 0) {
+  if (localStorageCart.items.length === 0) {
     return <CartEmpty />;
   }
 
   function handlePlaceOrder() {
     if (localStorageCart?.customerId) {
       navigate(`/payment/${cart._id}`, {
-        state: { cart:localStorageCart },
+        state: { cart: localStorageCart },
       });
     } else if (!customerId) {
       setIsGuestModalOpen(true);
-      }
+    }
   }
 
   function handleIncreaseCartItemQuantity(productId) {
@@ -132,8 +130,8 @@ const CartPage = () => {
   return (
     <div className="flex min-h-screen justify-center bg-neutral-200 dark:bg-neutral-900">
       <div
-        className="grid w-screen grid-cols-1 grid-rows-1 gap-3 px-4 pt-20 sm:w-auto md:w-auto
-          md:grid-cols-2 md:grid-rows-1 md:gap-6 lg:gap-12">
+        className="grid w-screen grid-cols-1 grid-rows-1 gap-3 px-4 pt-[7.5rem] sm:w-auto sm:pt-20
+          md:w-auto md:grid-cols-2 md:grid-rows-1 md:gap-6 lg:gap-12">
         <div>
           {localStorageCart.items?.map((cartItem, index) => {
             const product = products?.find(
@@ -240,6 +238,7 @@ const CartPage = () => {
           <div className="text-xl font-bold">Total:</div>
           <div className="text-xl">${localStorageCart?.totalPrice.toFixed(2)}</div>
         </div>
+
         <button
           onClick={() => handlePlaceOrder()}
           className="w-full rounded-lg bg-yellow-400 px-8 py-4 text-sm font-bold text-neutral-950
