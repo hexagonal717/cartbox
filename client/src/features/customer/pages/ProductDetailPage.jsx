@@ -12,9 +12,6 @@ const ProductDetailPage = () => {
   const { productId } = useParams();
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
   const customerId = token?.customerId;
-  const productInCart = useSelector((state) =>
-    state.cartSlice.cart?.items.find((item) => item.productId === productId),
-  );
 
   const localStorageProductInCart = useSelector((state) => {
     if (!customerId) {
@@ -28,7 +25,6 @@ const ProductDetailPage = () => {
 
   const dispatch = useDispatch();
   const [product, setProduct] = useState(null);
-  const [cart, setCart] = useState(null);
 
   const [productQuery, cartQuery] = useQueries({
     queries: [
@@ -47,7 +43,6 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     if (productQuery.data) setProduct(productQuery.data);
-    if (cartQuery.data) setCart(cartQuery.data);
   }, [productQuery.data, cartQuery.data, productId]);
 
   if (productQuery.isLoading || cartQuery.isLoading) {
@@ -78,7 +73,7 @@ const ProductDetailPage = () => {
 
   return (
     <div
-      className="grid h-screen w-full grid-cols-1 gap-8 px-0 py-16 sm:grid-cols-2 sm:px-8 sm:py-20
+      className="grid min-h-screen w-full grid-cols-1 gap-8 px-0 py-16 sm:grid-cols-2 sm:px-8 sm:py-20
         lg:grid-cols-2 lg:px-36">
       <div className="mx-auto w-full max-w-lg">
         <img

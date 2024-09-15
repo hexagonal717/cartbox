@@ -62,8 +62,10 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className="flex w-full min-h-screen items-center justify-center bg-neutral-300 dark:bg-neutral-950">
-      <Card className="m-4 w-full max-w-md">
+    <div
+      className="flex min-h-screen w-full items-center justify-center bg-white dark:bg-neutral-950
+        sm:bg-neutral-50">
+      <Card className="m-4 w-full max-w-md border-0 sm:border">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
             Create an Account
@@ -171,7 +173,7 @@ const SignUpPage = () => {
           </form>
         </CardContent>
         <CardFooter className="flex flex-col items-center space-y-2">
-          <p className="text-sm text-neutral-200">Already have an account?</p>
+          <p className="text-sm dark:text-neutral-200 text-neutral-800">Already have an account?</p>
           <Link to={`/login`}>
             <Button variant="outline" className="w-full">
               Log In

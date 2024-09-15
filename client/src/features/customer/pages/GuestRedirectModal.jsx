@@ -29,14 +29,15 @@ const GuestRedirectModal = ({ isOpen, onClose }) => {
   };
 
   return (
+
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
-        className={`w-[28rem] rounded-lg sm:w-[35rem]
+        className={`w-[21rem] rounded-lg sm:w-[35rem]
           ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`}>
         <DialogHeader>
           <DialogTitle>Sign In or Create an Account</DialogTitle>
         </DialogHeader>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-center text-gray-500">
           Please log in or sign up to continue with your order.
         </p>
         <div className="grid gap-4 py-4">

@@ -68,7 +68,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex dark:bg-neutral-950 h-screen items-center justify-center bg-gradient-to-br from-background to-secondary p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full border-0 sm:border max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl text-center font-bold">Welcome Back</CardTitle>
         </CardHeader>
