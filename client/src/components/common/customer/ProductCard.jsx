@@ -16,13 +16,13 @@ const ProductCard = ({ product, cart }) => {
       }}
       className="no-underline">
       <Card
-        className="flex h-full w-full flex-col overflow-hidden rounded-lg border p-4 shadow-md
+        className="flex h-full w-full flex-col overflow-hidden rounded-lg border p-2 shadow-md
           transition-transform duration-300 hover:scale-[101%] hover:shadow-lg
-          dark:border-neutral-800 dark:bg-neutral-950 lg:max-w-sm">
+          dark:border-neutral-800 dark:bg-neutral-950/50 lg:max-w-sm">
         {' '}
         {/* Product Image */}
         <CardHeader className="p-0">
-          <div className="relative h-52 w-full overflow-hidden">
+          <div className="relative h-48 w-full rounded-sm overflow-hidden">
             <img
               src={product.image}
               alt={product.name}

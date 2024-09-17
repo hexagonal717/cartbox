@@ -1,7 +1,6 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getProductList } from '@/api/v1/customer/customerApi.js';
-
 import SearchBar from '../customer/SearchBar.jsx';
 import { Button } from '@/components/ui-custom/button.jsx';
 import { Moon, ShoppingBag, Sun, User, X } from 'lucide-react';

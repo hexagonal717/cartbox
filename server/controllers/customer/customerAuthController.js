@@ -1,4 +1,4 @@
-const customerSchema = require('../../model/customerSchema');
+const Customer = require('../../model/customerSchema');
 const argon = require('argon2');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('cloudinary').v2;
@@ -26,29 +26,26 @@ const signup = async (req, res) => {
     const { firstName, lastName, age, email, phone, address, password, role } =
       req.body;
 
+
+    console.log(phone,age,'dddddddddd');
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    const existingUserEmail = await customerSchema.findOne(
+    const existingUserEmail = await Customer.findOne(
       { email },
       {},
       { lean: true },
     );
-    /*const existingUserPhone = await customerSchema.findOne(
-      { phone },
-      {},
-      { lean: true },
-    );*/
 
-    if (existingUserEmail /*|| existingUserPhone*/) {
+    if (existingUserEmail) {
       return res.status(400).json({ error: 'User already exists.' });
     }
 
     let imagePath = null;
 
     // Create the new user document before uploading the image
-    const newUser = new customerSchema({
+    const newUser = new Customer({
       firstName,
       lastName,
       email,
@@ -85,7 +82,7 @@ const signup = async (req, res) => {
       });
       await newCart.save();
 
-      res.status(200).json({ message: 'success' });
+      res.status(200).json({ status: 'success' });
     } else {
       // If there's no image, just save the user and create the cart
       const savedCustomerWithoutImage = await newUser.save();
@@ -113,7 +110,7 @@ const login = async (req, res) => {
       res.status(400).json({ error: 'Email and Password is required.' });
     }
 
-    const dbExistingUser = await customerSchema.findOne(
+    const dbExistingUser = await Customer.findOne(
       { email },
       {},
       { lean: true },
@@ -151,7 +148,7 @@ const forgotPassword = async (req, res) => {
   const generateOTP = () => Math.floor(1000 + Math.random() * 9000);
 
   try {
-    const existingUserEmail = await customerSchema.findOne(
+    const existingUserEmail = await Customer.findOne(
       { email },
       {},
       { lean: true },
@@ -218,15 +215,13 @@ const changePassword = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password.password;
 
-    console.log(email, '5555');
-
-    const existingEmail = await customerSchema.findOne(email, {}, { lean: true });
+    const existingEmail = await Customer.findOne(email, {}, { lean: true });
 
     if (existingEmail) {
     }
 
     if (existingEmail) {
-      const updatePassword = await customerSchema.findOneAndUpdate(
+      const updatePassword = await Customer.findOneAndUpdate(
         email,
         { $set: { password: await argon.hash(password) } },
         { new: true },

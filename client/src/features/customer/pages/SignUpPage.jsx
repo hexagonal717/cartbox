@@ -12,11 +12,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui-custom/card';
-import { User } from 'lucide-react';
+import {
+  Loader2,
+  User,
+} from 'lucide-react';
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const [previewImage, setPreviewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
     firstName: '',
     lastName: '',
@@ -41,11 +45,13 @@ const SignUpPage = () => {
 
   function handleSignUp(event) {
     event.preventDefault();
+    setIsLoading(true);
     signUp(customerInfo).then((signup) => {
       if (signup.status === 'success') {
         return setTimeout(() => {
           login(customerInfo, dispatch).then((login) => {
             if (login.status === 'success') {
+              setIsLoading(false);
               return login.status;
             }
           });
@@ -170,8 +176,15 @@ const SignUpPage = () => {
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Sign Up
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Signing up...
+                </>
+              ) : (
+                'Sign Up'
+              )}
             </Button>
           </form>
         </CardContent>
