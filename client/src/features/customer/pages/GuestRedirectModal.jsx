@@ -29,6 +29,7 @@ const GuestRedirectModal = ({ isOpen, onClose }) => {
   };
 
   return (
+
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
         className={`w-[21rem] rounded-lg sm:w-[35rem]
