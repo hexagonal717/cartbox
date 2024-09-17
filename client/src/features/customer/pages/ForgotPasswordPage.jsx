@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { forgotPassword } from '@/api/v1/customer/customerApi.js';
@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui-custom/input.jsx';
 import { Label } from '@/components/ui-custom/label.jsx';
 import { Button } from '@/components/ui-custom/button.jsx';
-import { Loader2 } from "lucide-react";
+import { Loader2 } from 'lucide-react';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState({ email: '' });
@@ -47,22 +47,24 @@ const ForgotPasswordPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center dark:bg-neutral-950">
-      <Card className="m-2 w-full max-w-md">
+    <div className="flex min-h-screen w-full items-center justify-center bg-white dark:bg-neutral-950">
+      <Card className="m-2 w-full max-w-md border-0 shadow-none sm:border sm:shadow-sm">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold">
-            Forgot Password
+          <CardTitle className="text-center text-xl font-bold">
+            Reset your password
           </CardTitle>
         </CardHeader>
-        <form className="space-y-2" onSubmit={handleSubmit}>
-          <CardContent>
+        <CardContent>
+          <form className="space-y-3" onSubmit={handleSubmit}>
             <div className="flex flex-col space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label className={'pl-0.5'} htmlFor="email">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
                 name="email"
-                placeholder="Enter your email"
+                placeholder="Enter your email address"
                 onChange={handleCredentials}
                 disabled={isLoading}
               />
@@ -70,21 +72,20 @@ const ForgotPasswordPage = () => {
                 <p className="text-sm text-red-500">Email doesn&apos;t exist</p>
               )}
             </div>
-          </CardContent>
-
-          <CardFooter className="flex flex-col items-center space-y-2">
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Sending OTP...
-                </>
-              ) : (
-                "Send OTP"
-              )}
-            </Button>
-          </CardFooter>
-        </form>
+            <CardFooter className="w-full p-0">
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending OTP...
+                  </>
+                ) : (
+                  'Send OTP'
+                )}
+              </Button>
+            </CardFooter>
+          </form>
+        </CardContent>
       </Card>
     </div>
   );

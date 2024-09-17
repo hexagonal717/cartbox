@@ -77,7 +77,13 @@ const addProduct = async (req, res) => {
       req.body;
 
     // Basic validation checks
-    if (!name || !price || !category || !subCategory || stockQuantity === undefined) {
+    if (
+      !name ||
+      !price ||
+      !category ||
+      !subCategory ||
+      stockQuantity === undefined
+    ) {
       return res.status(400).json({
         status: 'fail',
         message: 'All fields are required',

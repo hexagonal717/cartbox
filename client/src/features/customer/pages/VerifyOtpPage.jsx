@@ -9,16 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui-custom/card.jsx';
-import {
-  Button
-} from '@/components/ui-custom/button.jsx';
+import { Button } from '@/components/ui-custom/button.jsx';
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui-custom/input-otp.jsx';
-import { Loader2 } from "lucide-react";
+import { Loader2 } from 'lucide-react';
 
 const VerifyOtpPage = () => {
   const navigate = useNavigate();
@@ -53,53 +50,48 @@ const VerifyOtpPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center dark:bg-neutral-950">
-      <Card className="m-2 w-full max-w-md">
+    <div className="flex min-h-screen w-full items-center justify-center p-4 dark:bg-neutral-950">
+      <Card className="m-2 w-full max-w-md border-0 shadow-none sm:border sm:shadow-sm">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold">
+          <CardTitle className="text-center text-xl font-bold">
             Verify your OTP
           </CardTitle>
         </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className={'space-y-3'}>
+            <div className="flex flex-col items-center space-y-2">
+              <InputOTP
+                value={otp}
+                onChange={handleOtpChange}
+                maxLength={4}
+                disabled={isLoading}>
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                </InputOTPGroup>
+              </InputOTP>
+              {error && <p className="text-sm text-red-500">{error}</p>}
+            </div>
 
-        <form onSubmit={handleSubmit}>
-          <CardContent className="flex flex-col items-center space-y-2">
-            <InputOTP
-              value={otp}
-              onChange={handleOtpChange}
-              maxLength={4}
-              disabled={isLoading}
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-              </InputOTPGroup>
-              <InputOTPSeparator />
-              <InputOTPGroup>
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-              </InputOTPGroup>
-            </InputOTP>
-            {error && (
-              <p className="text-sm text-red-500">{error}</p>
-            )}
-          </CardContent>
-          <CardFooter className="flex flex-col items-center space-y-2">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={otp.length !== 4 || isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Verifying...
-                </>
-              ) : (
-                "Verify OTP Code"
-              )}
-            </Button>
-          </CardFooter>
-        </form>
+            <CardFooter className="w-full p-0">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={otp.length !== 4 || isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Verifying...
+                  </>
+                ) : (
+                  'Verify OTP Code'
+                )}
+              </Button>
+            </CardFooter>
+          </form>
+        </CardContent>
       </Card>
     </div>
   );

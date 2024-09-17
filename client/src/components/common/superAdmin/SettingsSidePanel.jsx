@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import { AccountCircleOutlined, SettingsOutlined } from '@mui/icons-material';
 import { Button } from '@/components/ui-custom/super-admin/button.jsx';
 import { Settings, UserRound } from 'lucide-react';
 

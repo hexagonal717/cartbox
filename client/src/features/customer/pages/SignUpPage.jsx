@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { signUp, login } from '@/api/v1/customer/customerApi';
 import { useDispatch } from 'react-redux';
 import { Button } from '@/components/ui-custom/button';
@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui-custom/card';
+import { User } from 'lucide-react';
 
 const SignUpPage = () => {
   const dispatch = useDispatch();
@@ -65,21 +66,23 @@ const SignUpPage = () => {
     <div
       className="flex min-h-screen w-full items-center justify-center bg-white dark:bg-neutral-950
         sm:bg-neutral-50">
-      <Card className="m-4 w-full max-w-md border-0 sm:border">
+      <Card className="m-4 w-full max-w-md border-0 shadow-none sm:border sm:shadow-sm">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold">
+          <CardTitle className="text-center text-xl font-bold">
             Create an Account
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignUp} className="space-y-4">
-            <div className="flex flex-col items-center space-y-2">
+          <form onSubmit={handleSignUp} className="space-y-3">
+            <div className="flex flex-col items-center space-y-1">
               <Label
                 htmlFor="upload-photo"
                 className={`mb-1 flex h-36 w-36 cursor-pointer items-center justify-center rounded-full
-                  bg-neutral-800 text-center`}>
+                  bg-neutral-100 text-center dark:bg-neutral-900`}>
                 {!previewImage ? (
-                  <div className={'text-white'}>Upload</div>
+                  <div className={'text-neutral-950 dark:text-white'}>
+                    <User />
+                  </div>
                 ) : (
                   <img
                     src={previewImage}
@@ -93,7 +96,7 @@ const SignUpPage = () => {
                   Remove image
                 </Button>
               ) : (
-                <p className="text-sm text-gray-500">Click to upload an image</p>
+                <p className="text-sm text-neutral-500">Click to upload an image</p>
               )}
               <Input
                 type="file"
@@ -103,7 +106,7 @@ const SignUpPage = () => {
                 className="hidden"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="firstName">First Name</Label>
               <Input
                 id="firstName"
@@ -113,7 +116,7 @@ const SignUpPage = () => {
                 required
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="lastName">Last Name</Label>
               <Input
                 id="lastName"
@@ -123,7 +126,7 @@ const SignUpPage = () => {
                 required
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -134,7 +137,7 @@ const SignUpPage = () => {
                 required
               />
             </div>
-            {/*<div className="space-y-2">*/}
+            {/*<div className="space-y-1">*/}
             {/*  <Label htmlFor="phone">Phone</Label>*/}
             {/*  <Input*/}
             {/*    id="phone"*/}
@@ -145,7 +148,7 @@ const SignUpPage = () => {
             {/*    required*/}
             {/*  />*/}
             {/*</div>*/}
-            {/*<div className="space-y-2">*/}
+            {/*<div className="space-y-1">*/}
             {/*  <Label htmlFor="age">Age</Label>*/}
             {/*  <Input*/}
             {/*    id="age"*/}
@@ -156,7 +159,7 @@ const SignUpPage = () => {
             {/*    required*/}
             {/*  />*/}
             {/*</div>*/}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
@@ -172,13 +175,13 @@ const SignUpPage = () => {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col items-center space-y-2">
-          <p className="text-sm dark:text-neutral-200 text-neutral-800">Already have an account?</p>
-          <Link to={`/login`}>
-            <Button variant="outline" className="w-full">
-              Log In
-            </Button>
-          </Link>
+        <CardFooter className="flex flex-col items-center space-y-3">
+          <p className="text-sm text-neutral-800 dark:text-neutral-200">
+            Already have an account?
+          </p>
+          <Button variant="outline" className="w-full">
+            <NavLink to={`/login`}> Log In</NavLink>
+          </Button>
         </CardFooter>
       </Card>
     </div>

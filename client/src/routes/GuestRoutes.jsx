@@ -25,7 +25,10 @@ const GuestRoutes = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-otp" element={<VerifyOtpPage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
-        <Route path="/change-password-success-redirect" element={<ChangePasswordSuccessRedirect />} />
+        <Route
+          path="/change-password-success-redirect"
+          element={<ChangePasswordSuccessRedirect />}
+        />
         <Route path="/product/:productId" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/product-category" element={<CategoryPage />} />

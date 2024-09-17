@@ -11,7 +11,10 @@ const ProtectedRedirectedRoutes = () => {
       <Route path="/forgot-password" element={<Navigate to={'/'} />} />
       <Route path="/verify-code" element={<Navigate to={'/'} />} />
       <Route path="/change-password" element={<Navigate to={'/'} />} />
-      <Route path="/change-password-success-redirect" element={<Navigate to={'/'} />} />
+      <Route
+        path="/change-password-success-redirect"
+        element={<Navigate to={'/'} />}
+      />
       <Route path="/payment" element={<Navigate to={'/'} />} />
       <Route path="/orders" element={<Navigate to={'/'} />} />
       {/*<Route path="/order-success" element={<Navigate to={'/'} />} />*/}
