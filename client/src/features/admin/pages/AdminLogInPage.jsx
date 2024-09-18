@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { login } from '../../../api/v1/admin/adminApi.js';
+import { login } from '@/api/v1/admin/auth/authApi.js';
 
 const AdminLogInPage = () => {
   const dispatch = useDispatch();
@@ -13,10 +13,7 @@ const AdminLogInPage = () => {
   });
 
   const handleSubmit = async (event) => {
-    console.log(event, 'EVENTTTTTTTT');
-
     event.preventDefault();
-
     try {
       const res = await login(credentials, dispatch); // Await the login function
 
@@ -68,7 +65,7 @@ const AdminLogInPage = () => {
           />
 
           <NavLink
-            to={'/forgotpassword'}
+            to={`/forgotpassword`}
             style={{
               textDecoration: 'none',
             }}>
@@ -95,7 +92,7 @@ const AdminLogInPage = () => {
             }}>
             Want to create an account?
           </div>
-          <Link to={'/admin-signup'}>
+          <Link to={`/admin-signup`}>
             <button
               className={`m-4 cursor-pointer rounded-lg border-0 bg-springgreen-500/10 px-20 py-2.5 text-sm
                 font-bold text-springgreen-500 outline outline-1 outline-springgreen-500/35
@@ -104,7 +101,7 @@ const AdminLogInPage = () => {
               Sign up
             </button>
           </Link>
-          <Link to={'/login'}>
+          <Link to={`/login`}>
             <div className={'text-xs'}>
               Are you a{' '}
               <span

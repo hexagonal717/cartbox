@@ -1,11 +1,34 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import { getProductList } from '@/api/v1/customer/customerApi.js';
-import SearchBar from '../customer/SearchBar.jsx';
-import { Button } from '@/components/ui-custom/button.jsx';
-import { Moon, ShoppingBag, Sun, User, X } from 'lucide-react';
-import { useDarkMode } from '@/context/DarkModeContext.jsx';
-import { useSelector } from 'react-redux';
+import {
+  Link,
+  NavLink,
+  useNavigate
+} from 'react-router-dom';
+import {
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import {
+  getProductList
+} from '@/api/v1/customer/product/productApi.js';
+import SearchBar
+  from '../customer/SearchBar.jsx';
+import {
+  Button
+} from '@/components/ui-custom/button.jsx';
+import {
+  Moon,
+  ShoppingBag,
+  Sun,
+  User,
+  X
+} from 'lucide-react';
+import {
+  useDarkMode
+} from '@/context/DarkModeContext.jsx';
+import {
+  useSelector
+} from 'react-redux';
 
 const GuestNavBar = () => {
   const cartItems = useSelector((state) => state.guestCartSlice.cart?.items);
@@ -13,7 +36,10 @@ const GuestNavBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionWindow, setSuggestionWindow] = useState(false);
-  const { darkMode, toggleDarkMode } = useDarkMode();
+  const {
+    darkMode,
+    toggleDarkMode
+  } = useDarkMode();
   const [profileOpen, setProfileOpen] = useState(false);
   const [mobileModalOpen, setMobileModalOpen] = useState(false);
 
@@ -84,8 +110,12 @@ const GuestNavBar = () => {
           className="flex w-full list-none items-center justify-between sm:justify-center sm:gap-1
             md:gap-4">
           <li>
-            <Link to={'/'} replace>
-              <div className={'text text-lg font-bold dark:text-white'}>CartBox</div>
+            <Link
+              to={'/'}
+              replace>
+              <div
+                className={'text text-lg font-bold dark:text-white'}>CartBox
+              </div>
             </Link>
           </li>
           <li
@@ -118,23 +148,32 @@ const GuestNavBar = () => {
             )}
           </li>
 
-          <li className={'flex items-center justify-center gap-4'}>
-            <div className="relative hidden sm:block">
+          <li
+            className={'flex items-center justify-center gap-4'}>
+            <div
+              className="relative hidden sm:block">
               <button
                 onClick={() => navigate('/login')}
                 className="flex w-36 cursor-pointer items-center justify-center rounded-lg border-none
                   bg-indigo-500/15 py-2.5 text-xs font-bold text-indigo-800 outline outline-1
                   outline-indigo-900/50 hover:bg-indigo-500/25 dark:bg-indigo-500/10
                   dark:text-indigo-500 dark:outline-indigo-900 dark:hover:bg-indigo-500/15">
-                Log In
+                Log
+                In
               </button>
             </div>
           </li>
-          <ul className={'flex gap-2'}>
-            <Button className={'p-2'} variant={'ghost'}>
-              <NavLink to={`/cart`}>
-                <div className="relative">
-                  <ShoppingBag className="text-neutral-950 hover:cursor-pointer dark:text-neutral-200" />
+          <ul
+            className={'flex gap-2'}>
+            <Button
+              className={'p-2'}
+              variant={'ghost'}>
+              <NavLink
+                to={`/cart`}>
+                <div
+                  className="relative">
+                  <ShoppingBag
+                    className="text-neutral-950 hover:cursor-pointer dark:text-neutral-200" />
                   <div
                     className="absolute flex h-4 w-4 -translate-y-8 translate-x-4 items-center justify-center
                       rounded-full bg-yellow-300 text-center text-xs font-semibold text-black">
@@ -143,27 +182,33 @@ const GuestNavBar = () => {
                 </div>
               </NavLink>
             </Button>
-            <div className="relative sm:hidden">
+            <div
+              className="relative sm:hidden">
               <Button
                 variant={'ghost'}
                 onClick={toggleMobileModal}
                 className={'rounded-lg p-2 dark:text-white'}>
                 {profileOpen ? (
-                  <User className={'scale-90'} />
+                  <User
+                    className={'scale-90'} />
                 ) : (
-                  <User className={'scale-90'} />
+                  <User
+                    className={'scale-90'} />
                 )}
               </Button>
             </div>
-            <li className="relative">
+            <li
+              className="relative">
               <Button
                 variant={'outline'}
                 onClick={toggleDarkMode}
                 className={'rounded-lg p-2'}>
                 {darkMode ? (
-                  <Moon className={'scale-75'} />
+                  <Moon
+                    className={'scale-75'} />
                 ) : (
-                  <Sun className={'scale-75'} />
+                  <Sun
+                    className={'scale-75'} />
                 )}
               </Button>
             </li>
@@ -217,17 +262,23 @@ const GuestNavBar = () => {
             variant={'ghost'}
             onClick={toggleMobileModal}
             className="absolute right-2 top-2 scale-90 rounded-full p-2 dark:text-white">
-            <X className="h-6 w-6" />
+            <X
+              className="h-6 w-6" />
           </Button>
-          <div className="mt-8 flex flex-col space-y-4">
-            <Button onClick={() => navigate('/login')} className="w-full">
-              Log In
+          <div
+            className="mt-8 flex flex-col space-y-4">
+            <Button
+              onClick={() => navigate('/login')}
+              className="w-full">
+              Log
+              In
             </Button>
             <Button
               variant={'outline'}
               onClick={() => navigate('/signup')}
               className="w-full">
-              Sign Up
+              Sign
+              Up
             </Button>
           </div>
         </div>
@@ -235,5 +286,4 @@ const GuestNavBar = () => {
     </>
   );
 };
-
 export default GuestNavBar;

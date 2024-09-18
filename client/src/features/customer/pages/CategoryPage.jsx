@@ -1,10 +1,15 @@
 import { useQueries } from '@tanstack/react-query';
-import { getCart, getProductListByCategory } from '@/api/v1/customer/customerApi.js';
 import { useSelector } from 'react-redux';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui-custom/button.jsx';
 import { ChevronLeft } from 'lucide-react';
+import {
+  getProductListByCategory
+} from '@/api/v1/customer/product/productApi.js';
+import {
+  getCart
+} from '@/api/v1/customer/cart/cartApi.js';
 
 const CategoryPage = () => {
   const navigate = useNavigate();

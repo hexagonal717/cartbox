@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser } from '@/api/v1/superAdmin/superAdminApi.js';
+import { deleteUser } from '@/api/v1/superAdmin/profile/profileApi.js';
 import { clearAccessToken } from '../redux/superAdminAuthSlice.js';
 
 const SuperAdminAccountSettings = () => {

@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
-import { getOrder } from '@/api/v1/customer/customerApi.js';
+import LoadingPage from '@/components/common/customer/LoadingPage.jsx';
+import { getOrder } from '@/api/v1/customer/order/orderApi.js';
 import { NavLink } from 'react-router-dom';
-import OrderEmpty from '../../../components/common/customer/OrderEmpty.jsx';
+import OrderEmpty from '@/components/common/customer/OrderEmpty.jsx';
 
 const OrdersPage = () => {
   const customerId = useSelector(
@@ -39,7 +39,7 @@ const OrdersPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen justify-center pt-20">
+    <div className="flex min-h-screen justify-center pt-36 sm:pt-22">
       <div className="flex w-4/5 flex-col px-3 sm:w-2/3 md:w-1/2 lg:w-2/6">
         <div className={'mb-4 text-3xl'}>My Orders</div>
 

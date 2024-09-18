@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { signUp } from '../../../api/v1/admin/adminApi.js';
+import { signUp } from '@/api/v1/admin/auth/authApi.js';
 
 const AdminSignUpPage = () => {
   const [previewImage, setPreviewImage] = useState(null);

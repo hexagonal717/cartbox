@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { signUp, login } from '@/api/v1/customer/customerApi';
+import { signUp, login } from '@/api/v1/customer/auth/authApi.js';
 import { useDispatch } from 'react-redux';
 import { Button } from '@/components/ui-custom/button';
 import { Input } from '@/components/ui-custom/input';

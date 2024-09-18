@@ -101,22 +101,73 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
 ### Frontend
 
 - client/
+    - .env.local
+    - components.json
     - index.html
+    - jsconfig.json
+    - netlify.toml
     - public/
         - vite.svg
     - src/
         - api/
-            - admin/
-                - adminApi.js
-                - adminAxios.js
-            - customer/
-                - customerApi.js
-                - customerAxios.js
-            - superAdmin/
-                - superAdminApi.js
-                - superAdminAxios.js
+            - v1/
+                - admin/
+                    - adminApi.js
+                    - adminAxios.js
+                - customer/
+                    - auth/
+                        - authApi.js
+                    - cart/
+                        - cartActions.js
+                        - cartApi.js
+                    - customerAxios.js
+                    - order/
+                        - orderApi.js
+                    - product/
+                        - productApi.js
+                    - profile/
+                        - profileApi.js
+                - superAdmin/
+                    - superAdminApi.js
+                    - superAdminAxios.js
         - App.jsx
         - assets/
+            - payment/
+                - affirm.svg
+                - alipay.svg
+                - amazon.svg
+                - amex.svg
+                - applepay.svg
+                - bancontact.svg
+                - bitcoin.svg
+                - bitcoincash.svg
+                - bitpay.svg
+                - discover.svg
+                - etherium.svg
+                - facebookpay.svg
+                - facepay.svg
+                - forbrugsforeningen.svg
+                - googlepay.svg
+                - jcb.svg
+                - lightcoin.svg
+                - liqpay.svg
+                - maestro.svg
+                - mastercard.svg
+                - monobank.svg
+                - payoneer.svg
+                - paypal.svg
+                - paysafe.svg
+                - privatpay.svg
+                - qiwi.svg
+                - sepa.svg
+                - shoppay.svg
+                - skrill.svg
+                - stripe.svg
+                - unionpay.svg
+                - venmo.svg
+                - visa.svg
+                - webmoney.svg
+                - wechat.svg
             - react.svg
         - components/
             - common/
@@ -127,26 +178,81 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
                     - SettingsSidePanel.jsx
                 - customer/
                     - AddAddressModal.jsx
-                    - Carousel.jsx
                     - CartEmpty.jsx
                     - CartItemCard.jsx
                     - CategoryBar.jsx
                     - EditAddressModal.jsx
                     - Footer.jsx
+                    - HomePageCarousel.jsx
                     - LoadingPage.jsx
                     - MarginTop.jsx
                     - NavBar.jsx
                     - OrderEmpty.jsx
                     - ProductCard.jsx
                     - ProfileButton.jsx
+                    - SearchBar.jsx
                     - SettingsSidePanel.jsx
                 - guest/
                     - GuestNavBar.jsx
                 - superAdmin/
+                    - DashboardSidePanel.jsx
+                    - SettingsSidePanel.jsx
+                    - SuperAdminNavBar.jsx
+                    - SuperAdminProfileButton.jsx
             - layouts/
                 - AdminLayout.jsx
                 - CustomerLayout.jsx
                 - GuestLayout.jsx
+                - SuperAdminLayout.jsx
+            - ui/
+                - alert.jsx
+                - avatar.jsx
+                - button.jsx
+                - card.jsx
+                - carousel.jsx
+                - checkbox.jsx
+                - dialog.jsx
+                - dropdown-menu.jsx
+                - input-otp.jsx
+                - input.jsx
+                - label.jsx
+                - progress.jsx
+                - scroll-area.jsx
+                - select.jsx
+                - separator.jsx
+                - table.jsx
+                - toast.jsx
+                - toaster.jsx
+            - ui-custom/
+                - admin/
+                    - button.jsx
+                    - dropdown-menu.jsx
+                - alert.jsx
+                - avatar.jsx
+                - button.jsx
+                - card.jsx
+                - carousel.jsx
+                - checkbox.jsx
+                - customer/
+                    - button.jsx
+                    - Cara.jsx
+                - dialog.jsx
+                - dropdown-menu.jsx
+                - input-otp.jsx
+                - input.jsx
+                - label.jsx
+                - progress.jsx
+                - scroll-area.jsx
+                - select.jsx
+                - separator.jsx
+                - super-admin/
+                    - button.jsx
+                    - dropdown-menu.jsx
+                    - SuperAdminProfileButton.jsx
+                - table.jsx
+        - context/
+            - DarkModeContext.jsx
+            - themeSlice.js
         - features/
             - admin/
                 - pages/
@@ -156,6 +262,7 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
                     - AdminProfilePage.jsx
                     - AdminSettingsPage.jsx
                     - AdminSignUpPage.jsx
+                    - OldProductManagement.jsx
                     - OverviewPage.jsx
                     - ProductManagementPage.jsx
                 - redux/
@@ -169,11 +276,12 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
                     - CartPage.jsx
                     - CategoryPage.jsx
                     - ChangePasswordPage.jsx
+                    - ChangePasswordSuccessRedirect.jsx
                     - DemoPage.jsx
                     - ForgotPasswordPage.jsx
+                    - GuestRedirectModal.jsx
                     - HomePage.jsx
                     - LogInPage.jsx
-                    - LogInRedirectPage.jsx
                     - OrderDetailPage.jsx
                     - OrdersPage.jsx
                     - OrderSuccessPage.jsx
@@ -184,21 +292,38 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
                     - SettingsPage.jsx
                     - SignUpPage.jsx
                     - SkeletonProductCard.jsx
-                    - VerifyCodePage.jsx
+                    - VerifyOtpPage.jsx
                 - redux/
-                    - cartSlice.js
+                    - auth/
+                    - cart/
+                        - cartSlice.js
+                        - cartTypes.js
+                        - guestCartSlice.js
                     - customerAuthSlice.js
                     - customerOtpSlice.js
                     - customerProfileSlice.js
+                    - otp/
+                    - product/
+                    - profile/
             - superAdmin/
                 - pages/
+                    - ClientManagementPage.jsx
+                    - ProductManagementPage.jsx
+                    - SuperAdminAccountSettings.jsx
                     - SuperAdminHomePage.jsx
                     - SuperAdminLogInPage.jsx
+                    - SuperAdminOverviewPage.jsx
+                    - SuperAdminProfilePage.jsx
+                    - SuperAdminSettingsPage.jsx
                 - redux/
                     - superAdminAuthSlice.js
                     - superAdminOtpSlice.js
                     - superAdminProfileSlice.js
+        - hooks/
+            - use-toast.js
         - index.css
+        - lib/
+            - utils.js
         - main.jsx
         - redux/
             - store.js
@@ -208,11 +333,13 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
             - ProtectedCustomerRoutes.jsx
             - ProtectedRedirectedRoutes.jsx
             - ProtectedRoutes.jsx
+            - ProtectedSuperAdminRoutes.jsx
 
 
 ### Backend
 
 - server/
+    - .env.local
     - controllers/
         - admin/
             - adminAuthController.js
@@ -226,6 +353,9 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
             - customerProfileController.js
         - superAdmin/
             - superAdminAuthController.js
+            - superAdminClientController.js
+            - superAdminEmployeeController.js
+            - superAdminProductController.js
             - superAdminProfileController.js
     - index.js
     - middleware/
@@ -258,6 +388,8 @@ CartBox is a full-stack e-commerce website built with React for the frontend and
                 - customerProfileRouter.js
             - superAdmin/
                 - superAdminAuthRouter.js
+                - superAdminClientRouter.js
+                - superAdminProductRouter.js
                 - superAdminProfileRouter.js
 
 ## Data Flow Diagram

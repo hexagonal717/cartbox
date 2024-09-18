@@ -37,7 +37,7 @@ const ProfileButton = ({ userData, handleLogout }) => {
           <div
             className={`absolute top-11 z-50 w-36 rounded-lg bg-black p-1 text-xs font-bold outline outline-1
             outline-white/15`}>
-            <NavLink to={'/settings/profile'} className={'no-underline'}>
+            <NavLink to={`/settings/profile`} className={'no-underline'}>
               <div
                 className={`flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
                 hover:bg-neutral-900 hover:text-white`}>
@@ -45,7 +45,7 @@ const ProfileButton = ({ userData, handleLogout }) => {
                 <div>My Profile</div>
               </div>
             </NavLink>
-            <NavLink to={'/orders'} className={'no-underline'}>
+            <NavLink to={`/orders`} className={'no-underline'}>
               <div
                 className={`flex cursor-pointer items-center gap-3 rounded-md p-2 text-neutral-400
                 hover:bg-neutral-900 hover:text-white`}>

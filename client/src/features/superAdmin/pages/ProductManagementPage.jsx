@@ -59,7 +59,7 @@ import {
   deleteProduct,
   getProductList,
   putProduct,
-} from '@/api/v1/superAdmin/superAdminApi.js';
+} from '@/api/v1/superAdmin/product/productApi.js';
 
 const ProductManagementPage = () => {
   const superAdminId = useSelector(

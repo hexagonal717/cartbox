@@ -1,5 +1,4 @@
 import { useQueries } from '@tanstack/react-query';
-import { getCart, getProductList } from '@/api/v1/customer/customerApi.js';
 import CategoryBar from '../../../components/common/customer/CategoryBar.jsx';
 import ProductCard from '../../../components/common/customer/ProductCard.jsx';
 import { useSelector } from 'react-redux';
@@ -13,8 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui-custom/card.jsx';
-import HomePageCarousel
-  from '@/components/common/customer/HomePageCarousel.jsx';
+import HomePageCarousel from '@/components/common/customer/HomePageCarousel.jsx';
+import {
+  getCart
+} from '@/api/v1/customer/cart/cartApi.js';
+import {
+  getProductList
+} from '@/api/v1/customer/product/productApi.js';
 const HomePage = () => {
   const customerId = useSelector(
     (state) => state.customerAuthSlice.accessToken?.customerId,
@@ -80,12 +84,10 @@ const HomePage = () => {
       <div
         className="flex w-full flex-col items-center pt-[7rem] dark:bg-neutral-900 sm:pt-[10rem]
           lg:py-[8rem]">
-        <div className="block">
-          <HomePageCarousel/>
-        </div>
+        <HomePageCarousel />
         <CategoryBar />
         <div
-          className="grid w-full max-w-screen-2xl grid-flow-row-dense grid-cols-2 gap-1 px-2
+          className="grid w-full max-w-screen-2xl grid-flow-row-dense grid-cols-2 gap-1 pb-4 sm:pt-4 px-2
             sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-3 lg:p-10 xl:grid-cols-6">
           {productList && productList.length > 0 ? (
             productList.map((product) => (
@@ -97,11 +99,11 @@ const HomePage = () => {
         </div>
       </div>
 
-      <footer className="w-full border-t border-t-neutral-800 bg-white dark:bg-neutral-950">
+      <footer className="w-full border-t dark:border-t-neutral-800 bg-white dark:bg-neutral-950">
         <div className="w-full px-4 py-8 md:px-6">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
             {/* About Us Section */}
-            <Card className={'border-0'}>
+            <Card className={'border-0 shadow-none'}>
               <CardHeader>
                 <CardTitle>About Us</CardTitle>
               </CardHeader>
@@ -114,7 +116,7 @@ const HomePage = () => {
             </Card>
 
             {/* Quick Links Section */}
-            <Card className={'border-0'}>
+            <Card className={'border-0 shadow-none'}>
               <CardHeader>
                 <CardTitle>Quick Links</CardTitle>
               </CardHeader>
@@ -142,7 +144,7 @@ const HomePage = () => {
             </Card>
 
             {/* Contact Us Section */}
-            <Card className={'border-0'}>
+            <Card className={'border-0 shadow-none'}>
               <CardHeader>
                 <CardTitle>Contact Us</CardTitle>
               </CardHeader>
@@ -168,7 +170,7 @@ const HomePage = () => {
             </Card>
 
             {/* Newsletter Subscription Section */}
-            <Card className={'border-0'}>
+            <Card className={'border-0 shadow-none'}>
               <CardHeader>
                 <CardTitle>Subscribe to Our Newsletter</CardTitle>
               </CardHeader>
@@ -195,7 +197,7 @@ const HomePage = () => {
             </p>
             <div className="flex space-x-4">
               {Object.entries(paymentIcons).map(([key, { src, alt }]) => (
-                <div key={key} className="drop-shadow-md text-center">
+                <div key={key} className="text-center drop-shadow-md">
                   <img src={src} alt={alt} />
                 </div>
               ))}
