@@ -9,7 +9,15 @@ import {
   deleteAddress,
   getAddress,
   putAddress,
-} from '../../../api/v1/customer/customerApi.js';
+} from '@/api/v1/customer/profile/profileApi.js';
+import {
+  Button
+} from '@/components/ui-custom/button.jsx';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from '@/components/ui-custom/card.jsx';
 
 const AddressPage = () => {
   const customerId = useSelector(
@@ -113,23 +121,25 @@ const AddressPage = () => {
   if (status === 'error') return <h1>{JSON.stringify(error)}</h1>;
 
   return (
-    <div className="flex h-full flex-row justify-center">
+    <div className="flex h-full w-screen justify-center">
       <div className="flex flex-col items-center gap-4 p-4">
-        <button
+        <Button
           onClick={() => setIsAddModalOpen(true)}
-          className={`flex w-96 items-center justify-center gap-2 rounded-md bg-neutral-800 p-4 text-sm
+          className={`flex items-center justify-center gap-2 rounded-md bg-neutral-800 p-4 text-sm
             shadow-sm hover:bg-neutral-700/50`}>
           <AddOutlined />
           <div>Add new address</div>
-        </button>
+        </Button>
 
         {addressInfo.map((address) => (
-          <div
+          <Card
             key={address?._id}
-            className="w-96 rounded-md bg-neutral-800 p-4 shadow-sm">
-            <h3 className="text-lg font-semibold text-neutral-200">
+            className="w-full sm:w-96 rounded-md bg-neutral-800 shadow-sm">
+            <CardHeader className="text-lg font-semibold text-neutral-200">
               {address?.fullName}
-            </h3>
+            </CardHeader>
+            <CardContent>
+
             <p className="text-sm text-neutral-400">{address?.addressLine1}</p>
             <p className="text-sm text-neutral-400">{address?.addressLine2}</p>
             <p className="text-sm text-neutral-400">
@@ -158,7 +168,8 @@ const AddressPage = () => {
                 Delete
               </button>
             </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 

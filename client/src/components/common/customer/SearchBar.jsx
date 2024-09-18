@@ -1,35 +1,39 @@
-const SearchBar = ({
-  searchQuery,
-  handleSearchQueryChange,
-  handleSearchSubmit,
-  setSuggestionWindow,
-}) => {
+import { useState } from 'react';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui-custom/input.jsx';
+
+export default function SearchBar({
+                                    searchQuery,
+                                    handleSearchQueryChange,
+                                    handleSearchSubmit,
+                                    setSuggestionWindow,
+                                  }) {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <div className="relative w-full sm:w-72 md:w-72 lg:w-[40rem] xl:w-[50rem]">
-      <div
-        className="flex h-10 items-center rounded-lg bg-neutral-200 hover:bg-neutral-300
-          dark:bg-neutral-900 dark:hover:bg-neutral-800">
-        <span className="pl-3">
-          <svg
-            className="h-5 w-5 text-neutral-950 opacity-80 dark:text-white"
-            fill="currentColor"
-            viewBox="0 0 24 24">
-            <path d="M10 2a8 8 0 015.293 13.707l5.657 5.657a1 1 0 01-1.414 1.414l-5.657-5.657A8 8 0 1110 2zm0 2a6 6 0 100 12 6 6 0 000-12z"></path>
-          </svg>
-        </span>
-        <input
+      <div className="relative">
+        <Search className="absolute left-3 top-3 h-4 w-4" />
+        <Input
+          className="rounded-xl py-2 pl-10 pr-4 focus-visible:ring-0 border border-neutral-300 bg-neutral-200 dark:bg-neutral-900"
           type="text"
           value={searchQuery}
           onChange={handleSearchQueryChange}
           onKeyDown={handleSearchSubmit}
-          onFocus={() => setSuggestionWindow(true)}
-          className="h-full w-full bg-transparent px-2 text-sm text-neutral-950 placeholder-neutral-500
-            outline-none dark:text-white"
+          onFocus={() => {
+            setIsFocused(true);
+            setSuggestionWindow(true);
+          }}
+          onBlur={() => setIsFocused(false)}
           placeholder="Search for products, brands and more..."
         />
+        {isFocused && (
+          <div
+            className="animate-shadow-glow-light dark:animate-shadow-glow-dark pointer-events-none absolute inset-0 overflow-hidden rounded-xl
+              border border-neutral-200"
+          />
+        )}
       </div>
     </div>
   );
-};
-
-export default SearchBar;
+}

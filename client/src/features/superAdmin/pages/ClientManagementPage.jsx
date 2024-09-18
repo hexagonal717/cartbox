@@ -58,7 +58,7 @@ import {
   deleteClient,
   getClientList,
   putClient,
-} from '@/api/v1/superAdmin/superAdminApi.js';
+} from '@/api/v1/superAdmin/client/clientApi.js';
 
 const ClientManagementPage = () => {
   const [sorting, setSorting] = useState([]);

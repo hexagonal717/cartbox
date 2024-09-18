@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { addOrder, getCart, getProductList } from '@/api/v1/customer/customerApi.js';
 import { useQueries } from '@tanstack/react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Card,
   CardContent,
@@ -19,6 +18,15 @@ import {
 } from '@/components/ui-custom/select';
 import { Button } from '@/components/ui-custom/button';
 import { Loader2 } from 'lucide-react';
+import {
+  getProductList
+} from '@/api/v1/customer/product/productApi.js';
+import {
+  getCart
+} from '@/api/v1/customer/cart/cartApi.js';
+import {
+  addOrder
+} from '@/api/v1/customer/order/orderApi.js';
 
 export default function PaymentPage() {
   const customerId = useSelector(

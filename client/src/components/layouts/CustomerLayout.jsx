@@ -3,7 +3,7 @@ import { useQueries } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import NavBar from '../common/customer/NavBar.jsx';
-import { getUser } from '@/api/v1/customer/customerApi.js';
+import { getUser } from '@/api/v1/customer/profile/profileApi.js';
 import { useDarkMode } from '@/context/DarkModeContext.jsx';
 import { getCart } from '@/api/v1/customer/cart/cartActions.js';
 const CustomerLayout = () => {
@@ -11,8 +11,6 @@ const CustomerLayout = () => {
   const customerId = useSelector(
     (state) => state.customerAuthSlice.accessToken?.customerId,
   );
-
-  const { darkMode } = useDarkMode();
   const ignoreLocations = [
     '/login',
     '/signup',
@@ -32,7 +30,7 @@ const CustomerLayout = () => {
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   const [user, setUser] = useState(null);
-
+  const { darkMode } = useDarkMode();
   const dispatch = useDispatch();
 
   const queries = useQueries({
@@ -73,13 +71,10 @@ const CustomerLayout = () => {
   }
 
   return (
-    <div className={`${darkMode && 'dark'} `}>
-      <div className="flex flex-col font-inter">
+    <div className={`${darkMode && 'dark'} flex h-screen flex-col`}>
+      <div className="flex w-full flex-1 font-inter">
         {!shouldIgnore && <NavBar user={user} cartItems={cartItems} />}
-        <div
-          className={
-            'bg-neutral-100 text-neutral-950 dark:bg-neutral-900 dark:text-white'
-          }>
+        <div className="w-full overflow-y-hidden">
           <Outlet />
         </div>
       </div>

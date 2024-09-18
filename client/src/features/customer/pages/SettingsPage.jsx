@@ -1,11 +1,10 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { useEffect } from 'react';
 
-import ProfilePage from './ProfilePage.jsx';
-import AccountSettings from './AccountSettings.jsx';
 import SettingsSidePanel from '../../../components/common/customer/SettingsSidePanel.jsx';
-import AddressPage from './AddressPage.jsx';
+import MobileSettingsPageNavBar
+  from '@/components/common/customer/MobileSettingsPageNavBar.jsx';
 
 const SettingsPage = () => {
   const location = useLocation();
@@ -18,11 +17,16 @@ const SettingsPage = () => {
   }, [location.pathname, navigate]);
 
   return (
-    <div className="grid h-screen w-screen grid-cols-[auto,1fr] items-center justify-center">
-      <SettingsSidePanel />
-      {location.pathname === '/settings/profile' && <ProfilePage />}
-      {location.pathname === '/settings/account' && <AccountSettings />}
-      {location.pathname === '/settings/address' && <AddressPage />}
+    <div className="flex h-full bg-neutral-50 dark:bg-neutral-900">
+      <div>
+        <MobileSettingsPageNavBar/>
+      </div>
+      <aside className={'hidden sm:block'}>
+        <SettingsSidePanel />
+      </aside>
+      <div className="flex w-full py-8 sm:pl-[11.9rem]">
+        <Outlet />
+      </div>
     </div>
   );
 };

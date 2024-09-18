@@ -59,7 +59,7 @@ import {
   deleteProduct,
   getProductList,
   putProduct,
-} from '@/api/v1/admin/adminApi.js';
+} from '@/api/v1/admin/product/productApi.js';
 
 const ProductManagementPage = () => {
   const adminId = useSelector((state) => state.adminAuthSlice.accessToken?.adminId);

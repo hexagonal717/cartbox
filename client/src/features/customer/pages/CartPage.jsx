@@ -1,7 +1,7 @@
 import { useQueries } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getCart, getProduct } from '@/api/v1/customer/customerApi.js';
+import { getCart } from '@/api/v1/customer/cart/cartApi.js';
 import {
   decreaseCartItemQuantity,
   increaseCartItemQuantity,
@@ -19,6 +19,9 @@ import {
 } from '@/features/customer/redux/cart/guestCartSlice.js';
 import GuestRedirectModal from '@/features/customer/pages/GuestRedirectModal.jsx';
 import { Card } from '@/components/ui-custom/card.jsx';
+import {
+  getProduct
+} from '@/api/v1/customer/product/productApi.js';
 
 const CartPage = () => {
   const navigate = useNavigate();

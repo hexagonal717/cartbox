@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { login } from '../../../api/v1/superAdmin/superAdminApi.js';
+import { login } from '@/api/v1/superAdmin/auth/authApi.js';
 
 const SuperAdminLogInPage = () => {
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const SuperAdminLogInPage = () => {
           />
 
           <NavLink
-            to={'/forgotpassword'}
+            to={`/forgotpassword`}
             style={{
               textDecoration: 'none',
             }}>
@@ -88,7 +88,7 @@ const SuperAdminLogInPage = () => {
             Log in
           </button>
 
-          <Link to={'/login'}>
+          <Link to={`/login`}>
             <div className={'text-xs'}>
               Are you a{' '}
               <span

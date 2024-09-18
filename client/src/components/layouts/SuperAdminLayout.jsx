@@ -2,7 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getUser } from '@/api/v1/superAdmin/superAdminApi.js';
+import { getUser } from '@/api/v1/superAdmin/profile/profileApi.js';
 import SuperAdminNavBar from '../common/superAdmin/SuperAdminNavBar.jsx';
 import { useDarkMode } from '@/context/DarkModeContext.jsx';
 
@@ -25,7 +25,7 @@ const SuperAdminLayout = () => {
   const shouldIgnore = ignoreLocations.includes(location.pathname);
 
   const [user, setUser] = useState(null);
-  const { darkMode, toggleDarkMode } = useDarkMode();
+  const { darkMode } = useDarkMode();
 
   const queries = useQueries({
     queries: [
@@ -61,7 +61,7 @@ const SuperAdminLayout = () => {
     <div className={`${darkMode && 'dark'} flex h-screen flex-col`}>
       <div className="flex w-full flex-1 font-inter">
         {!shouldIgnore && (
-          <SuperAdminNavBar user={user} toggleDarkMode={toggleDarkMode} />
+          <SuperAdminNavBar user={user} />
         )}
         <div className="w-full overflow-y-hidden">
           <Outlet />

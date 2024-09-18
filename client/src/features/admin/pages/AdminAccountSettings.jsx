@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser } from '@/api/v1/admin/adminApi.js';
+import { deleteUser } from '@/api/v1/admin/profile/profileApi.js';
 import { clearAccessToken } from '../redux/adminAuthSlice.js';
 
 const AdminAccountSettings = () => {

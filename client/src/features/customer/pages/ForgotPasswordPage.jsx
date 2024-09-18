@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { forgotPassword } from '@/api/v1/customer/customerApi.js';
+import { forgotPassword } from '@/api/v1/customer/auth/authApi.js';
 import { setEmailState } from '../redux/customerOtpSlice.js';
 import {
   Card,

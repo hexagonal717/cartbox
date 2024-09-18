@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { verifyOtp } from '@/api/v1/customer/customerApi.js';
+import { verifyOtp } from '@/api/v1/customer/auth/authApi.js';
 import { setOtpVerify } from '../redux/customerOtpSlice.js';
 import {
   Card,

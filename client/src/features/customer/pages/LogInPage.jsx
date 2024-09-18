@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '@/api/v1/customer/customerApi.js';
+import { login } from '@/api/v1/customer/auth/authApi.js';
 import { addCartItem } from '@/api/v1/customer/cart/cartActions.js';
 import { ClearGuestCart } from '@/features/customer/redux/cart/guestCartSlice.js';
 import { Button } from '@/components/ui-custom/button';
@@ -15,11 +15,11 @@ import {
   CardTitle,
 } from '@/components/ui-custom/card';
 import { Alert, AlertDescription } from '@/components/ui-custom/alert';
-import { AlertCircle } from 'lucide-react';
-
+import { AlertCircle, Loader2 } from 'lucide-react';
 export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const guestCart = useSelector((state) => state.guestCartSlice.cart);
 
   const [credentials, setCredentials] = useState({
@@ -50,18 +50,20 @@ export default function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     setError('');
-
     try {
       const res = await login(credentials, dispatch);
       if (res?.status === 'success' && res && res.customerId) {
         await transferGuestCart(res.customerId);
         dispatch(ClearGuestCart());
+        setIsLoading(false);
         navigate('/');
       } else {
         setError('Login successful but customerId not received');
       }
     } catch (error) {
+      setIsLoading(false);
       setError('Login failed. Please check your credentials and try again.');
     }
   };
@@ -77,10 +79,15 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-white p-4 dark:bg-neutral-950">
       <Card className="w-full max-w-md border-0 shadow-none sm:border sm:shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-center text-xl font-bold">
-            Welcome Back
-          </CardTitle>
+        <CardHeader className="space-y-7">
+          <div className="flex items-center justify-center">
+            <CardTitle className="text-4xl font-bold">CartBox</CardTitle>
+          </div>
+          <div className="text-center">
+            <p className="text-muted-foreground text-sm font-bold">
+              We&apos;re glad to see you again!
+            </p>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-3">
@@ -110,8 +117,15 @@ export default function LoginPage() {
                 required
               />
             </div>
-            <Button type="submit" className={'w-full'}>
-              Log in
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                'Log in'
+              )}
             </Button>
           </form>
           {error && (

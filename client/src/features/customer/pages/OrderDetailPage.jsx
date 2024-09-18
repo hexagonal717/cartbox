@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getOrder } from '../../../api/v1/customer/customerApi.js';
-import LoadingPage from '../../../components/common/customer/LoadingPage.jsx';
+import { getOrder } from '@/api/v1/customer/order/orderApi.js';
+import LoadingPage from '@/components/common/customer/LoadingPage.jsx';
 
 import { useLocation } from 'react-router-dom';
 

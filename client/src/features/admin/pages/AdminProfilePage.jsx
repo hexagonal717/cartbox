@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser, putUser } from '@/api/v1/admin/adminApi.js';
+import { getUser, putUser } from '@/api/v1/admin/profile/profileApi.js';
 
 const AdminProfilePage = () => {
   const token = useSelector((state) => state.adminAuthSlice.accessToken);
@@ -93,7 +93,7 @@ const AdminProfilePage = () => {
   return (
     dbAdminInfo && (
       <main className={'flex h-full w-screen items-center justify-center'}>
-        <div className="">
+        <div>
           <form
             className="flex flex-col items-center justify-center gap-2"
             onSubmit={handleSave}

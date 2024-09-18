@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser, putUser } from '../../../api/v1/customer/customerApi.js';
+import { getUser, putUser } from '@/api/v1/customer/profile/profileApi.js';
 
 const ProfilePage = () => {
   const token = useSelector((state) => state.customerAuthSlice.accessToken);
@@ -92,10 +92,10 @@ const ProfilePage = () => {
 
   return (
     dbCustomerInfo && (
-      <div className={'flex h-full flex-row items-center justify-center'}>
-        <div className="flex flex-col items-center justify-center gap-4 p-4">
+      <main className={'flex h-full w-screen items-center justify-center'}>
+        <div className={'flex flex-col'}>
           <form
-            className="flex flex-col items-center justify-center gap-3"
+            className="flex flex-col items-center justify-center gap-2"
             onSubmit={handleSave}
             method="post"
             encType="multipart/form-data">
@@ -162,7 +162,7 @@ const ProfilePage = () => {
             </button>
           </form>
         </div>
-      </div>
+      </main>
     )
   );
 };
