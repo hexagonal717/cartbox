@@ -1,7 +1,7 @@
-const customerSchema = require('../../model/customerSchema');
-const cartSchema = require('../../model/cartSchema');
-const orderSchema = require('../../model/orderSchema');
-const paymentSchema = require('../../model/paymentSchema');
+const Customer = require('../../model/customerSchema');
+const Cart = require('../../model/cartSchema');
+const Order = require('../../model/orderSchema');
+const Payment = require('../../model/paymentSchema');
 const argon = require('argon2');
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
@@ -22,11 +22,7 @@ const upload = multer({ storage: storage });
 
 const getUser = async (req, res) => {
   try {
-    const data = await customerSchema.find(
-      { _id: req.params.id },
-      {},
-      { lean: true },
-    );
+    const data = await Customer.find({ _id: req.params.id }, {}, { lean: true });
     const { password, ...other } = data[0];
 
     res.status(200).json(other);
@@ -37,13 +33,28 @@ const getUser = async (req, res) => {
 
 const putUser = async (req, res) => {
   try {
+    let { phone } = req.body;
     let imagePath = null;
 
-    // Fetch the user from the database to get the type and ObjectId
-    const existingUser = await customerSchema.findById(req.params.id);
+    phone = phone === null ? '' : phone;
 
+    const existingUser = await Customer.findById(req.params.id);
     if (!existingUser) {
       return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (phone.trim() !== '') { // Only check if phone is not an empty string
+      const existingUserPhone = await Customer.findOne(
+        { phone: phone.trim(), _id: { $ne: req.params.id } },
+        {},
+        { lean: true },
+      );
+
+      if (existingUserPhone) {
+        return res
+          .status(400)
+          .json({ error: 'User with this phone number already exists.' });
+      }
     }
 
     if (req.file) {
@@ -66,7 +77,7 @@ const putUser = async (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      phone: req.body.phone,
+      phone: phone.trim(),
       ...req.body,
     };
 
@@ -75,13 +86,13 @@ const putUser = async (req, res) => {
     }
 
     // Update the user in the database
-    const updateData = await customerSchema.findByIdAndUpdate(
+    const updateData = await Customer.findByIdAndUpdate(
       req.params.id,
       { $set: updateFields },
       { new: true },
     );
 
-    res.status(200).json(updateData);
+    res.status(200).json(updateData); // Return the updated user data
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: 'Server error. Please try again later.' });
@@ -90,10 +101,10 @@ const putUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    await customerSchema.findByIdAndDelete(req.params.id);
-    await cartSchema.findOneAndDelete({ customerId: req.params.id });
-    await orderSchema.findOneAndDelete({ customerId: req.params.id });
-    await paymentSchema.findOneAndDelete({ customerId: req.params.id });
+    await Customer.findByIdAndDelete(req.params.id);
+    await Cart.findOneAndDelete({ customerId: req.params.id });
+    await Order.findOneAndDelete({ customerId: req.params.id });
+    await Payment.findOneAndDelete({ customerId: req.params.id });
     res.status(200).json({ status: 'success' });
   } catch (err) {
     console.log(err);
@@ -111,7 +122,7 @@ const insertAllData = async (req, res) => {
     );
 
     // Insert users into the database
-    const result = await customerSchema.insertMany(usersWithHashedPasswords);
+    const result = await Customer.insertMany(usersWithHashedPasswords);
 
     res.status(200).json({ status: 'success', payload: result });
   } catch (err) {
@@ -126,7 +137,7 @@ const insertAllData = async (req, res) => {
 
 const deleteAllData = async (req, res) => {
   try {
-    await customerSchema.deleteMany();
+    await Customer.deleteMany();
     res.status(200).json({ type: 'delete success' });
   } catch (err) {
     console.log(err);
@@ -135,7 +146,7 @@ const deleteAllData = async (req, res) => {
 
 const filterData = async (req, res) => {
   try {
-    const filData = await customerSchema.find({ age: { $gte: 25 } });
+    const filData = await Customer.find({ age: { $gte: 25 } });
     res.status(200).json({ type: 'success', data: filData });
   } catch (err) {
     console.log(err);
@@ -145,14 +156,14 @@ const filterData = async (req, res) => {
 //Mongo Queries
 const findAllUsers = async (req, res) => {
   try {
-    const data = await customerSchema.find();
+    const data = await Customer.find();
     res.send(data);
   } catch (err) {}
 };
 
 const findUserByAge = async (req, res) => {
   try {
-    const data = await customerSchema.find({ age: 25 });
+    const data = await Customer.find({ age: 25 });
     res.send(data);
   } catch (err) {}
 };
@@ -160,7 +171,7 @@ const findUserByAge = async (req, res) => {
 const getAddress = async (req, res) => {
   const { id: customerId } = req.params;
   try {
-    const customer = await customerSchema.findById(customerId);
+    const customer = await Customer.findById(customerId);
     if (!customer) {
       return res.status(404).json({ message: 'Customer not found' });
     }
@@ -175,7 +186,7 @@ const addAddress = async (req, res) => {
   const newAddress = req.body;
 
   try {
-    const customer = await customerSchema.findById(req.params.id);
+    const customer = await Customer.findById(req.params.id);
     if (!customer) {
       return res.status(404).json({ message: 'Customer not found' });
     }
@@ -205,7 +216,7 @@ const putAddress = async (req, res) => {
   const updatedAddress = req.body;
 
   try {
-    const customer = await customerSchema.findById(customerId);
+    const customer = await Customer.findById(customerId);
     if (!customer) {
       return res.status(404).json({ message: 'Customer not found' });
     }
@@ -236,7 +247,7 @@ const deleteAddress = async (req, res) => {
   const { id: customerId, addressId } = req.params;
 
   try {
-    const customer = await customerSchema.findById(customerId);
+    const customer = await Customer.findById(customerId);
     if (!customer) {
       return res.status(404).json({ message: 'Customer not found' });
     }

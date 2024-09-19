@@ -10,9 +10,9 @@ const AddAddressModal = ({ isOpen, onClose, onSave }) => {
     state: '',
     zipCode: '',
     country: '',
-    phone: Number,
-    type: '', // Added type field
-    isDefault: false, // Added isDefault field
+    phone: '',
+    type: '',
+    isDefault: false,
   };
 
   const [address, setAddress] = useState(initialAddressState);
@@ -21,7 +21,7 @@ const AddAddressModal = ({ isOpen, onClose, onSave }) => {
     if (!isOpen) {
       setAddress(initialAddressState);
     }
-  }, [isOpen]);
+  }, [ isOpen]);
 
   const handleOnChange = (event) => {
     const { name, value } = event.target;

@@ -47,12 +47,12 @@ const SignUpPage = () => {
     event.preventDefault();
     setIsLoading(true);
     signUp(customerInfo).then((signup) => {
-      if (signup.status === 'success') {
+      if (signup?.status === 'success') {
         return setTimeout(() => {
           login(customerInfo, dispatch).then((login) => {
-            if (login.status === 'success') {
+            if (login?.status === 'success') {
               setIsLoading(false);
-              return login.status;
+              return login?.status;
             }
           });
         }, 2000);

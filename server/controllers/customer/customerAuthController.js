@@ -25,22 +25,16 @@ const signup = async (req, res) => {
   try {
     const { firstName, lastName, age, email, phone, address, password, role } =
       req.body;
-
-
-    console.log(phone,age,'dddddddddd');
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    const existingUserEmail = await Customer.findOne(
-      { email },
-      {},
-      { lean: true },
-    );
 
+    const existingUserEmail = await Customer.findOne({ email }, {}, { lean: true });
     if (existingUserEmail) {
-      return res.status(400).json({ error: 'User already exists.' });
+      return res.status(400).json({ error: 'User with this email already exists.' });
     }
+
 
     let imagePath = null;
 
@@ -110,11 +104,7 @@ const login = async (req, res) => {
       res.status(400).json({ error: 'Email and Password is required.' });
     }
 
-    const dbExistingUser = await Customer.findOne(
-      { email },
-      {},
-      { lean: true },
-    );
+    const dbExistingUser = await Customer.findOne({ email }, {}, { lean: true });
     if (!dbExistingUser) {
       return res.status(401).json({ error: 'Email or Password is incorrect.' });
     }
@@ -148,11 +138,7 @@ const forgotPassword = async (req, res) => {
   const generateOTP = () => Math.floor(1000 + Math.random() * 9000);
 
   try {
-    const existingUserEmail = await Customer.findOne(
-      { email },
-      {},
-      { lean: true },
-    );
+    const existingUserEmail = await Customer.findOne({ email }, {}, { lean: true });
     if (!existingUserEmail) {
       return res.status(400).json({ error: "This email address doesn't exist." });
     }
