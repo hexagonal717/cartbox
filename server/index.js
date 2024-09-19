@@ -30,8 +30,15 @@ app.use(
 );
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI).then(() => {});
-
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('MongoDB Connected');
+  })
+  .catch((error) => {
+    console.error(`MongoDB Connection Error: ${error.message}`);
+    process.exit(1);
+  });
 // Customer routes
 app.use('/api/customer/auth', customerAuthRouter);
 app.use('/api/customer/profile', customerProfileRouter);

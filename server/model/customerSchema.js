@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+
 const addressSchema = new mongoose.Schema(
   {
     fullName: { type: String },
-    phone: { type: Number },
+    phone: { type: String },
     addressLine1: { type: String },
     addressLine2: { type: String },
     landmark: { type: String },
@@ -20,9 +21,9 @@ const customerInfoSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    age: { type: mongoose.Schema.Types.Mixed },
+    age: { type: String },
     email: { type: String, required: true, unique: true },
-    phone: { type: mongoose.Schema.Types.Mixed },
+    phone: { type: String, },
     password: { type: String, required: true },
     address: [addressSchema],
     role: {
@@ -35,6 +36,9 @@ const customerInfoSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-customerInfoSchema.index({ email: 1, phone: 1 }, { unique: true, sparse: true });
+customerInfoSchema.index(
+  { phone: 1 },
+  { unique: true, partialFilterExpression: { phone: { $ne: null } } }
+);
 
 module.exports = mongoose.model('Customer', customerInfoSchema);
